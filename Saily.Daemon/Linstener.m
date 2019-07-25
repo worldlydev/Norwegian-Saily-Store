@@ -60,6 +60,10 @@ static void read_end() {
         requiredImportAPT();
         return;
     }
+    if ([read_rdi hasPrefix:@"init:req:dpkg:forceUnlock"]) {
+        requiredUnlockDPKG();
+        return;
+    }
 }
 
 static void read_space() {

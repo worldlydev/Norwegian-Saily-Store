@@ -202,3 +202,5 @@
 "请重启程序" = "Please Restart Application";
 "没有在剪贴板中找到有效的软件源地址" = "No validated package repo was found";
 "没有找到有效的软件源地址" = "No validated package repo was found";
+"这个操作将产生危险，你确定吗" = "This is super dangerous";
+"已按照你的要求解锁dpkg" = "Unlocked DPKG";

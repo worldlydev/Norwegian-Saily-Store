@@ -18,7 +18,7 @@ void someChimeraSetup(void);
 int main (int argc, const char * argv[])
 {
 
-    NSLog(@"[i] 准备启动 Daemon, 版本代号 0.6-b592");
+    NSLog(@"[i] 准备启动 Daemon, 版本代号 0.6-b648");
     
     if ([[NSFileManager defaultManager] fileExistsAtPath: @"/Applications/Sileo.app"]) {
         NSLog(@"[*] 为 Chimera 的越狱执行额外的脚本");

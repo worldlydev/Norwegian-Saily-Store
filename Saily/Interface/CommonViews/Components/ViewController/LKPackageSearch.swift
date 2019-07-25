@@ -96,28 +96,14 @@ extension LKPackageSearch: UISearchBarDelegate {
         UIApplication.shared.beginIgnoringInteractionEvents()
         IHProgressHUD.show()
         
-        LKRoot.queue_dispatch.async { [weak self] in
-            if let text = self?.last_search {
-                var item1 = [String]()
-                var item2 = [String]()
-                for item in LKRoot.container_packages where self?.do_they_match(pack: item.value, text: text , use_id: false) ?? false {
-                    item1.append(item.key)
-                }
-                for item in LKRoot.container_packages where self?.do_they_match(pack: item.value, text: text, use_id: true) ?? false {
-                    item2.append(item.key)
-                }
-                item1.sort()
-                item2.sort()
-                self?.search_result.removeAll()
-                for item in item1 {
-                    self?.search_result.append(item)
-                }
-            }
+        LKRoot.queue_dispatch.async {
+            let session = UUID().uuidString
+            self.searchSession = session
+            self.do_search(session: session, text: self.last_search, use_id: false, fullSearch: true)
             DispatchQueue.main.async { [weak self] in
                 UIApplication.shared.endIgnoringInteractionEvents()
                 IHProgressHUD.dismiss()
                 self?.collection_view.reloadData {
-                    
                 }
             }
         }
@@ -125,7 +111,28 @@ extension LKPackageSearch: UISearchBarDelegate {
         
     }
     
-    func do_search(session: String, text: String, use_id: Bool) {
+    func do_search(session: String, text: String, use_id: Bool, fullSearch: Bool = false) {
+        
+        if fullSearch {
+            search_result.removeAll()
+            for item in LKRoot.container_packages where item.key.hasPrefix(last_search) {
+                search_result.append(item.key)
+            }
+            search_result.sort()
+            var second_search = [String]()
+            for item in LKRoot.container_packages where item.key.contains(last_search) {
+                second_search.append(item.key)
+            }
+            second_search.sort()
+            for item in second_search {
+                search_result.append(item)
+            }
+            DispatchQueue.main.async { [weak self] in
+                self?.collection_view.reloadData()
+            }
+            return
+        }
+        
         search_result.removeAll()
         for item in LKRoot.container_packages where do_they_match(pack: item.value, text: text, use_id: use_id) {
             search_result.append(item.key)

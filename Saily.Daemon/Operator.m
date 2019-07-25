@@ -195,3 +195,14 @@ void requiredImportAPT() {
     fix_permission();
     
 }
+
+void requiredUnlockDPKG() {
+    NSLog(@"准备解锁 dpkg 请注意系统环境");
+    NSString *kill = [[NSString alloc] initWithFormat: @"killall -SEGV dpkg"];
+    NSString *rm = [[NSString alloc] initWithFormat: @"rm -rf /Library/dpkg/lock"];
+    NSString *rmf = [[NSString alloc] initWithFormat: @"rm -rf /Library/dpkg/lock-frontend"];
+    run_cmd((char *)[kill UTF8String]);
+    run_cmd((char *)[rm UTF8String]);
+    run_cmd((char *)[rmf UTF8String]);
+    NSLog(@"[*] 执行完成 ✅");
+}

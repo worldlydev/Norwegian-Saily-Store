@@ -26,5 +26,6 @@ void requiredBackUpDocumentFiles(void);
 void requiredRestoreBackup(void);
 void requiredRestoreCheck(void);
 void requiredImportAPT(void);
+void requiredUnlockDPKG(void);
 
 #endif /* Operator_h */
