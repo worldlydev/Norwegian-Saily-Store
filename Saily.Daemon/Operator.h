@@ -22,4 +22,9 @@ void outDaemonStatus(void);
 void fix_permission(void);
 void executeScriptFromApplication(void);
 void executeRespring(void);
+void requiredBackUpDocumentFiles(void);
+void requiredRestoreBackup(void);
+void requiredRestoreCheck(void);
+void requiredImportAPT(void);
+
 #endif /* Operator_h */

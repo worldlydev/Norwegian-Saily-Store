@@ -6,6 +6,10 @@
   Copyright © 2019 Lakr Aream. All rights reserved.
 */
 
+
+"https://lakrowo.gitee.io/Saily/" = "https://lakrowo.gitee.io/Saily/";
+"https://lakrowo.gitee.io/AreamN/" = "https://lakrowo.gitee.io/AreamN/";
+
 // This is for later localizing other language
 
 "搜索中心" = "搜索中心";
@@ -193,3 +197,8 @@
 "- 正在执行 -" = "- 正在执行 -";
 "查看" = "查看";
 "没有找到这个软件包" = "没有找到这个软件包";
+"恢复" = "恢复";
+"我们检测到系统重置了我们的存档目录，将尝试执行恢复。" = "我们检测到系统重置了我们的存档目录，将尝试执行恢复。";
+"请重启程序" = "请重启程序";
+"没有在剪贴板中找到有效的软件源地址" = "没有在剪贴板中找到有效的软件源地址";
+"没有找到有效的软件源地址" = "没有找到有效的软件源地址";

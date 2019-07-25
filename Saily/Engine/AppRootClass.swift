@@ -10,14 +10,16 @@ let LKRoot = app_root_class()
 
 class app_root_class {
     
+    var firstOpen = false
+    
     #if DEBUG
     let is_debug = true
     #else
     let is_debug = false
     #endif
     
-    // iOS 13 Fix
     var ever_went_background = false
+    var should_backup_when_exit = true
     
     var is_iPad = false
     // swiftlint:disable:next discouraged_direct_init
@@ -135,6 +137,7 @@ class app_root_class {
     }
     
     func bootstrap_this_app() {
+        firstOpen = true
         // 开始初始化数据库
         try? root_db?.create(table: common_data_handler.table_name.LKNewsRepos.rawValue, of: DBMNewsRepo.self)
         try? root_db?.create(table: common_data_handler.table_name.LKSettings.rawValue, of: DBMSettings.self)
@@ -162,13 +165,8 @@ class app_root_class {
         default_news_repos_aream.sort_id = 1
 
         let pre = Locale.preferredLanguages[0]
-        if pre.contains("zh") {
-            default_news_repos_saily.link = "https://lakrowo.gitee.io/Saily/"
-            default_news_repos_aream.link = "https://lakrowo.gitee.io/AreamN/"
-        } else {
-            default_news_repos_saily.link = "https://lakraream.github.io/Saily/"
-            default_news_repos_aream.link = "https://lakraream.github.io/AreamN/"
-        }
+        default_news_repos_saily.link = "https://lakrowo.gitee.io/Saily/".localized()
+        default_news_repos_aream.link = "https://lakrowo.gitee.io/AreamN/".localized()
         
         try? root_db?.insert(objects: [default_news_repos_saily, default_news_repos_aream], intoTable: common_data_handler.table_name.LKNewsRepos.rawValue)
 //        #if DEBUG                                                                                       // 压力测试源

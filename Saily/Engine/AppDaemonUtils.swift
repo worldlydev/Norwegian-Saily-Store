@@ -39,8 +39,50 @@ class app_daemon_utils {
             self.checkDaemonOnline { (ret) in
                 print("[*] 获取到 Dameon 状态： " + ret.rawValue)
                 self.status = ret
+                if self.status == .ready && LKRoot.firstOpen {
+                    self.daemon_msg_pass(msg: "init:req:restoreCheck")
+                    sleep(1)
+                    if FileManager.default.fileExists(atPath: LKRoot.root_path! + "/daemon.call/shouldRestore") {
+                        DispatchQueue.main.async {
+                            let alert = UIAlertController(title: "恢复".localized(), message: "我们检测到系统重置了我们的存档目录，将尝试执行恢复。".localized(), preferredStyle: .alert)
+                            alert.addAction(UIAlertAction(title: "取消".localized(), style: .cancel, handler: nil))
+                            alert.addAction(UIAlertAction(title: "执行".localized(), style: .default, handler: { (_) in
+                                UIApplication.shared.beginIgnoringInteractionEvents()
+                                IHProgressHUD.show()
+                                LKRoot.queue_dispatch.async {
+                                    LKRoot.root_db?.close()
+                                    try? FileManager.default.removeItem(atPath: LKRoot.root_path!)
+                                    try? FileManager.default.createDirectory(atPath: LKRoot.root_path!, withIntermediateDirectories: true, attributes: nil)
+                                    try? FileManager.default.createDirectory(atPath: LKRoot.root_path! + "/daemon.call", withIntermediateDirectories: true, attributes: nil)
+                                    self.daemon_msg_pass(msg: "init:req:restoreDocuments")
+                                    while !FileManager.default.fileExists(atPath: LKRoot.root_path! + "/daemon.call/resotreCompleted") {
+                                        usleep(2333)
+                                    }
+                                    DispatchQueue.main.async {
+                                        IHProgressHUD.dismiss()
+                                        let alert = UIAlertController(title: "⚠️", message: "请重启程序".localized(), preferredStyle: .alert)
+                                        presentViewController(some: alert)
+                                        LKRoot.should_backup_when_exit = false
+                                    }
+                                }
+                            }))
+                            presentViewController(some: alert)
+                        }
+                    }
+                }
             }
         }
+    }
+    
+    func requestBackup() -> operation_result {
+        if status != .ready {
+            LKDaemonUtils.checkDaemonOnline { (ret) in
+                self.status = ret
+            }
+            return .failed
+        }
+        daemon_msg_pass(msg: "init:req:backupDocuments")
+        return .success
     }
     
     func daemon_msg_pass(msg: String) {
@@ -54,16 +96,16 @@ class app_daemon_utils {
         }
         sender_lock = true
         object.call_to_daemon_(with: "com.Lakr233.Saily.MsgPass.read.Begin")
-        usleep(2333)
+        usleep(6666)
         let charasets = msg.charactersArray
         for item in charasets {
             let cs = String(item)
             let str = "com.Lakr233.Saily.MsgPass.read." + cs
             object.call_to_daemon_(with: str)
-            usleep(2333)
+            usleep(6666)
         }
         object.call_to_daemon_(with: "com.Lakr233.Saily.MsgPass.read.End")
-        usleep(2333)
+        usleep(6666)
         print("[*] 向远端发送数据完成：" + msg)
         sender_lock = false
     }

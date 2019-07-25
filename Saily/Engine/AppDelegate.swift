@@ -59,7 +59,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationWillTerminate(_ application: UIApplication) {
-        
+        LKRoot.root_db?.close()
+        if LKRoot.should_backup_when_exit {
+            _ = LKDaemonUtils.requestBackup()
+        }
     }
 
 }

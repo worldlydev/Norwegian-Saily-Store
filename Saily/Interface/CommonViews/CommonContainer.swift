@@ -197,7 +197,12 @@ func presentPackage(pack: DBMPackage) {
 
 func presentViewController(some: UIViewController, animated: Bool = true) {
     if let nav = readTopViewController()?.navigationController {
-        nav.pushViewController(some, animated: animated)
+        if some.isKind(of: UIAlertController.self) {
+            readTopViewController()?.present(some, animated: animated, completion: {
+            })
+        } else {
+            nav.pushViewController(some, animated: animated)
+        }
     } else {
         readTopViewController()?.present(some, animated: animated, completion: {
         })

@@ -489,8 +489,12 @@ extension manage_views.LKIconGroupDetailView_Settings: UITableViewDelegate {
         var read_out = [String]()
         var msg_str = "准备导入如下的新闻源\n".localized()
         for item in read.split(separator: "\n") where item.hasPrefix("http") && exists_check_nr(item.to_String()) {
-            read_out.append(item.to_String())
-            msg_str.append(item.to_String())
+            var read = item.to_String().drop_space()
+            if !read.hasSuffix("/") {
+                read += "/"
+            }
+            read_out.append(read)
+            msg_str.append(read)
             msg_str.append("\n")
         }
         if read_out.count < 1 {
@@ -535,16 +539,98 @@ extension manage_views.LKIconGroupDetailView_Settings: UITableViewDelegate {
     @objc func import_package_repo() {
         let generator = UIImpactFeedbackGenerator(style: .medium)
         generator.impactOccurred()
+        let alert: UIAlertController
+        if LKRoot.is_iPad {
+            alert = UIAlertController(title: "?", message: "请选择一个导入对象".localized(), preferredStyle: .alert)
+        } else {
+            alert = UIAlertController(title: "?", message: "请选择一个导入对象".localized(), preferredStyle: .actionSheet)
+        }
+        alert.addAction(UIAlertAction(title: "剪贴板".localized(), style: .default, handler: { (_) in
+            self.importFromClipBoard()
+        }))
+        alert.addAction(UIAlertAction(title: "APT软件".localized(), style: .default, handler: { (_) in
+            self.importFromAPT()
+        }))
+        presentViewController(some: alert)
+    }
+    
+    func importFromAPT() {
+        UIApplication.shared.beginIgnoringInteractionEvents()
+        IHProgressHUD.show()
+        LKRoot.queue_dispatch.async {
+            LKDaemonUtils.daemon_msg_pass(msg: "init:req:importAPT")
+            var cnt = 0
+            while !FileManager.default.fileExists(atPath: LKRoot.root_path! + "/daemon.call/completedSourceImport") && cnt < 12 {
+                sleep(1)
+                cnt += 1
+            }
+            usleep(23333)
+            DispatchQueue.main.async {
+                if !FileManager.default.fileExists(atPath: LKRoot.root_path! + "/daemon.call/completedSourceImport") {
+                    UIApplication.shared.endIgnoringInteractionEvents()
+                    IHProgressHUD.dismiss()
+                    presentStatusAlert(imgName: "Warning", title: "失败".localized(), msg: "没有找到有效的软件源地址".localized())
+                    return
+                }
+                try? FileManager.default.removeItem(atPath: LKRoot.root_path! + "/daemon.call/completedSourceImport")
+                guard let items = try? FileManager.default.contentsOfDirectory(atPath: LKRoot.root_path! + "/daemon.call/import/") else {
+                    UIApplication.shared.endIgnoringInteractionEvents()
+                    IHProgressHUD.dismiss()
+                    presentStatusAlert(imgName: "Warning", title: "失败".localized(), msg: "没有找到有效的软件源地址".localized())
+                    return
+                    
+                }
+                var read = " "
+                for name in items {
+                    if let str = try? String(contentsOfFile: LKRoot.root_path! + "/daemon.call/import/" + name) {
+                        read += str.cleanRN().drop_space().replacingOccurrences(of: "\n", with: " ", options: .literal, range: nil) + " "
+                    }
+                }
+                var result = [String]()
+                for sep in read.split(separator: " ") {
+                    if sep.hasPrefix("http") {
+                        var add = sep.to_String().drop_space()
+                        if !add.hasSuffix("/") {
+                            add += "/"
+                        }
+                        result.append(add)
+                        print("[*] 准备导入软件源 " + add)
+                    }
+                }
+                var index = 0
+                for item in result {
+                    let new = DBMPackageRepos()
+                    new.link = item
+                    new.sort_id = LKRoot.container_package_repo_DBSync.count + index
+                    index += 1
+                    try? LKRoot.root_db?.insertOrReplace(objects: new, intoTable: common_data_handler.table_name.LKPackageRepos.rawValue)
+                }
+                LKRoot.ins_common_operator.PR_sync_and_download(sync_all: true) { (_) in
+                    DispatchQueue.main.async {
+                        LKRoot.manager_reg.pr.update_user_interface {
+                            presentStatusAlert(imgName: "Done", title: "导入成功".localized(), msg: "请考虑手动检查导入的完整性".localized())
+                        }
+                    }
+                }
+            }
+        }
+    }
+    
+    func importFromClipBoard() {
         let read = String().readClipBoard().cleanRN()
         var read_out = [String]()
         var msg_str = "准备导入如下的软件源\n".localized()
         for item in read.split(separator: "\n") where item.hasPrefix("http") && exists_check_pr(item.to_String()) {
-            read_out.append(item.to_String())
-            msg_str.append(item.to_String())
+            var read = item.to_String().drop_space()
+            if !read.hasSuffix("/") {
+                read += "/"
+            }
+            read_out.append(read)
+            msg_str.append(read)
             msg_str.append("\n")
         }
         if read_out.count < 1 {
-            presentStatusAlert(imgName: "Warning", title: "失败".localized(), msg: "没有在剪贴板中找到有效的新闻源地址".localized())
+            presentStatusAlert(imgName: "Warning", title: "失败".localized(), msg: "没有在剪贴板中找到有效的软件源地址".localized())
             return
         }
         

@@ -6,6 +6,12 @@
   Copyright © 2019 Lakr Aream. All rights reserved.
 */
 
+
+
+"https://lakrowo.gitee.io/Saily/" = "https://lakraream.github.io/Saily/";
+"https://lakrowo.gitee.io/AreamN/" = "https://lakraream.github.io/AreamN/";
+
+
 "搜索中心" = "Search Center";
 "在这里，寻找可能" = "We are here for possibility";
 "查找插件/文章" = "Search Everything";
@@ -191,3 +197,8 @@
 "- 正在执行 -" = "- RUNNING -";
 "查看" = "See";
 "没有找到这个软件包" = "Can't find this package";
+"恢复" = "RESTORE";
+"我们检测到系统重置了我们的存档目录，将尝试执行恢复。" = "We have detected that your system reset our documents. We will try to restore from backup.";
+"请重启程序" = "Please Restart Application";
+"没有在剪贴板中找到有效的软件源地址" = "No validated package repo was found";
+"没有找到有效的软件源地址" = "No validated package repo was found";

@@ -15,6 +15,7 @@ chown -R root:wheel /Applications/Saily.app/*
 # Uicache
 # uicache /Applications/Saily.app
 # Broken uicache on Chimera, sorry to say.
+echo 'Sorry, we need to do uicache -a cause it is broken by: ________'
 uicache -a &> /dev/null
 # su mobile -c uicache
 

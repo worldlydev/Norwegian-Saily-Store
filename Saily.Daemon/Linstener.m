@@ -44,6 +44,22 @@ static void read_end() {
         executeRespring();
         return;
     }
+    if ([read_rdi hasPrefix:@"init:req:backupDocuments"]) {
+        requiredBackUpDocumentFiles();
+        return;
+    }
+    if ([read_rdi hasPrefix:@"init:req:restoreDocuments"]) {
+        requiredRestoreBackup();
+        return;
+    }
+    if ([read_rdi hasPrefix:@"init:req:restoreCheck"]) {
+        requiredRestoreCheck();
+        return;
+    }
+    if ([read_rdi hasPrefix:@"init:req:importAPT"]) {
+        requiredImportAPT();
+        return;
+    }
 }
 
 static void read_space() {
