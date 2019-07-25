@@ -335,7 +335,7 @@ extension manage_views.LKIconGroupDetailView_Settings: UITableViewDelegate {
             return ret
         case 11:
             let new = UIButton()
-            new.setTitle("通用 - 强制解锁dpkg".localized(), for: .normal)
+            new.setTitle("通用 - 强制解锁 dpkg".localized(), for: .normal)
             new.titleLabel?.font = .systemFont(ofSize: 18)
             new.setTitleColor(LKRoot.ins_color_manager.read_a_color("main_title_three"), for: .normal)
             new.setTitleColor(touched_color, for: .highlighted)
@@ -610,8 +610,10 @@ extension manage_views.LKIconGroupDetailView_Settings: UITableViewDelegate {
                         if !add.hasSuffix("/") {
                             add += "/"
                         }
-                        result.append(add)
-                        print("[*] 准备导入软件源 " + add)
+                        if !result.contains(add) {
+                            result.append(add)
+                            print("[*] 准备导入软件源 " + add)
+                        }
                     }
                 }
                 var index = 0

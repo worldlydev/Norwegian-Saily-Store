@@ -52,6 +52,7 @@
 "软件逻辑" = "Application Defaults";
 "通用 - 全局下载超时" = "General - Network Timeou";
 "通用 - 获取设备 UDID" = "General - Set UDID";
+"通用 - 强制解锁 dpkg" = "General - Force Unlock DPKG";
 "关于" = "About";
 "查看 - 设备信息" = "Device Information";
 "查看 - 软件信息" = "Application Information";
@@ -204,3 +205,6 @@
 "没有找到有效的软件源地址" = "No validated package repo was found";
 "这个操作将产生危险，你确定吗" = "This is super dangerous";
 "已按照你的要求解锁dpkg" = "Unlocked DPKG";
+"APT软件" = "APT Standard Software";
+"剪贴板" = "Pasteboard Scan";
+"请选择一个导入对象" = "Please choose a way to import";
