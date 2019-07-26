@@ -16,6 +16,6 @@ Designers:
 - @xerusdesign   
 
 Translator:   
-- dabeecao/@jbvq19 Vietnamese
+- GitHub:dabeecao Vietnamese
 
 More thins coming later.... I got summery holiday homeworks to do.  
