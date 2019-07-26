@@ -16,11 +16,12 @@ chown -R root:wheel /Applications/Saily.app/*
 # uicache /Applications/Saily.app
 # Broken uicache on Chimera, sorry to say.
 echo 'Sorry, we need to do uicache -a cause it is broken by: ________'
-uicache -a &> /dev/null
+uicache -a
 # su mobile -c uicache
 
 # Swap our daemon
 killall Saily.Daemon &> /dev/null
 
 # Force dpkg to continue
+echo "com.Lakr233.Saily install" | dpkg --set-selections  
 exit 0

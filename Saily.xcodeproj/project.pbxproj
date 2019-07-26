@@ -846,7 +846,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cd $SOURCE_ROOT\nfind . -name '.DS_Store' -delete\nfind . -name '_CodeSignature' -delete\ncd $SOURCE_ROOT/Saily.Daemon/Package/Applications\nfind . -name 'embedded.mobileprovision' -delete\n\n";
+			shellScript = "cd $SOURCE_ROOT\nfind . -name '.DS_Store' -delete\nfind . -name '_CodeSignature' -delete\ncd $SOURCE_ROOT/Saily.Daemon/Package/Applications\nfind . -name 'embedded.mobileprovision' -delete\ncd $SOURCE_ROOT/Packages\nrm -rf ./*\n";
 		};
 		B4AFE5F922E86940000F5244 /* Unsign & ldid */ = {
 			isa = PBXShellScriptBuildPhase;
