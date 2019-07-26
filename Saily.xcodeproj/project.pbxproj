@@ -177,6 +177,9 @@
 		B432BD3322E628B3007B4727 /* NSData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSData.swift; sourceTree = "<group>"; };
 		B437DD7B22E6D7C300A827EB /* LKRequestList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LKRequestList.swift; sourceTree = "<group>"; };
 		B439A8C322D9AE0700E1D577 /* LKActiveShineCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LKActiveShineCell.swift; sourceTree = "<group>"; };
+		B4691C7422EA851B00329DF5 /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = vi.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
+		B4691C7722EA851B00329DF5 /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = vi.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		B4691C7822EA851B00329DF5 /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = vi.lproj/Localizable.strings; sourceTree = "<group>"; };
 		B46EE49C22D60C6C000C6F6D /* LKResponderBlockButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LKResponderBlockButton.swift; sourceTree = "<group>"; };
 		B46EE49E22D611CD000C6F6D /* LKRepoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LKRepoView.swift; sourceTree = "<group>"; };
 		B470FA9122D4515700C4A215 /* LKButtonStackTVCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LKButtonStackTVCell.swift; sourceTree = "<group>"; };
@@ -694,6 +697,7 @@
 				en,
 				Base,
 				"zh-Hans",
+				vi,
 			);
 			mainGroup = AB081F88229D4BDC00ACA4DD;
 			productRefGroup = AB081F92229D4BDC00ACA4DD /* Products */;
@@ -1029,6 +1033,7 @@
 			children = (
 				04118A1622AA7E0500C4D94E /* zh-Hans */,
 				04118A1822AA7E0800C4D94E /* en */,
+				B4691C7722EA851B00329DF5 /* vi */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -1037,6 +1042,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				ABFBA800229D7B3D0070A17E /* Base */,
+				B4691C7422EA851B00329DF5 /* vi */,
 			);
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
@@ -1062,6 +1068,7 @@
 			children = (
 				ABFBA836229D8DC70070A17E /* zh-Hans */,
 				ABFBA838229D8E3A0070A17E /* en */,
+				B4691C7822EA851B00329DF5 /* vi */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
