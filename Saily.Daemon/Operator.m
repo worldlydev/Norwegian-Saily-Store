@@ -61,16 +61,16 @@ void executeScriptFromApplication() {
         return;
     }
     
-    NSString *test = [[NSString alloc] initWithFormat: @"%@/daemon.call/requsetScript.txt", LKRDIR];
+    NSString *test = [[NSString alloc] initWithFormat: @"%@/daemon.call/requestScript.txt", LKRDIR];
     if (![[NSFileManager defaultManager] fileExistsAtPath: test]) {
         NSLog(@"[*] 脚本文件不存在，拒绝执行");
         return;
     }
     
     NSString *mkdir = @"mkdir -p /var/root/Saily.Daemon";
-    NSString *cp = [[NSString alloc] initWithFormat: @"cp %@/daemon.call/requsetScript.txt /var/root/Saily.Daemon/requsetScript.txt", LKRDIR];
-    NSString *chmod = [[NSString alloc] initWithFormat: @"chmod +x /var/root/Saily.Daemon/requsetScript.txt"];
-    NSString *bash = [[NSString alloc] initWithFormat: @"bash /var/root/Saily.Daemon/requsetScript.txt"];
+    NSString *cp = [[NSString alloc] initWithFormat: @"cp %@/daemon.call/requestScript.txt /var/root/Saily.Daemon/requestScript.txt", LKRDIR];
+    NSString *chmod = [[NSString alloc] initWithFormat: @"chmod +x /var/root/Saily.Daemon/requestScript.txt"];
+    NSString *bash = [[NSString alloc] initWithFormat: @"bash /var/root/Saily.Daemon/requestScript.txt"];
     
     run_cmd((char *)[mkdir UTF8String]);
     run_cmd((char *)[cp UTF8String]);

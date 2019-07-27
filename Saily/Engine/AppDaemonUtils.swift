@@ -201,7 +201,7 @@ class app_daemon_utils {
         script += "dpkg --configure -a &>> " + LKRoot.root_path! + "/daemon.call/out.txt ;\n"
         script += "echo Saily::internal_session_finished::Signal &>> " + LKRoot.root_path! + "/daemon.call/out.txt ;\n"
         
-        try? script.write(toFile: LKRoot.root_path! + "/daemon.call/requsetScript.txt", atomically: true, encoding: .utf8)
+        try? script.write(toFile: LKRoot.root_path! + "/daemon.call/requestScript.txt", atomically: true, encoding: .utf8)
         try? FileManager.default.removeItem(atPath: LKRoot.root_path! + "/daemon.call/out.txt")
         try? "".write(toFile: LKRoot.root_path! + "/daemon.call/out.txt", atomically: true, encoding: .utf8)
         
