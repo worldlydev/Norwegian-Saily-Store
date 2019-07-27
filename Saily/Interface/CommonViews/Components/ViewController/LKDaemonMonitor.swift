@@ -156,7 +156,12 @@ class LKDaemonMonitor: UIViewController {
             })
             actionButton.snp.remakeConstraints({ (x) in
                 x.right.equalTo(self.view.snp.right).offset(-18)
-                x.bottom.equalTo(self.view.snp.bottom).offset(0 - self.view.safeAreaInsets.bottom - 18)
+                if #available(iOS 11.0, *) {
+                    x.bottom.equalTo(self.view.snp.bottom).offset(0 - self.view.safeAreaInsets.bottom - 18)
+                } else {
+                    // Fallback on earlier versions
+                    x.bottom.equalTo(self.view.snp.bottom).offset(-18)
+                }
                 x.height.equalTo(45)
                 x.width.equalTo(45)
             })

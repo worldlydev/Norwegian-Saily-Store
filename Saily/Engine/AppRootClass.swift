@@ -194,12 +194,18 @@ class app_root_class {
 //        ]
 //        #else
         var default_links = [
-            "https://apt.bingner.com/",
             "https://repo.chariz.io/",
             "https://repo.nepeta.me/",
             "https://repo.dynastic.co/"
         ]
 //        #endif
+        
+        
+        if FileManager.default.fileExists(atPath: "/.installed_unc0ver") {
+            default_links.insert("https://apt.bingner.com/", at: 0)
+        } else {
+            default_links.insert("https://repo.chimera.sh/", at: 0)
+        }
         
         if pre.contains("zh") {
             default_links.insert("https://LakrOwO.gitee.io/repo/", at: 0)

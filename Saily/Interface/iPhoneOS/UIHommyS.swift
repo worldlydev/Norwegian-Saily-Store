@@ -60,10 +60,16 @@ class UIHommyS: UIViewController {
         
         // 处理 AutoLayout
         self.container?.snp.makeConstraints({ (x) in
-            x.top.equalTo(self.view.safeAreaInsets.top)
+            if #available(iOS 11.0, *) {
+                x.bottom.equalTo(self.view.safeAreaInsets.bottom)
+                x.top.equalTo(self.view.safeAreaInsets.top)
+            } else {
+                // Fallback on earlier versions
+                x.top.equalTo(self.view.snp.top)
+                x.bottom.equalTo(self.view.snp.bottom)
+            }
             x.left.equalTo(self.view.snp.left)
             x.right.equalTo(self.view.snp.right)
-            x.bottom.equalTo(self.view.safeAreaInsets.bottom)
         })
         header.snp.makeConstraints({ (x) in
             x.top.equalTo(self.container!.snp.top)

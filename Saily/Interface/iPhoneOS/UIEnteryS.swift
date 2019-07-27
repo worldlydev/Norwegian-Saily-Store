@@ -50,10 +50,14 @@ class UIEnteryS: UITabBarController {
         nav3.navigationBar.isHidden = true
         nav4.navigationBar.isHidden = true
         
-        nav1.navigationBar.prefersLargeTitles = true
-        nav2.navigationBar.prefersLargeTitles = true
-        nav3.navigationBar.prefersLargeTitles = true
-        nav4.navigationBar.prefersLargeTitles = true
+        if #available(iOS 11.0, *) {
+            nav1.navigationBar.prefersLargeTitles = true
+            nav2.navigationBar.prefersLargeTitles = true
+            nav3.navigationBar.prefersLargeTitles = true
+            nav4.navigationBar.prefersLargeTitles = true
+        } else {
+            // Fallback on earlier versions
+        }
         
         viewControllers = [nav1, nav2, nav3, nav4]
         

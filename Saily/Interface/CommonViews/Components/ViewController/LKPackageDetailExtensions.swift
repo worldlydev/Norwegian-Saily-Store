@@ -28,7 +28,9 @@ extension LKPackageDetail: UIScrollViewDelegate {
         if contentView == scrollView {
             // 基准线
             var base = CGFloat(233)
-            base -= (UIApplication.shared.keyWindow?.safeAreaInsets.top ?? 0)
+            if #available(iOS 11.0, *) {
+                base -= (UIApplication.shared.keyWindow?.safeAreaInsets.top ?? 0)
+            }
             base -= (self.navigationController?.navigationBar.frame.height ?? 0)
             base -= (self.navigationController?.navigationBar.frame.height ?? 0)
             base -= 20
@@ -78,9 +80,15 @@ extension LKPackageDetail: UIScrollViewDelegate {
         if contentView == scrollView {
             if scrollView.contentOffset.y > 48 && scrollView.contentOffset.y < 256 {
                 UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 0.5, options: .curveEaseIn, animations: {
-                    self.contentView.contentOffset.y = 233 -
-                        (UIApplication.shared.keyWindow?.safeAreaInsets.top ?? 0) -
-                        (self.navigationController?.navigationBar.frame.height ?? 0)
+                    if #available(iOS 11.0, *) {
+                        self.contentView.contentOffset.y = 233 -
+                            (UIApplication.shared.keyWindow?.safeAreaInsets.top ?? 0) -
+                            (self.navigationController?.navigationBar.frame.height ?? 0)
+                    } else {
+                        // Fallback on earlier versions
+                        self.contentView.contentOffset.y = 233 -
+                            (self.navigationController?.navigationBar.frame.height ?? 0)
+                    }
                 }, completion: { (_) in
                 })
             }

@@ -83,7 +83,11 @@ class LKPackageDetail: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        navigationController?.navigationBar.prefersLargeTitles = false
+        if #available(iOS 11.0, *) {
+            navigationController?.navigationBar.prefersLargeTitles = false
+        } else {
+            // Fallback on earlier versions
+        }
         navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         navigationController?.navigationBar.shadowImage = UIImage()
         _ = try? AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.playback, mode: .default, options: .mixWithOthers)
@@ -143,7 +147,11 @@ class LKPackageDetail: UIViewController {
         contentView.showsVerticalScrollIndicator = false
         contentView.showsHorizontalScrollIndicator = false
         contentView.contentOffset = CGPoint(x: 0, y: 0)
-        contentView.contentInsetAdjustmentBehavior = .never
+        if #available(iOS 11.0, *) {
+            contentView.contentInsetAdjustmentBehavior = .never
+        } else {
+            // Fallback on earlier versions
+        }
         contentView.snp.makeConstraints { (x) in
             x.edges.equalTo(self.view.snp.edges)
         }
@@ -153,7 +161,12 @@ class LKPackageDetail: UIViewController {
         view.addSubview(status_bar_cover)
         status_bar_cover.snp.makeConstraints { (x) in
             x.top.equalTo(self.view.snp.top)
-            x.height.equalTo(UIApplication.shared.keyWindow?.safeAreaInsets.top ?? 0)
+            if #available(iOS 11.0, *) {
+                x.height.equalTo(UIApplication.shared.keyWindow?.safeAreaInsets.top ?? 0)
+            } else {
+                // Fallback on earlier versions
+                x.height.equalTo(20)
+            }
             x.left.equalTo(self.view.snp.left)
             x.right.equalTo(self.view.snp.right)
         }
@@ -302,7 +315,11 @@ class LKPackageDetail: UIViewController {
     
     var loadUrl = URL(string: "https://www.apple.com/")!
     func setup_Cydia(dep: String) {
-        webView.scrollView.contentInsetAdjustmentBehavior = .never
+        if #available(iOS 11.0, *) {
+            webView.scrollView.contentInsetAdjustmentBehavior = .never
+        } else {
+            // Fallback on earlier versions
+        }
         // 获取数据
         if let url = URL(string: dep) {
             IHProgressHUD.show()

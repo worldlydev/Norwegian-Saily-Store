@@ -70,8 +70,8 @@ extension common_views {
         head_icon.snp.makeConstraints { (x) in
             x.centerY.equalTo(main_title.snp.centerY).offset(0)
             x.right.equalTo(ret_view.snp.right).offset(-18)
-            x.width.equalTo(40)
-            x.height.equalTo(40)
+            x.width.equalTo(28)
+            x.height.equalTo(28)
         }
         
         if sep_enabled {

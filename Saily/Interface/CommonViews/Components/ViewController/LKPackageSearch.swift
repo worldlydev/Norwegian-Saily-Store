@@ -64,7 +64,11 @@ class LKPackageSearch: UIViewController {
         search_bar.delegate = self
         navigationItem.titleView = search_bar
         
-        navigationController?.navigationBar.prefersLargeTitles = false
+        if #available(iOS 11.0, *) {
+            navigationController?.navigationBar.prefersLargeTitles = false
+        } else {
+            // Fallback on earlier versions
+        }
         
         self.searchBar(self.search_bar, textDidChange: "")
         
