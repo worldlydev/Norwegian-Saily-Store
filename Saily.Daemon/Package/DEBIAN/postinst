@@ -23,7 +23,7 @@ uicache -a
 # su mobile -c uicache
 
 # Swap our daemon
-killall Saily.Daemon &> /dev/null
+killall Saily.Daemon
 
 # Force dpkg to continue
 # echo "com.Lakr233.Saily install" | dpkg --set-selections  

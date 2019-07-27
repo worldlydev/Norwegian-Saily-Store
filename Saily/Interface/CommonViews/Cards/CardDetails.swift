@@ -87,7 +87,7 @@ extension common_views {
                     x.height.equalTo(return_this_shit.1)
                 }
                 last_view = return_this_shit.0
-                ret.lenth += return_this_shit.1
+                ret.lenth += return_this_shit.1 + 8
                 continue run_content_invoker
             }
             // 身子
@@ -104,7 +104,7 @@ extension common_views {
             x.height.equalTo(return_this_shit.1)
         }
         last_view = return_this_shit.0
-        ret.lenth += return_this_shit.1
+        ret.lenth += return_this_shit.1 - 108
         
         ret.last_view_for_auto_layout = last_view
         
@@ -131,13 +131,15 @@ extension common_views {
                     x.right.equalTo(ret.snp.right)
                     x.top.equalTo(ret.snp.top)
                     if LKRoot.is_iPad {
-                        // 晚点再来处理
                         x.height.equalTo(text_view.sizeThatFits(CGSize(width: 444, height: CGFloat.infinity)).height)
-                        lenth += text_view.sizeThatFits(CGSize(width: 444, height: CGFloat.infinity)).height
                     } else {
                         x.height.equalTo(text_view.sizeThatFits(CGSize(width: UIScreen.main.bounds.width - 56, height: CGFloat.infinity)).height)
-                        lenth += text_view.sizeThatFits(CGSize(width: UIScreen.main.bounds.width - 56, height: CGFloat.infinity)).height
                     }
+                }
+                if LKRoot.is_iPad {
+                    lenth += text_view.sizeThatFits(CGSize(width: 444, height: CGFloat.infinity)).height
+                } else {
+                    lenth += text_view.sizeThatFits(CGSize(width: UIScreen.main.bounds.width - 56, height: CGFloat.infinity)).height
                 }
             }
         case .text_inherit_saying:
@@ -246,7 +248,7 @@ extension common_views {
                 cell.apart_init()
                 cell.title.text = body
                 cell.sub_title.text = vfsl.first
-                cell.icon.sd_setImage(with: URL(string: (vfsl.first ?? "") + "/CydiaIcon.png"), completed: nil)
+                cell.icon.sd_setImage(with: URL(string: (vfsl.first ?? "") + "CydiaIcon.png"), completed: nil)
                 DispatchQueue.main.async {
                     cell.button.removeFromSuperview()
                 }

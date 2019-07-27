@@ -386,7 +386,7 @@ extension app_opeerator {
             }
         }
         
-        result_str(ret_str_fixed )
+        result_str(ret_str_fixed)
         
     } // NR_download_card_contents
     

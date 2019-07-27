@@ -191,7 +191,7 @@ class UIHommyS: UIViewController {
                         }
                         
                         // 调整主容器大小
-                        self.container?.contentSize.height = CGFloat(LKRoot.container_news_repo.count * 425) + 128 + 98
+                        self.container?.contentSize.height = CGFloat(LKRoot.container_news_repo.count * 425) + 233 + 66
                         
                         // 第一个源的瞄点
                         var last_view = UIView()
@@ -620,11 +620,7 @@ class UIHommyS: UIViewController {
                         let new_container = LKRoot.ins_view_manager.NRCD_create_card_detail(info: ret_str)
                         UIView.animate(withDuration: 0.8, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.5, options: .curveEaseIn, animations: {
                             self.card_details_scroll_view?.layoutIfNeeded()
-                            if LKRoot.safe_area_needed {
-                                self.card_details_scroll_view?.contentSize = CGSize(width: 0, height: 555 + new_container.lenth)
-                            } else {
-                                self.card_details_scroll_view?.contentSize = CGSize(width: 0, height: 500 + new_container.lenth)
-                            }
+                            self.card_details_scroll_view?.contentSize = CGSize(width: 0, height: 558 + new_container.lenth)
                         })
                         
                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: {
