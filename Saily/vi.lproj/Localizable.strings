@@ -80,6 +80,7 @@
 "请考虑添加一些安装或卸载的软件包" = "NGƯỜI DÙNG THÊM\/XÓA MỘT SỐ GÓI";
 "- 无更多软件包 -" = "- Không còn gói nào :)";
 "通用 - 获取设备 UDID" = "Chung - Đặt UDID";
+"通用 - 强制解锁网络" = "Chung - Buộc phải mở khóa mạng";
 "- 任务完成 -" = "- KẾT THÚC -";
 "软件包与已安装或将安装的项目冲突" = "GÓI XUNG ĐỘT ĐÃ HOẶC ĐANG ĐƯỢC CÀI ĐẶT";
 "查看最近更新的全部软件包" = "Hiển thị tất cả các gói được cập nhật gần đây";
@@ -211,3 +212,4 @@
 "请尝试在设置页面刷新软件源" = "Vui lòng xem xét làm mới gói và nguồn tại trang cài đặt";
 "您有的提交列表有未解决的先决条件问题" = "Có một số vấn đề chưa được giải quyết trong phần danh mục";
 "这个栏目没有内容" = "Danh mục không có nội dung";
+"这个操作将重启您的系统" = "reboot required";

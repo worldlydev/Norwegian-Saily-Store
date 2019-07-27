@@ -1,25 +1,18 @@
 //
-//  Linstener.m
-//  Saily.Daemon
+//  NSObject+Listener.m
+//  UnitTest
 //
-//  Created by Lakr Aream on 2019/7/21.
+//  Created by Lakr Aream on 2019/7/26.
 //  Copyright © 2019 Lakr Aream. All rights reserved.
 //
 
-#import "Linstener.h"
+#import "NSObject+Listener.h"
+
+#include <notify.h>
+
+@implementation Listener
 
 NSString *read_rdi = @"";
-
-static void exit_by_another_daemon() {
-    dispatch_queue_t some = dispatch_queue_create("com.Lakr233.Saily.pending_exit_queue", nil);
-    dispatch_async(some, ^{
-        while (read_status() != 0) {
-            sleep(1);
-        }
-        NSLog(@"[*] com.Lakr233.Saily.Daemon_Conflict");
-        exit(2);
-    });
-}
 
 static void read_begin() {
     NSLog(@"[*] 开始新的数据拼接 session");
@@ -28,46 +21,6 @@ static void read_begin() {
 
 static void read_end() {
     NSLog(@"[*] 数据接受完成，内容为: %@", read_rdi);
-    if ([read_rdi hasPrefix:@"init:path:"]) {
-        setAppPath([read_rdi substringFromIndex:10]);
-        return;
-    }
-    if ([read_rdi hasPrefix:@"init:status:required_call_back"]) {
-        outDaemonStatus();
-        return;
-    }
-    if ([read_rdi hasPrefix:@"init:req:fromScript"]) {
-        executeScriptFromApplication();
-        return;
-    }
-    if ([read_rdi hasPrefix:@"init:req:reSpring"]) {
-        executeRespring();
-        return;
-    }
-    if ([read_rdi hasPrefix:@"init:req:backupDocuments"]) {
-        requiredBackUpDocumentFiles();
-        return;
-    }
-    if ([read_rdi hasPrefix:@"init:req:restoreDocuments"]) {
-        requiredRestoreBackup();
-        return;
-    }
-    if ([read_rdi hasPrefix:@"init:req:restoreCheck"]) {
-        requiredRestoreCheck();
-        return;
-    }
-    if ([read_rdi hasPrefix:@"init:req:importAPT"]) {
-        requiredImportAPT();
-        return;
-    }
-    if ([read_rdi hasPrefix:@"init:req:dpkg:forceUnlock"]) {
-        requiredUnlockDPKG();
-        return;
-    }
-    if ([read_rdi hasPrefix:@"init:req:net:unlock"]) {
-        requiredUnlockNetwork();
-        return;
-    }
 }
 
 static void read_space() {
@@ -450,7 +403,7 @@ static void read_bl() {
     read_rdi = [read_rdi stringByAppendingString:@"~"];
 }
 
-void regLinstenersOnMsgPass() {
+- (void)regLinstenersOnMsgPass {
     
     CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(),
                                     NULL,
@@ -1225,19 +1178,9 @@ void regLinstenersOnMsgPass() {
                                     NULL,
                                     CFNotificationSuspensionBehaviorCoalesce);
     
-    notify_post("com.Lakr233.Saily.Daemon_Conflict");
-    
-    usleep(23333);
-    
-    CFNotificationCenterAddObserver(CFNotificationCenterGetDarwinNotifyCenter(),
-                                    NULL,
-                                    exit_by_another_daemon,
-                                    CFSTR("com.Lakr233.Saily.Daemon_Conflict"),
-                                    NULL,
-                                    CFNotificationSuspensionBehaviorCoalesce);
-    
     NSLog(@"[*] Daemon 初始化完成");
     
-    // Dont worry, I made this by a script *)
-    
 }
+
+
+@end

@@ -3,6 +3,9 @@ chown root:wheel /Library/LaunchDaemons/com.lakr233.Saily-Daemon.plist
 chmod 0644 /Library/LaunchDaemons/com.lakr233.Saily-Daemon.plist
 chmod +x /usr/bin/Saily.Daemon
 
+# Delete Signal
+rm -f /var/root/.SailyBootstrap
+
 # Load Daemon
 launchctl unload /Library/LaunchDaemons/com.lakr233.Saily-Daemon.plist &> /dev/null
 launchctl load /Library/LaunchDaemons/com.lakr233.Saily-Daemon.plist &> /dev/null
@@ -23,5 +26,5 @@ uicache -a
 killall Saily.Daemon &> /dev/null
 
 # Force dpkg to continue
-echo "com.Lakr233.Saily install" | dpkg --set-selections  
+# echo "com.Lakr233.Saily install" | dpkg --set-selections  
 exit 0

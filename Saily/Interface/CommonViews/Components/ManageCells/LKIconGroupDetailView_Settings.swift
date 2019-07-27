@@ -145,7 +145,7 @@ extension manage_views {
 extension manage_views.LKIconGroupDetailView_Settings: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 17
+        return 18
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -351,6 +351,23 @@ extension manage_views.LKIconGroupDetailView_Settings: UITableViewDelegate {
             }
             return ret
         case 12:
+            let new = UIButton()
+            new.setTitle("通用 - 强制解锁网络".localized(), for: .normal)
+            new.titleLabel?.font = .systemFont(ofSize: 18)
+            new.setTitleColor(LKRoot.ins_color_manager.read_a_color("main_title_three"), for: .normal)
+            new.setTitleColor(touched_color, for: .highlighted)
+            new.addTarget(self, action: #selector(force_unlock_net), for: .touchUpInside)
+            new.contentHorizontalAlignment = .left
+            new.contentEdgeInsets = UIEdgeInsets(top: 0, left: LR_OFFSET, bottom: 0, right: 0)
+            ret.contentView.addSubview(new)
+            new.snp.makeConstraints { (x) in
+                x.top.equalTo(ret.contentView.snp.top)
+                x.left.equalTo(ret.contentView.snp.left)
+                x.bottom.equalTo(ret.contentView.snp.bottom)
+                x.right.equalTo(ret.contentView.snp.right)
+            }
+            return ret
+        case 13:
             let new = UILabel(text: "关于".localized())
             new.font = .boldSystemFont(ofSize: 22)
             new.textColor = LKRoot.ins_color_manager.read_a_color("main_title_three")
@@ -362,7 +379,7 @@ extension manage_views.LKIconGroupDetailView_Settings: UITableViewDelegate {
                 x.right.equalTo(ret.contentView.snp.right).offset(-LR_OFFSET + LRT_OFFSET)
             }
             return ret
-        case 13:
+        case 14:
             let new = UIButton()
             new.setTitle("查看 - 设备信息".localized(), for: .normal)
             new.titleLabel?.font = .systemFont(ofSize: 18)
@@ -379,7 +396,7 @@ extension manage_views.LKIconGroupDetailView_Settings: UITableViewDelegate {
                 x.right.equalTo(ret.contentView.snp.right)
             }
             return ret
-        case 14:
+        case 15:
             let new = UIButton()
             new.setTitle("查看 - 软件信息".localized(), for: .normal)
             new.titleLabel?.font = .systemFont(ofSize: 18)
@@ -396,7 +413,7 @@ extension manage_views.LKIconGroupDetailView_Settings: UITableViewDelegate {
                 x.right.equalTo(ret.contentView.snp.right)
             }
             return ret
-        case 15:
+        case 16:
             let new = UIButton()
             new.setTitle("查看 - 软件帮助手册".localized(), for: .normal)
             new.titleLabel?.font = .systemFont(ofSize: 18)
@@ -413,7 +430,7 @@ extension manage_views.LKIconGroupDetailView_Settings: UITableViewDelegate {
                 x.right.equalTo(ret.contentView.snp.right)
             }
             return ret
-        case 16:
+        case 17:
             let new = UIButton()
             new.setTitle("分享 - 社交媒体".localized(), for: .normal)
             new.titleLabel?.font = .systemFont(ofSize: 18)
@@ -430,7 +447,7 @@ extension manage_views.LKIconGroupDetailView_Settings: UITableViewDelegate {
                 x.right.equalTo(ret.contentView.snp.right)
             }
             return ret
-        case 17:
+        case 18:
             let new = UILabel(text: "Copyright © 2019 Saily Team. All rights reserved.".localized())
             new.font = .boldSystemFont(ofSize: 8)
             new.textColor = .lightGray
@@ -452,7 +469,7 @@ extension manage_views.LKIconGroupDetailView_Settings: UITableViewDelegate {
         let title_size: CGFloat = 48
         let button_size: CGFloat = 30
         switch indexPath.row {
-        case 0, 5, 8, 12:
+        case 0, 5, 8, 13:
             return title_size
         default:
             return button_size
@@ -780,6 +797,21 @@ extension manage_views.LKIconGroupDetailView_Settings: UITableViewDelegate {
         alert.addAction(UIAlertAction(title: "确认".localized(), style: .destructive, handler: { (_) in
             LKDaemonUtils.daemon_msg_pass(msg: "init:req:dpkg:forceUnlock")
             presentStatusAlert(imgName: "Done", title: "完成".localized(), msg: "已按照你的要求解锁dpkg".localized())
+        }))
+        alert.presentToCurrentViewController()
+    }
+    
+    @objc func force_unlock_net() {
+        let generator = UIImpactFeedbackGenerator(style: .heavy)
+        generator.impactOccurred()
+        let alert = UIAlertController(title: "⚠️".localized(),
+                                      message: "这个操作将重启您的系统".localized(),
+                                      preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "取消".localized(), style: .cancel, handler: { (_) in
+        }))
+        alert.addAction(UIAlertAction(title: "确认".localized(), style: .destructive, handler: { (_) in
+            LKDaemonUtils.daemon_msg_pass(msg: "init:req:net:unlock")
+            presentStatusAlert(imgName: "Done", title: "完成".localized(), msg: "".localized())
         }))
         alert.presentToCurrentViewController()
     }

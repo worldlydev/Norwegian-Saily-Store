@@ -53,6 +53,8 @@
 "通用 - 全局下载超时" = "General - Network Timeou";
 "通用 - 获取设备 UDID" = "General - Set UDID";
 "通用 - 强制解锁 dpkg" = "General - Force Unlock DPKG";
+"通用 - 强制解锁网络" = "General - Force Unlock Network";
+"这个操作将重启您的系统" = "reboot required";
 "关于" = "About";
 "查看 - 设备信息" = "Device Information";
 "查看 - 软件信息" = "Application Information";

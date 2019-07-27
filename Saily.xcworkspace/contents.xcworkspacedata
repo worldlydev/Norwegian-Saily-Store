@@ -19,6 +19,9 @@
    <FileRef
       location = "group:Pods/Pods.xcodeproj">
    </FileRef>
+   <FileRef
+      location = "group:DaemonTest/DaemonTest.xcodeproj">
+   </FileRef>
    <Group
       location = "group:IO"
       name = "IO">

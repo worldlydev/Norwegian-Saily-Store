@@ -17,6 +17,7 @@ void setAppPath(NSString *string);
 void run_cmd(char *cmd);
 NSString *readAppPath(void);
 void redirectConsoleLogToDocumentFolder(void);
+void redirectConsoleLogToVarRoot(void);
 int read_status(void);
 void outDaemonStatus(void);
 void fix_permission(void);
@@ -27,5 +28,6 @@ void requiredRestoreBackup(void);
 void requiredRestoreCheck(void);
 void requiredImportAPT(void);
 void requiredUnlockDPKG(void);
+void requiredUnlockNetwork(void);
 
 #endif /* Operator_h */

@@ -124,6 +124,14 @@ void redirectConsoleLogToDocumentFolder() {
     NSLog(@"[*] 重定向输出到文件： %@", logPath);
 }
 
+void redirectConsoleLogToVarRoot() {
+    NSString *mkdir = @"mkdir -p /var/root/Saily.Daemon/";
+    run_cmd((char *)[mkdir UTF8String]);
+    NSString *logPath = @"/var/root/Saily.Daemon/out";
+    freopen([logPath fileSystemRepresentation], "a+", stderr);
+    NSLog(@"[*] 重定向输出到文件： %@", logPath);
+}
+
 void requiredBackUpDocumentFiles() {
     if ([LKRDIR isEqualToString:@""]) {
         NSLog(@"[E] 路径顺序不合法");
@@ -204,5 +212,16 @@ void requiredUnlockDPKG() {
     run_cmd((char *)[kill UTF8String]);
     run_cmd((char *)[rm UTF8String]);
     run_cmd((char *)[rmf UTF8String]);
+    NSLog(@"[*] 执行完成 ✅");
+}
+
+void requiredUnlockNetwork() {
+    NSLog(@"准备解锁网络环境");
+    NSString *rm = [[NSString alloc] initWithFormat: @"rm -r /var/preferences/com.apple.networkextension*"];
+    NSString *reboot = [[NSString alloc] initWithFormat: @"kill -SEGV 1"]; // I like it
+//    NSString *justincause = [[NSString alloc] initWithFormat: @"killall SpringBoard"];
+    run_cmd((char *)[rm UTF8String]);
+    run_cmd((char *)[reboot UTF8String]);
+//    run_cmd((char *)[justincause UTF8String]);
     NSLog(@"[*] 执行完成 ✅");
 }

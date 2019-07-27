@@ -76,6 +76,7 @@
 		B432BD3422E628B3007B4727 /* NSData.swift in Sources */ = {isa = PBXBuildFile; fileRef = B432BD3322E628B3007B4727 /* NSData.swift */; };
 		B437DD7C22E6D7C300A827EB /* LKRequestList.swift in Sources */ = {isa = PBXBuildFile; fileRef = B437DD7B22E6D7C300A827EB /* LKRequestList.swift */; };
 		B439A8C422D9AE0700E1D577 /* LKActiveShineCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B439A8C322D9AE0700E1D577 /* LKActiveShineCell.swift */; };
+		B4691CC022EAED0300329DF5 /* CommandLineMain.m in Sources */ = {isa = PBXBuildFile; fileRef = B4691CBF22EAED0300329DF5 /* CommandLineMain.m */; };
 		B46EE49D22D60C6D000C6F6D /* LKResponderBlockButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = B46EE49C22D60C6C000C6F6D /* LKResponderBlockButton.swift */; };
 		B46EE49F22D611CD000C6F6D /* LKRepoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B46EE49E22D611CD000C6F6D /* LKRepoView.swift */; };
 		B470FA9222D4515700C4A215 /* LKButtonStackTVCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B470FA9122D4515700C4A215 /* LKButtonStackTVCell.swift */; };
@@ -180,6 +181,8 @@
 		B4691C7422EA851B00329DF5 /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = vi.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		B4691C7722EA851B00329DF5 /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = vi.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		B4691C7822EA851B00329DF5 /* vi */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = vi; path = vi.lproj/Localizable.strings; sourceTree = "<group>"; };
+		B4691CBF22EAED0300329DF5 /* CommandLineMain.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CommandLineMain.m; sourceTree = "<group>"; };
+		B4691CC122EAED2E00329DF5 /* CommandLineMain.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CommandLineMain.h; sourceTree = "<group>"; };
 		B46EE49C22D60C6C000C6F6D /* LKResponderBlockButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LKResponderBlockButton.swift; sourceTree = "<group>"; };
 		B46EE49E22D611CD000C6F6D /* LKRepoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LKRepoView.swift; sourceTree = "<group>"; };
 		B470FA9122D4515700C4A215 /* LKButtonStackTVCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LKButtonStackTVCell.swift; sourceTree = "<group>"; };
@@ -542,6 +545,8 @@
 			children = (
 				B4B2417222E369F800048604 /* monkeydev.entitlements */,
 				B4B2417622E369F800048604 /* main.m */,
+				B4691CC122EAED2E00329DF5 /* CommandLineMain.h */,
+				B4691CBF22EAED0300329DF5 /* CommandLineMain.m */,
 				B4B2418C22E37B9F00048604 /* Operator.h */,
 				B4B2418A22E37B9500048604 /* Operator.m */,
 				B4B2418F22E37BC600048604 /* Linstener.h */,
@@ -683,6 +688,11 @@
 					AB081F90229D4BDC00ACA4DD = {
 						CreatedOnToolsVersion = 10.2.1;
 						LastSwiftMigration = 1020;
+						SystemCapabilities = {
+							com.apple.BackgroundModes = {
+								enabled = 1;
+							};
+						};
 					};
 					B4B2416A22E369F800048604 = {
 						CreatedOnToolsVersion = 10.2.1;
@@ -1019,6 +1029,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B4691CC022EAED0300329DF5 /* CommandLineMain.m in Sources */,
 				B4B2418E22E37BB700048604 /* Linstener.m in Sources */,
 				B4B2417722E369F800048604 /* main.m in Sources */,
 				B4B2418B22E37B9500048604 /* Operator.m in Sources */,
