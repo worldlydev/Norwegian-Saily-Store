@@ -39,6 +39,7 @@ class app_daemon_utils {
             self.checkDaemonOnline { (ret) in
                 print("[*] 获取到 Dameon 状态： " + ret.rawValue)
                 self.status = ret
+                
                 if self.status == .ready && LKRoot.firstOpen {
                     self.daemon_msg_pass(msg: "init:req:restoreCheck")
                     sleep(1)
@@ -67,6 +68,21 @@ class app_daemon_utils {
                                 }
                             }))
                             presentViewController(some: alert)
+                        }
+                    }
+                }
+                
+                if self.status == .ready && FileManager.default.fileExists(atPath: LKRoot.root_path! + "/ud.id") {
+                    if let udid = try? String(contentsOfFile: LKRoot.root_path! + "/ud.id") {
+                        if udid != "" && LKRoot.settings?.real_UDID != udid {
+                            let new = DBMSettings()
+                            new.real_UDID = udid
+                            try? LKRoot.root_db?.update(table: common_data_handler.table_name.LKSettings.rawValue, on: [DBMSettings.Properties.real_UDID], with: new)
+                            LKRoot.settings?.real_UDID = udid
+                        } else {
+                            DispatchQueue.main.async {
+                                (LKRoot.tabbar_view_controller as? UIEnteryS)?.home.viewDidLoad()
+                            }
                         }
                     }
                 }

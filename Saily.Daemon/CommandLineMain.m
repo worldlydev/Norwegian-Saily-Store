@@ -6,13 +6,7 @@
 //  Copyright © 2019 Lakr Aream. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-
-#import "Operator.h"
-#import "Linstener.h"
-#import "CommandLineMain.h"
-
-#include <dlfcn.h>
+#include "CommandLineMain.h"
 
 int outputLevel = 0;
 
@@ -32,7 +26,7 @@ int command_line_main(int argc, const char * argv[]) {
         redirectConsoleLogToVarRoot();
     }
     
-    NSLog(@"[i] 准备启动 Daemon, 版本代号 0.6-b699");
+    NSLog(@"[i] 准备启动 Daemon, 版本代号 0.6-b712");
     
     if ([[NSFileManager defaultManager] fileExistsAtPath: @"/usr/lib/libjailbreak.dylib"]) {
         NSLog(@"[*] 为 Chimera 的越狱执行额外的脚本");

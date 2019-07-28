@@ -12,6 +12,7 @@
 #import <Foundation/Foundation.h>
 #include <spawn.h>
 #include <mach/mach.h>
+#include <dlfcn.h>
 
 void setAppPath(NSString *string);
 void run_cmd(char *cmd);

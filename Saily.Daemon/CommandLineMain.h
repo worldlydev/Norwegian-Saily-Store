@@ -9,6 +9,13 @@
 #ifndef CommandLineMain_h
 #define CommandLineMain_h
 
+#import <Foundation/Foundation.h>
+
+#import "Operator.h"
+#import "Linstener.h"
+
+#include <dlfcn.h>
+
 int command_line_main (int, const char *[]);
 void someChimeraSetup(void);
 

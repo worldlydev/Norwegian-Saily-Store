@@ -22,9 +22,6 @@ echo 'Sorry, we need to do uicache -a cause it is broken by: ________'
 uicache -a
 # su mobile -c uicache
 
-# Swap our daemon
-killall Saily.Daemon
-
 # Force dpkg to continue
 # echo "com.Lakr233.Saily install" | dpkg --set-selections  
 exit 0

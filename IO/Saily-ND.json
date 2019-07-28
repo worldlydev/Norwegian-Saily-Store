@@ -49,12 +49,12 @@
                     "class": "DepictionSeparatorView"
                 },
                 {
-                    "text": "0.6-b699",
+                    "text": "0.6-b712",
                     "class": "DepictionTableTextView",
                     "title": "Version"
                 },
                 {
-                    "text": "07-27-2019",
+                    "text": "07-28-2019",
                     "class": "DepictionTableTextView",
                     "title": "Released"
                 },

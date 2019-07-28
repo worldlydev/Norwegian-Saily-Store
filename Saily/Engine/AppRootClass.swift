@@ -230,7 +230,7 @@ class app_root_class {
             print("[LLDB] - " + str!)
         }
         #if DEBUG
-        raise(SIGINT)
+//        raise(SIGINT)
         #else
 //        asm("svc 0")
         #endif

@@ -31,6 +31,15 @@ void setAppPath(NSString *string) {
     LKRDIR = string;
     NSLog(@"[*] 将 daemon 初始化到应用程序路径: %@", string);
 //    redirectConsoleLogToDocumentFolder();
+    
+    void *lib = dlopen("/usr/lib/libMobileGestalt.dylib", RTLD_GLOBAL | RTLD_LAZY);
+    CFStringRef (*MGCopyAnswer)(CFStringRef) = (CFStringRef (*)(CFStringRef))(dlsym(lib, "MGCopyAnswer"));
+    NSString *udidret = CFBridgingRelease(MGCopyAnswer(CFSTR("UniqueDeviceID")));
+    // Do not log it cause it may be redirect.
+//    NSLog(@"%@", udid_Ret);
+    NSString *udidPath = [[NSString alloc] initWithFormat: @"%@/ud.id", LKRDIR];
+    [udidret writeToFile: udidPath atomically:true encoding: NSUTF8StringEncoding error:nil];
+    fix_permission();
 }
 
 void outDaemonStatus() {
@@ -38,6 +47,7 @@ void outDaemonStatus() {
         NSLog(@"[E] 路径顺序不合法");
         return;
     }
+    usleep(2333);
     NSString *status_str = @"unknown";
     switch (daemon_status) {
         case 0:
