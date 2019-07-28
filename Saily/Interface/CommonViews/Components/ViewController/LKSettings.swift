@@ -30,7 +30,6 @@ class LKSettingsController: UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        some.removeFromSuperview()
         UIView.animate(withDuration: 0.5, animations: {
             self.navigationController?.navigationBar.setBackgroundImage(nil, for: .default)
             let some = LKRoot.ins_color_manager.read_a_color("main_background")

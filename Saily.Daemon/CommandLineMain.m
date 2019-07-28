@@ -26,7 +26,7 @@ int command_line_main(int argc, const char * argv[]) {
         redirectConsoleLogToVarRoot();
     }
     
-    NSLog(@"[i] 准备启动 Daemon, 版本代号 0.6-b712");
+    NSLog(@"[i] 准备启动 Daemon, 版本代号 0.6-b716");
     
     if ([[NSFileManager defaultManager] fileExistsAtPath: @"/usr/lib/libjailbreak.dylib"]) {
         NSLog(@"[*] 为 Chimera 的越狱执行额外的脚本");

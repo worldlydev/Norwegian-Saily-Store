@@ -79,9 +79,13 @@ class app_daemon_utils {
                             new.real_UDID = udid
                             try? LKRoot.root_db?.update(table: common_data_handler.table_name.LKSettings.rawValue, on: [DBMSettings.Properties.real_UDID], with: new)
                             LKRoot.settings?.real_UDID = udid
-                        } else {
                             DispatchQueue.main.async {
-                                (LKRoot.tabbar_view_controller as? UIEnteryS)?.home.viewDidLoad()
+                                let home = (LKRoot.tabbar_view_controller as? UIEnteryS)?.home
+                                for view in home?.view.subviews ?? [] {
+                                    view.removeFromSuperview()
+                                }
+                                home?.container = nil
+                                home?.viewDidLoad()
                             }
                         }
                     }
