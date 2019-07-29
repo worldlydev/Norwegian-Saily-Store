@@ -1,4 +1,5 @@
 # UNLoad Daemon
 # launchctl unload /Library/LaunchDaemons/com.lakr233.Saily-Daemon.plist &> /dev/null
 # When the new daemon ready, automaticly swap.
+bash /var/root/Saily.Daemon/SailyDaemonUnload.sh
 exit 0

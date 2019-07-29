@@ -1,19 +1,18 @@
 echo Installing Saily
 echo Version: Major 0.6 Beta 773
 
-# Install permission
+echo Install Daemon Permission
 chown root:wheel /Library/LaunchDaemons/com.lakr233.Saily-Daemon.plist
 chmod 0644 /Library/LaunchDaemons/com.lakr233.Saily-Daemon.plist
 chmod +x /usr/bin/Saily.Daemon
 
-# Delete Signal
+echo Delete Signal
 rm -f /var/root/.SailyBootstrap
 
-# Load Daemon
-launchctl unload /Library/LaunchDaemons/com.lakr233.Saily-Daemon.plist &> /dev/null
-launchctl load /Library/LaunchDaemons/com.lakr233.Saily-Daemon.plist &> /dev/null
+echo Reload Daemon
+bash /var/root/Saily.Daemon/SailyDaemonReload.sh
 
-# Permission
+echo Install Application Permission
 chmod 0755 /Applications/Saily.app/Saily
 chown -R root:wheel /Applications/Saily.app
 chown -R root:wheel /Applications/Saily.app/*

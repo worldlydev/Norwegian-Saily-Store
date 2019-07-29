@@ -1,3 +1,2 @@
 uicache -a
-killall Saily.Daemon &> /dev/null
 exit 0
