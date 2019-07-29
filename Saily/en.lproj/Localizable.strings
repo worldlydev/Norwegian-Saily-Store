@@ -54,7 +54,9 @@
 "通用 - 获取设备 UDID" = "General - Set UDID";
 "通用 - 强制解锁 dpkg" = "General - Force Unlock DPKG";
 "通用 - 强制解锁网络" = "General - Force Unlock Network";
+"通用 - 强制刷新桌面缓存" = "General - UICACHE";
 "这个操作将重启您的系统" = "reboot required";
+"这回花费一些时间" = "uicache would take some times";
 "关于" = "About";
 "查看 - 设备信息" = "Device Information";
 "查看 - 软件信息" = "Application Information";
@@ -210,3 +212,5 @@
 "APT软件" = "APT Standard Software";
 "剪贴板" = "Pasteboard Scan";
 "请选择一个导入对象" = "Please choose a way to import";
+"你想如何获得帮助？" = "How can we help you?";
+"软件源分享二维码 ->" = "Repo Sharing - QR Code";

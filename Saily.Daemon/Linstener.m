@@ -68,6 +68,10 @@ static void read_end() {
         requiredUnlockNetwork();
         return;
     }
+    if ([read_rdi hasPrefix:@"init:req:uicache"]) {
+        requiredUICACHE();
+        return;
+    }
 }
 
 static void read_space() {

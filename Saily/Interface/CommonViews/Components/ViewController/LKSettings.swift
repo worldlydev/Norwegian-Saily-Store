@@ -11,7 +11,7 @@ class LKSettingsController: UIViewController {
     let some = LKRoot.manager_reg.se
     let contentView = UIScrollView()
     
-    var sum_height = UIScreen.main.bounds.height + 99
+    var sum_height = UIScreen.main.bounds.height
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)

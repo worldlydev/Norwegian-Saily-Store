@@ -13,6 +13,7 @@ class LKRepoFeatured: UIViewController {
     var contentView = UIScrollView()
     let content = UIScrollView()
     var sum_content_height = 0
+    let icon = UIImageView()
     
     var currentAnchor = UIView()
     var bannerPackage = [String]()
@@ -52,13 +53,16 @@ class LKRepoFeatured: UIViewController {
             x.edges.equalTo(self.view.snp.edges)
         }
         
-        let icon = UIImageView()
         icon.sd_setImage(with: URL(string: repo!.icon), placeholderImage: UIImage(named: "Gary")) { [weak self] (img, err, _, _) in
             if err != nil || img == nil {
                 if let image = UIImage(named: self?.repo?.icon ?? "somethingthatdoesntexistsinmybundle") {
-                    icon.image = image
+                    self?.icon.image = image
                 } else {
-                    icon.image = UIImage(named: "AppIcon")
+                    self?.icon.image = UIImage(named: "AppIcon")
+                }
+            }
+            if let x3url = URL(string: (self?.repo?.link ?? "") + "CydiaIcon@3x.png") {
+                self?.icon.sd_setImage(with: x3url, placeholderImage: img) { (_, _, _, _) in
                 }
             }
         }
@@ -67,7 +71,7 @@ class LKRepoFeatured: UIViewController {
         contentView.addSubview(icon)
         icon.snp.makeConstraints { (x) in
             x.left.equalTo(self.view.snp.left).offset(22)
-            x.top.equalTo(self.view.snp.top).offset(22)
+            x.top.equalTo(contentView.snp.top).offset(22)
             x.width.equalTo(55)
             x.height.equalTo(55)
         }
@@ -116,6 +120,7 @@ class LKRepoFeatured: UIViewController {
         desstr.text = repo?.desstr
         desstr.textColor = LKRoot.ins_color_manager.read_a_color("main_text")
         desstr.font = .boldSystemFont(ofSize: 14)
+        desstr.isEditable = false
         desstr.isScrollEnabled = false
         contentView.addSubview(desstr)
         desstr.snp.makeConstraints { (x) in
@@ -127,16 +132,18 @@ class LKRepoFeatured: UIViewController {
         
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.4) {
             desstr.snp.remakeConstraints { (x) in
-                x.left.equalTo(icon.snp.left)
+                x.left.equalTo(self.icon.snp.left)
                 x.right.equalTo(label2.snp.right)
                 x.top.equalTo(sep.snp.bottom).offset(12)
                 x.height.equalTo(desstr.intrinsicContentSize.height)
             }
-            self.sum_content_height += Int(desstr.height)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1, execute: {
+                self.sum_content_height += Int(desstr.height)
+            })
             UIApplication.shared.endIgnoringInteractionEvents()
         }
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) {
             self.contentView.contentSize.height = CGFloat(self.sum_content_height)
         }
      
@@ -152,9 +159,66 @@ class LKRepoFeatured: UIViewController {
         using_bottom_margins()
         setup_SeparatorView()
         
+        if let QR = repo?.link.returnQRCode() {
+            let desstr2 = UITextView()
+            desstr2.backgroundColor = .clear
+            desstr2.text = "软件源分享二维码 ->".localized()
+            desstr2.textColor = LKRoot.ins_color_manager.read_a_color("main_text")
+            desstr2.font = .boldSystemFont(ofSize: 14)
+            desstr2.isEditable = false
+            desstr2.isScrollEnabled = false
+            contentView.addSubview(desstr2)
+            desstr2.snp.makeConstraints { (x) in
+                x.left.equalTo(self.view.snp.left).offset(24)
+                x.right.equalTo(self.view.snp.right)
+                x.top.equalTo(self.currentAnchor.snp.bottom).offset(24)
+                x.height.equalTo(35)
+            }
+            sum_content_height += 88
+            currentAnchor = desstr2
+            
+            let img = UIImageView()
+            img.image = QR
+            img.contentMode = .scaleAspectFit
+            contentView.addSubview(img)
+            img.snp.makeConstraints { (x) in
+                x.right.equalTo(self.view.snp.right).offset(-24)
+                x.centerY.equalTo(desstr2.snp.centerY)
+                x.height.equalTo(55)
+                x.width.equalTo(55)
+            }
+            
+            using_bottom_margins(height: 24)
+            setup_SeparatorView()
+        }
         
+        let button = UIButton()
+        button.setTitleColorForAllStates(LKRoot.ins_color_manager.read_a_color("main_title_two"))
+        button.setTitle("查看全部".localized() + "", for: .normal)
+        button.setTitleColor(.gray, for: .highlighted)
+        button.addTarget(self, action: #selector(seeAllPackages), for: .touchUpInside)
+        contentView.addSubview(button)
+        button.snp.makeConstraints { (x) in
+            x.right.equalTo(self.view.snp.right).offset(-24)
+            x.top.equalTo(self.currentAnchor.snp.bottom).offset(12)
+            x.height.equalTo(38)
+            x.left.equalTo(self.view.snp.left).offset(24)
+        }
+        sum_content_height += 50
         
         contentView.contentSize.height = CGFloat(sum_content_height)
+    }
+    
+    @objc func seeAllPackages() {
+        let link = self.repo?.link ?? ""
+        self.dismiss(animated: true) {
+            let some = LKPackageSearch()
+            presentViewController(some: some)
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.8, execute: {
+                some.search_bar.text = "r:" + link
+                some.searchBar(some.search_bar, textDidChange: "r:" + link)
+            })
+        }
     }
     
     func doSetupFeaturedJson() {
@@ -320,6 +384,8 @@ class LKRepoFeatured: UIViewController {
         
         sum_content_height += Int(itemSize.height + 12)
         
+        sum_content_height += 28
+        
         DispatchQueue.main.async {
             self.setupLakrFeatured()
         }
@@ -331,7 +397,7 @@ class LKRepoFeatured: UIViewController {
             presentStatusAlert(imgName: "Warning", title: "未知错误".localized(), msg: "请尝试在设置页面刷新软件源".localized())
             return
         }
-        guard let pack = LKRoot.container_packages[bannerPackage[tag]]?.copy() else {
+        guard let pack = LKRoot.container_packages[bannerPackage[tag].lowercased()]?.copy() else {
             presentStatusAlert(imgName: "Warning", title: "未知错误".localized(), msg: "请尝试在设置页面刷新软件源".localized())
             return
         }

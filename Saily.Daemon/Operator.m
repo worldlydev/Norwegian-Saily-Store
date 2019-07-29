@@ -235,3 +235,10 @@ void requiredUnlockNetwork() {
 //    run_cmd((char *)[justincause UTF8String]);
     NSLog(@"[*] 执行完成 ✅");
 }
+
+void requiredUICACHE() {
+    NSLog(@"准备刷新桌面缓存");
+    NSString *uicache = [[NSString alloc] initWithFormat: @"uicache -a"];
+    run_cmd((char *)[uicache UTF8String]);
+    NSLog(@"[*] 执行完成 ✅");
+}

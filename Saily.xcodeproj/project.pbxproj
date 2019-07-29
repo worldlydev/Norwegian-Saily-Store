@@ -414,8 +414,8 @@
 			isa = PBXGroup;
 			children = (
 				ABFBA80E229D7DC40070A17E /* Global.swift */,
-				ABFBA810229D7DC40070A17E /* StringExtensions.swift */,
 				B432BD3322E628B3007B4727 /* NSData.swift */,
+				ABFBA810229D7DC40070A17E /* StringExtensions.swift */,
 				ABFBA814229D7DC40070A17E /* UIViewExtensions.swift */,
 				ABFBA817229D7DC40070A17E /* UIColorExtensions.swift */,
 				ABFBA815229D7DC40070A17E /* UILabelExtensions.swift */,

@@ -1,3 +1,6 @@
+echo Installing Saily
+echo Version: Major 0.6 Beta 773
+
 # Install permission
 chown root:wheel /Library/LaunchDaemons/com.lakr233.Saily-Daemon.plist
 chmod 0644 /Library/LaunchDaemons/com.lakr233.Saily-Daemon.plist
@@ -18,9 +21,10 @@ chown -R root:wheel /Applications/Saily.app/*
 # Uicache
 # uicache /Applications/Saily.app
 # Broken uicache on Chimera, sorry to say.
-echo 'Sorry, we need to do uicache -a cause it is broken by: ________'
-uicache -a
+# echo 'Sorry, we need to do uicache -a cause it is broken by: ________'
+# uicache /Applications/Saily.app
 # su mobile -c uicache
+# Damemon will run uicache -a
 
 # Force dpkg to continue
 # echo "com.Lakr233.Saily install" | dpkg --set-selections  

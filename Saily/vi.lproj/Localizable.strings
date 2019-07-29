@@ -213,3 +213,7 @@
 "您有的提交列表有未解决的先决条件问题" = "Có một số vấn đề chưa được giải quyết trong phần danh mục";
 "这个栏目没有内容" = "Danh mục không có nội dung";
 "这个操作将重启您的系统" = "reboot required";
+"你想如何获得帮助？" = "How can we help you?";
+"通用 - 强制刷新桌面缓存" = "General - UICACHE";
+"这回花费一些时间" = "uicache would take some times";
+"软件源分享二维码 ->" = "Repo Sharing - QR Code";

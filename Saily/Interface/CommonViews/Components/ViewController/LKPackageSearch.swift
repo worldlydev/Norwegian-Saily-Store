@@ -15,7 +15,7 @@ class LKPackageSearch: UIViewController {
     var search_result = [String]()
     var search_bar: UISearchBar = UISearchBar()
     var last_search = ""
-    
+    var extSession = ""
     var searchSession = ""
     
     override func viewWillAppear(_ animated: Bool) {
@@ -117,26 +117,6 @@ extension LKPackageSearch: UISearchBarDelegate {
     
     func do_search(session: String, text: String, use_id: Bool, fullSearch: Bool = false) {
         
-        if fullSearch {
-            search_result.removeAll()
-            for item in LKRoot.container_packages where item.key.hasPrefix(last_search) {
-                search_result.append(item.key)
-            }
-            search_result.sort()
-            var second_search = [String]()
-            for item in LKRoot.container_packages where item.key.contains(last_search) {
-                second_search.append(item.key)
-            }
-            second_search.sort()
-            for item in second_search {
-                search_result.append(item)
-            }
-            DispatchQueue.main.async { [weak self] in
-                self?.collection_view.reloadData()
-            }
-            return
-        }
-        
         search_result.removeAll()
         for item in LKRoot.container_packages where do_they_match(pack: item.value, text: text, use_id: use_id) {
             search_result.append(item.key)
@@ -147,6 +127,11 @@ extension LKPackageSearch: UISearchBarDelegate {
         search_result.sort()
         DispatchQueue.main.async { [weak self] in
             self?.collection_view.reloadData()
+        }
+        let session = UUID().uuidString
+        self.extSession = session
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
+            self?.extraSearch(text: text, session: session)
         }
     }
     
@@ -180,6 +165,45 @@ extension LKPackageSearch: UISearchBarDelegate {
             }
         }
         
+        return false
+    }
+    
+    func extraSearch(text: String, session: String) {
+        LKRoot.queue_dispatch.async {
+            var text = text
+            if text.hasPrefix("a:") {
+                text = text.dropFirst(2).to_String()
+            }
+            if text.hasPrefix("r:") {
+                text = text.dropFirst(2).to_String()
+            }
+            var extraResult = [String]()
+            for item in LKRoot.container_packages where self.do_they_match_extra_search(pack: item.value, text: text) {
+                extraResult.append(item.key)
+            }
+            extraResult.sort()
+            for item in extraResult where !self.search_result.contains(item) {
+                if session != self.extSession {
+                    return
+                }
+                self.search_result.append(item)
+            }
+            DispatchQueue.main.async { [weak self] in
+                self?.collection_view.reloadData()
+            }
+        }
+    }
+    
+    func do_they_match_extra_search(pack: DBMPackage, text: String) -> Bool {
+        for v1 in pack.version {
+            for v2 in v1.value {
+                for v3 in v2.value {
+                    if v3.value.uppercased().contains(text.uppercased()) {
+                        return true
+                    }
+                }
+            }
+        }
         return false
     }
     

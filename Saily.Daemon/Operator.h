@@ -30,5 +30,6 @@ void requiredRestoreCheck(void);
 void requiredImportAPT(void);
 void requiredUnlockDPKG(void);
 void requiredUnlockNetwork(void);
+void requiredUICACHE(void);
 
 #endif /* Operator_h */

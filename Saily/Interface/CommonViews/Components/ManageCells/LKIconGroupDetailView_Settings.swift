@@ -318,23 +318,6 @@ extension manage_views.LKIconGroupDetailView_Settings: UITableViewDelegate {
             return ret
         case 10:
             let new = UIButton()
-            new.setTitle("通用 - 获取设备 UDID".localized(), for: .normal)
-            new.titleLabel?.font = .systemFont(ofSize: 18)
-            new.setTitleColor(LKRoot.ins_color_manager.read_a_color("main_title_three"), for: .normal)
-            new.setTitleColor(touched_color, for: .highlighted)
-            new.addTarget(self, action: #selector(get_device_udid), for: .touchUpInside)
-            new.contentHorizontalAlignment = .left
-            new.contentEdgeInsets = UIEdgeInsets(top: 0, left: LR_OFFSET, bottom: 0, right: 0)
-            ret.contentView.addSubview(new)
-            new.snp.makeConstraints { (x) in
-                x.top.equalTo(ret.contentView.snp.top)
-                x.left.equalTo(ret.contentView.snp.left)
-                x.bottom.equalTo(ret.contentView.snp.bottom)
-                x.right.equalTo(ret.contentView.snp.right)
-            }
-            return ret
-        case 11:
-            let new = UIButton()
             new.setTitle("通用 - 强制解锁 dpkg".localized(), for: .normal)
             new.titleLabel?.font = .systemFont(ofSize: 18)
             new.setTitleColor(LKRoot.ins_color_manager.read_a_color("main_title_three"), for: .normal)
@@ -350,13 +333,30 @@ extension manage_views.LKIconGroupDetailView_Settings: UITableViewDelegate {
                 x.right.equalTo(ret.contentView.snp.right)
             }
             return ret
-        case 12:
+        case 11:
             let new = UIButton()
             new.setTitle("通用 - 强制解锁网络".localized(), for: .normal)
             new.titleLabel?.font = .systemFont(ofSize: 18)
             new.setTitleColor(LKRoot.ins_color_manager.read_a_color("main_title_three"), for: .normal)
             new.setTitleColor(touched_color, for: .highlighted)
             new.addTarget(self, action: #selector(force_unlock_net), for: .touchUpInside)
+            new.contentHorizontalAlignment = .left
+            new.contentEdgeInsets = UIEdgeInsets(top: 0, left: LR_OFFSET, bottom: 0, right: 0)
+            ret.contentView.addSubview(new)
+            new.snp.makeConstraints { (x) in
+                x.top.equalTo(ret.contentView.snp.top)
+                x.left.equalTo(ret.contentView.snp.left)
+                x.bottom.equalTo(ret.contentView.snp.bottom)
+                x.right.equalTo(ret.contentView.snp.right)
+            }
+            return ret
+        case 12:
+            let new = UIButton()
+            new.setTitle("通用 - 强制刷新桌面缓存".localized(), for: .normal)
+            new.titleLabel?.font = .systemFont(ofSize: 18)
+            new.setTitleColor(LKRoot.ins_color_manager.read_a_color("main_title_three"), for: .normal)
+            new.setTitleColor(touched_color, for: .highlighted)
+            new.addTarget(self, action: #selector(force_uicache), for: .touchUpInside)
             new.contentHorizontalAlignment = .left
             new.contentEdgeInsets = UIEdgeInsets(top: 0, left: LR_OFFSET, bottom: 0, right: 0)
             ret.contentView.addSubview(new)
@@ -379,47 +379,30 @@ extension manage_views.LKIconGroupDetailView_Settings: UITableViewDelegate {
                 x.right.equalTo(ret.contentView.snp.right).offset(-LR_OFFSET + LRT_OFFSET)
             }
             return ret
+//        case 13:
+//            let new = UIButton()
+//            new.setTitle("查看 - 软件信息".localized(), for: .normal)
+//            new.titleLabel?.font = .systemFont(ofSize: 18)
+//            new.setTitleColor(LKRoot.ins_color_manager.read_a_color("main_title_three"), for: .normal)
+//            new.setTitleColor(touched_color, for: .highlighted)
+//            new.addTarget(self, action: #selector(get_software_info), for: .touchUpInside)
+//            new.contentHorizontalAlignment = .left
+//            new.contentEdgeInsets = UIEdgeInsets(top: 0, left: LR_OFFSET, bottom: 0, right: 0)
+//            ret.contentView.addSubview(new)
+//            new.snp.makeConstraints { (x) in
+//                x.top.equalTo(ret.contentView.snp.top)
+//                x.left.equalTo(ret.contentView.snp.left)
+//                x.bottom.equalTo(ret.contentView.snp.bottom)
+//                x.right.equalTo(ret.contentView.snp.right)
+//            }
+//            return ret
         case 14:
-            let new = UIButton()
-            new.setTitle("查看 - 设备信息".localized(), for: .normal)
-            new.titleLabel?.font = .systemFont(ofSize: 18)
-            new.setTitleColor(LKRoot.ins_color_manager.read_a_color("main_title_three"), for: .normal)
-            new.setTitleColor(touched_color, for: .highlighted)
-            new.addTarget(self, action: #selector(get_device_info), for: .touchUpInside)
-            new.contentHorizontalAlignment = .left
-            new.contentEdgeInsets = UIEdgeInsets(top: 0, left: LR_OFFSET, bottom: 0, right: 0)
-            ret.contentView.addSubview(new)
-            new.snp.makeConstraints { (x) in
-                x.top.equalTo(ret.contentView.snp.top)
-                x.left.equalTo(ret.contentView.snp.left)
-                x.bottom.equalTo(ret.contentView.snp.bottom)
-                x.right.equalTo(ret.contentView.snp.right)
-            }
-            return ret
-        case 15:
-            let new = UIButton()
-            new.setTitle("查看 - 软件信息".localized(), for: .normal)
-            new.titleLabel?.font = .systemFont(ofSize: 18)
-            new.setTitleColor(LKRoot.ins_color_manager.read_a_color("main_title_three"), for: .normal)
-            new.setTitleColor(touched_color, for: .highlighted)
-            new.addTarget(self, action: #selector(get_software_info), for: .touchUpInside)
-            new.contentHorizontalAlignment = .left
-            new.contentEdgeInsets = UIEdgeInsets(top: 0, left: LR_OFFSET, bottom: 0, right: 0)
-            ret.contentView.addSubview(new)
-            new.snp.makeConstraints { (x) in
-                x.top.equalTo(ret.contentView.snp.top)
-                x.left.equalTo(ret.contentView.snp.left)
-                x.bottom.equalTo(ret.contentView.snp.bottom)
-                x.right.equalTo(ret.contentView.snp.right)
-            }
-            return ret
-        case 16:
             let new = UIButton()
             new.setTitle("查看 - 软件帮助手册".localized(), for: .normal)
             new.titleLabel?.font = .systemFont(ofSize: 18)
             new.setTitleColor(LKRoot.ins_color_manager.read_a_color("main_title_three"), for: .normal)
             new.setTitleColor(touched_color, for: .highlighted)
-            new.addTarget(self, action: #selector(get_software_info), for: .touchUpInside)
+            new.addTarget(self, action: #selector(get_help), for: .touchUpInside)
             new.contentHorizontalAlignment = .left
             new.contentEdgeInsets = UIEdgeInsets(top: 0, left: LR_OFFSET, bottom: 0, right: 0)
             ret.contentView.addSubview(new)
@@ -430,24 +413,24 @@ extension manage_views.LKIconGroupDetailView_Settings: UITableViewDelegate {
                 x.right.equalTo(ret.contentView.snp.right)
             }
             return ret
-        case 17:
-            let new = UIButton()
-            new.setTitle("分享 - 社交媒体".localized(), for: .normal)
-            new.titleLabel?.font = .systemFont(ofSize: 18)
-            new.setTitleColor(LKRoot.ins_color_manager.read_a_color("main_title_three"), for: .normal)
-            new.setTitleColor(touched_color, for: .highlighted)
-            new.addTarget(self, action: #selector(get_software_info), for: .touchUpInside)
-            new.contentHorizontalAlignment = .left
-            new.contentEdgeInsets = UIEdgeInsets(top: 0, left: LR_OFFSET, bottom: 0, right: 0)
-            ret.contentView.addSubview(new)
-            new.snp.makeConstraints { (x) in
-                x.top.equalTo(ret.contentView.snp.top)
-                x.left.equalTo(ret.contentView.snp.left)
-                x.bottom.equalTo(ret.contentView.snp.bottom)
-                x.right.equalTo(ret.contentView.snp.right)
-            }
-            return ret
-        case 18:
+//        case 16:
+//            let new = UIButton()
+//            new.setTitle("分享 - 社交媒体".localized(), for: .normal)
+//            new.titleLabel?.font = .systemFont(ofSize: 18)
+//            new.setTitleColor(LKRoot.ins_color_manager.read_a_color("main_title_three"), for: .normal)
+//            new.setTitleColor(touched_color, for: .highlighted)
+//            new.addTarget(self, action: #selector(get_software_info), for: .touchUpInside)
+//            new.contentHorizontalAlignment = .left
+//            new.contentEdgeInsets = UIEdgeInsets(top: 0, left: LR_OFFSET, bottom: 0, right: 0)
+//            ret.contentView.addSubview(new)
+//            new.snp.makeConstraints { (x) in
+//                x.top.equalTo(ret.contentView.snp.top)
+//                x.left.equalTo(ret.contentView.snp.left)
+//                x.bottom.equalTo(ret.contentView.snp.bottom)
+//                x.right.equalTo(ret.contentView.snp.right)
+//            }
+//            return ret
+        case 15:
             let new = UILabel(text: "Copyright © 2019 Saily Team. All rights reserved.".localized())
             new.font = .boldSystemFont(ofSize: 8)
             new.textColor = .lightGray
@@ -585,6 +568,7 @@ extension manage_views.LKIconGroupDetailView_Settings: UITableViewDelegate {
         alert.addAction(UIAlertAction(title: "APT软件".localized(), style: .default, handler: { (_) in
             self.importFromAPT()
         }))
+        alert.addAction(UIAlertAction(title: "取消".localized(), style: .cancel, handler: nil))
         presentViewController(some: alert)
     }
     
@@ -816,20 +800,65 @@ extension manage_views.LKIconGroupDetailView_Settings: UITableViewDelegate {
         alert.presentToCurrentViewController()
     }
     
-    @objc func get_device_udid() {
-        
+    @objc func force_uicache() {
+        let generator = UIImpactFeedbackGenerator(style: .heavy)
+        generator.impactOccurred()
+        let alert = UIAlertController(title: "⚠️".localized(),
+                                      message: "这回花费一些时间".localized(),
+                                      preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "取消".localized(), style: .cancel, handler: { (_) in
+            let generator = UIImpactFeedbackGenerator(style: .heavy)
+            generator.impactOccurred()
+        }))
+        alert.addAction(UIAlertAction(title: "确认".localized(), style: .destructive, handler: { (_) in
+            let generator = UIImpactFeedbackGenerator(style: .heavy)
+            generator.impactOccurred()
+            UIApplication.shared.beginIgnoringInteractionEvents()
+            IHProgressHUD.show()
+            LKRoot.queue_dispatch.async {
+                LKDaemonUtils.daemon_msg_pass(msg: "init:req:uicache")
+            }
+            DispatchQueue.main.asyncAfter(deadline: .now() + 12) {
+                UIApplication.shared.endIgnoringInteractionEvents()
+                IHProgressHUD.dismiss()
+                presentStatusAlert(imgName: "Done", title: "完成".localized(), msg: "".localized())
+            }
+        }))
+        alert.presentToCurrentViewController()
     }
     
-    @objc func get_device_info() {
-        
-    }
-    
-    @objc func get_software_info() {
-        
-    }
+//    @objc func get_software_info() {
+//
+//    }
     
     @objc func get_help() {
-        
+        let generator = UIImpactFeedbackGenerator(style: .heavy)
+        generator.impactOccurred()
+        let alert: UIAlertController
+        if LKRoot.is_iPad {
+            alert = UIAlertController(title: "⚠️".localized(),
+                                          message: "你想如何获得帮助？".localized(),
+                                          preferredStyle: .alert)
+        } else {
+            alert = UIAlertController(title: "⚠️".localized(),
+                                      message: "你想如何获得帮助？".localized(),
+                                      preferredStyle: .actionSheet)
+        }
+        alert.addAction(UIAlertAction(title: "Twitter".localized(), style: .default, handler: { (_) in
+            UIApplication.shared.open(URL(string: "https://twitter.com/Lakr233")!, options: [:], completionHandler: nil)
+        }))
+        alert.addAction(UIAlertAction(title: "Discord".localized(), style: .default, handler: { (_) in
+            UIApplication.shared.open(URL(string: "https://discord.gg/3nKjap8")!, options: [:], completionHandler: nil)
+        }))
+        alert.addAction(UIAlertAction(title: "E-Mail".localized(), style: .default, handler: { (_) in
+            UIApplication.shared.open(URL(string: "mailto:master@233owo.com")!, options: [:], completionHandler: nil)
+        }))
+        alert.addAction(UIAlertAction(title: "GitHub".localized(), style: .default, handler: { (_) in
+            UIApplication.shared.open(URL(string: "https://github.com/Co2333/Saily-Store/issues")!, options: [:], completionHandler: nil)
+        }))
+        alert.addAction(UIAlertAction(title: "取消".localized(), style: .cancel, handler: { (_) in
+        }))
+        alert.presentToCurrentViewController()
     }
     
     @objc func share() {

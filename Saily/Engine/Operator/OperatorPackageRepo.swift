@@ -345,8 +345,13 @@ extension app_opeerator {
             packages[item.id] = new
         }
         
+        var thread_cache = [String : String]()
+        for item in LKRoot.container_package_repo_download {
+            thread_cache[item.key] = item.value
+        }
+        
         print("[*] 开始更新软件包")
-        for item in LKRoot.container_package_repo_download where item.value != "" {
+        for item in thread_cache where item.value != "" {
             var read_in = item.value
             read_in.append("\n\n")
             // 进行解包
@@ -374,6 +379,9 @@ extension app_opeerator {
                             // 两行空行，新数据包 判断软件包是否存在 如果存在则更新version字段
                             // 先加一个属性
                             this_package["_internal_SIG_begin_update"] = "0x1"
+                            
+                            
+                            
                             if this_package["PACKAGE"] == nil || this_package["VERSION"] == nil {
                                 //                            print("[*] 丢弃没有id的软件包")
                             } else if packages[this_package["PACKAGE"]!] != nil {

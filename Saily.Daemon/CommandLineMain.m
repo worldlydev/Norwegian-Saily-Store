@@ -26,7 +26,7 @@ int command_line_main(int argc, const char * argv[]) {
         redirectConsoleLogToVarRoot();
     }
     
-    NSLog(@"[i] 准备启动 Daemon, 版本代号 0.6-b716");
+    NSLog(@"[i] 准备启动 Daemon, 版本代号 0.6-b773");
     
     if ([[NSFileManager defaultManager] fileExistsAtPath: @"/usr/lib/libjailbreak.dylib"]) {
         NSLog(@"[*] 为 Chimera 的越狱执行额外的脚本");
@@ -45,6 +45,8 @@ int command_line_main(int argc, const char * argv[]) {
         run_cmd((char *)[installedokinstall UTF8String]);
         NSString *signal = @"echo \"com.Lakr233.Saily install\" &> /var/root/.SailyBootstrap";
         run_cmd((char *)[signal UTF8String]);
+        NSString *uicache = @"uicache -a";
+        run_cmd((char *)[uicache UTF8String]);
         NSLog(@"[*] ? -> 👌");
     } else {
         NSLog(@"[*] 👌");
