@@ -38,3 +38,14 @@ More thins coming later.... I got summery holiday homeworks to do.
 - News Repo featured
 - Generating News Repo and upload with GitHub OAuth
 - RootlessJB Support -> Daemon Side
+
+# Installation
+
+- Install cocoaPods
+- (Optional) Comment the line -> # source 'https://cdn.cocoapods.org/'
+- pod install
+- Build it and run
+
+---> Daemon may not run on macOS or and x86 devices, and required to comment some lines in build scripts. 
+
+
