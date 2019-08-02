@@ -13,7 +13,7 @@ Developers:
 
 Designers:   
 - @Lakr233     
-- @xerusdesign   
+- @xerusdesign - Default Tweak Icon   
 
 Translator:   
 - GitHub:dabeecao Vietnamese
