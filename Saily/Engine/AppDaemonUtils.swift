@@ -132,6 +132,7 @@ class app_daemon_utils {
     
     func checkDaemonOnline(_ complete: @escaping (daemon_status) -> Void) {
         try? FileManager.default.removeItem(atPath: LKRoot.root_path! + "/daemon.call/status.txt")
+        try? "".write(toFile: LKRoot.root_path! + "/daemon.call/status.txt", atomically: true, encoding: .utf8)
         LKRoot.queue_dispatch.async {
             self.daemon_msg_pass(msg: "init:path:" + LKRoot.root_path!)
             usleep(2333)
@@ -143,6 +144,11 @@ class app_daemon_utils {
                     if let str_read = try? String(contentsOfFile: LKRoot.root_path! + "/daemon.call/status.txt") {
                         switch str_read {
                         case "ready\n": complete(daemon_status.ready); return
+                        case "rootless\n":
+                            presentSwiftMessageSuccess(title: "侦测到Rootless越狱".localized(), body: "插件依赖的安装可能会出现问题，请在安装前仔细检查。".localized())
+                            LKRoot.isRootLess = true
+                            complete(daemon_status.ready)
+                            return
                         case "busy\n": complete(daemon_status.busy); return
                         default:
                             cnt += 1

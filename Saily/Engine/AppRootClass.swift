@@ -28,6 +28,8 @@ class app_root_class {
     var root_path: String?
     var root_db: Database?
     
+    var isRootLess: Bool = false
+    
     var settings: DBMSettings?
     var safe_area_needed: Bool = false
     var current_page = UIViewController()
@@ -129,6 +131,26 @@ class app_root_class {
         // 嘿嘿嘿
         UserDefaults.standard.set(false, forKey: "_UIConstraintBasedLayoutLogUnsatisfiable")
         
+        // rootless JB working on it!
+        if FileManager.default.fileExists(atPath: "/.rootlessJBENVSIM") /* x86 simulator */ {
+            isRootLess = true
+        }
+        
+        if let rootlessSigs = try? FileManager.default.contentsOfDirectory(atPath: "/var/containers/Bundle/") {
+            for item in rootlessSigs where item.lowercased().contains("rootless") {
+                isRootLess = true
+            }
+        } else {
+            // Do it in init of daemon
+//            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+//                LKDaemonUtils.checkRootlessJB()
+//            }
+        }
+        
+        if isRootLess {
+            print("------> 启用rootless版本 <------")
+        }
+        
         // 发送到下载处理引擎
         queue_dispatch.async {
             self.ins_common_operator.PR_sync_and_download(sync_all: true) { (_) in
@@ -194,7 +216,7 @@ class app_root_class {
 //        ]
 //        #else
         var default_links = [
-            "https://repo.chariz.io/",
+            "https://repo.packix.com/", // Moved my baby?
             "https://repo.nepeta.me/",
             "https://repo.dynastic.co/"
         ]

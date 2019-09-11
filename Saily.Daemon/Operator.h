@@ -14,6 +14,7 @@
 #include <mach/mach.h>
 #include <dlfcn.h>
 
+void setIsRootless(void);
 void setAppPath(NSString *string);
 void run_cmd(char *cmd);
 NSString *readAppPath(void);

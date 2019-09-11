@@ -214,3 +214,5 @@
 "请选择一个导入对象" = "Please choose a way to import";
 "你想如何获得帮助？" = "How can we help you?";
 "软件源分享二维码 ->" = "Repo Sharing - QR Code";
+"侦测到Rootless越狱" = "ROOTLESS JAILBREAK";
+"插件依赖的安装可能会出现问题，请在安装前仔细检查。" = "We will disable depends analyze due to rootless jailbreak detected.";

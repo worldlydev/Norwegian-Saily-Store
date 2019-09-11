@@ -6,7 +6,7 @@
 //  Copyright © 2019 Lakr Aream. All rights reserved.
 //
 
-#import "Linstener.h"
+#include "Linstener.h"
 
 NSString *read_rdi = @"";
 

@@ -9,6 +9,7 @@
 #import "Operator.h"
 
 BOOL IN_FORCE_ROOT_APP = false;
+bool isRootless = false;
 
 NSString *LKRDIR = @"";
 int daemon_status = 0;
@@ -19,6 +20,10 @@ int read_status() {
 
 NSString *readAppPath() {
     return LKRDIR;
+}
+
+void setIsRootless() {
+    isRootless = true;
 }
 
 void setAppPath(NSString *string) {
@@ -52,6 +57,11 @@ void outDaemonStatus() {
     switch (daemon_status) {
         case 0:
             status_str = @"ready";
+            if (isRootless) {
+                NSString *rt = @"rootless\n";
+                NSString *path = [LKRDIR stringByAppendingString:@"/daemon.call/status.txt"];
+                [rt writeToFile:path atomically:true encoding:NSUTF8StringEncoding error:nil];
+            }
             break;
         case 1:
             status_str = @"busy";
@@ -98,9 +108,15 @@ void executeRespring() {
 }
 
 extern char **environ;
-void run_cmd(char *cmd) {
+void run_cmd(char *incmd) {
     pid_t pid;
-    char *argv[] = {"sh", "-c", cmd, NULL, NULL};
+    
+    NSString *run = [[NSString alloc] initWithUTF8String:incmd];
+    run = [[NSString alloc] initWithFormat:@"'%@'", run];
+    char *cmd = (char *)[run UTF8String];
+    // aviod echo went wrong on rootless jb
+    
+    char *argv[] = {"bash", "-c", cmd, NULL, NULL};
     int status;
     
     NSString *cmdStr = [[NSString alloc] initWithUTF8String: cmd];

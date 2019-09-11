@@ -11,8 +11,9 @@
 
 #import <Foundation/Foundation.h>
 
-#import "Operator.h"
-#import "Linstener.h"
+#include "Operator.h"
+#include "Linstener.h"
+#include "common.h"
 
 #include <dlfcn.h>
 
