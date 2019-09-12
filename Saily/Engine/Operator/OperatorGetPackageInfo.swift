@@ -124,6 +124,7 @@ extension app_opeerator {
     func PAK_read_all_dependency(dependStr: String) -> [String : depends] {
         
         if LKRoot.isRootLess {
+            print("[R] PAK_read_looped_depends")
             return [:]
         }
         
@@ -173,6 +174,7 @@ extension app_opeerator {
     func PAK_read_looped_depends(packID: String, read_all: Bool = false, checkQueue: Bool = false, loopBreaker: [String : depends] = [:], loopDeepth: Int = 0) -> [String : depends] {
         
         if LKRoot.isRootLess {
+            print("[R] PAK_read_looped_depends")
             return [:]
         }
         
@@ -203,6 +205,7 @@ extension app_opeerator {
     func PAK_read_missing_dependency(dependStr: String, checkQueue: Bool = true) -> [String : depends] {
         
         if LKRoot.isRootLess {
+            print("[R] PAK_read_looped_depends")
             return [:]
         }
         

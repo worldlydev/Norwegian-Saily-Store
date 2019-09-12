@@ -35,7 +35,44 @@ extension app_opeerator {
             read_status = (try? String(contentsOfFile:  "/Library/dpkg/status")) ?? "ERR_READ"
         }
         if read_status == "ERR_READ" {
-            CallB(operation_result.failed.rawValue)
+            LKRoot.queue_dispatch.async {
+                sleep(6)
+                if LKRoot.isRootLess {
+                    if let read: [DMRTLInstallTrace] = try? LKRoot.rtlTrace_db?.getObjects(fromTable: common_data_handler.table_name.LKRootLessInstalledTrace.rawValue) {
+                        var package = [String : DBMPackage]()
+                        for item in read {
+                            let new = DBMPackage()
+                            new.id = item.id ?? UUID().uuidString
+                            new.latest_update_time = item.time ?? "20011002"
+                            // 合成FileList
+                            var list = ""
+                            for f in item.list ?? [] {
+                                list += f
+                                list += "\n"
+                            }
+                            // 版本容器包含了 【版本号 ： 【软件源地址 ： 【属性 ： 属性值】】】
+                            new.version = ["none" : ["rootLessInstall.id" : ["FILELIST" : list]]]
+                            new.signal = "rootless_installed"
+                            new.status = current_info.installed_ok.rawValue
+                            package[new.id] = new
+                        }
+                        LKRoot.container_packages_installed_DBSync = package
+                        LKRoot.container_string_store["IN_PROGRESS_INSTALLED_PACKAGE_UPDATE"] = "FALSE"
+                        if LKRoot.manager_reg.ya.initd {
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                                LKRoot.manager_reg.ya.update_interface {
+                                }
+                            }
+                        }
+                        CallB(operation_result.success.rawValue)
+                    } else {
+                        CallB(operation_result.failed.rawValue)
+                    }
+                    return
+                }
+                CallB(operation_result.failed.rawValue)
+                return
+            }
             return
         }
         
