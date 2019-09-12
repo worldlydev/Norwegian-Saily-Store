@@ -32,5 +32,6 @@ void requiredImportAPT(void);
 void requiredUnlockDPKG(void);
 void requiredUnlockNetwork(void);
 void requiredUICACHE(void);
+void requiredEXTRACT(void);
 
 #endif /* Operator_h */

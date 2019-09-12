@@ -58,9 +58,10 @@ void outDaemonStatus() {
         case 0:
             status_str = @"ready";
             if (isRootless) {
-                NSString *rt = @"rootless\n";
-                NSString *path = [LKRDIR stringByAppendingString:@"/daemon.call/status.txt"];
-                [rt writeToFile:path atomically:true encoding:NSUTF8StringEncoding error:nil];
+                status_str = @"rootless";
+//                NSString *rt = @"rootless\n";
+//                NSString *path = [LKRDIR stringByAppendingString:@"/daemon.call/status.txt"];
+//                [rt writeToFile:path atomically:true encoding:NSUTF8StringEncoding error:nil];
             }
             break;
         case 1:
@@ -120,9 +121,18 @@ void run_cmd(char *incmd) {
     int status;
     
     NSString *cmdStr = [[NSString alloc] initWithUTF8String: cmd];
-    NSLog(@"[Execute] sh -c %@", cmdStr);
+    NSLog(@"[Execute] bash -c %@", cmdStr);
     
-    status = posix_spawn(&pid, "/bin/sh", NULL, NULL, argv, environ);
+    if (isRootless) {
+        NSString *rtcmd = [[NSString alloc] initWithFormat: @"PATH=/var/containers/Bundle/tweaksupport/usr/local/bin:/var/containers/Bundle/tweaksupport/usr/bin:/var/containers/Bundle/tweaksupport/bin:/var/containers/Bundle/iosbinpack64/usr/sbin/"];
+        rtcmd = [rtcmd stringByAppendingString:@" "];
+        rtcmd = [rtcmd stringByAppendingString: [[NSString alloc] initWithUTF8String:incmd]];
+        char *rootlessARGS[] = {"bash", "-c", (char *)[rtcmd UTF8String], NULL, NULL};
+        status = posix_spawn(&pid, "/var/containers/Bundle/tweaksupport/bin/bash", NULL, NULL, rootlessARGS, environ);
+    } else {
+        status = posix_spawn(&pid, "/bin/bash", NULL, NULL, argv, environ);
+    }
+    
     if (status == 0) {
         if (waitpid(pid, &status, 0) == -1) {
             perror("waitpid");
@@ -257,4 +267,27 @@ void requiredUICACHE() {
     NSString *uicache = [[NSString alloc] initWithFormat: @"uicache -a"];
     run_cmd((char *)[uicache UTF8String]);
     NSLog(@"[*] 执行完成 ✅");
+}
+
+void requiredEXTRACT() {
+    NSLog(@"准备开始解压软件包");
+    if ([LKRDIR isEqualToString:@""]) {
+        NSLog(@"[E] 路径顺序不合法");
+        return;
+    }
+    // 获取全部软件包路径
+    NSString *prefix = [LKRDIR stringByAppendingString:@"/daemon.call/pendingExtract"];
+    NSArray<NSString *> *files = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:prefix error:nil];
+    
+    for (int i = 0; i < [files count]; i++) {
+        NSString *path = [[NSString alloc] initWithFormat:@"%@/daemon.call/pendingExtract/%@", LKRDIR, files[i]];
+        NSLog(@"获取到软件包：%@", path);
+        NSString *ext = [[NSString alloc] initWithFormat: @"dpkg -X %@ %@.ext", path, path];
+        NSString *rm = [[NSString alloc] initWithFormat: @"rm %@", path];
+        run_cmd((char *)[ext UTF8String]);
+        run_cmd((char *)[rm UTF8String]);
+    }
+    
+    fix_permission();
+    
 }

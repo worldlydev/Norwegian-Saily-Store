@@ -672,6 +672,7 @@
 				B4AFE5F922E86940000F5244 /* Unsign & ldid */,
 				B4B2416922E369F800048604 /* ShellScript */,
 				B4B2417D22E378D900048604 /* Update Cydia Source */,
+				500B899B232A2AD400994982 /* Update Rootless Ress */,
 			);
 			buildRules = (
 			);
@@ -747,6 +748,24 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		500B899B232A2AD400994982 /* Update Rootless Ress */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Update Rootless Ress";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nmkdir -p $SOURCE_ROOT/Packages/rootless\ncd $SOURCE_ROOT/Packages/rootless\nunzip ./../*.zip\nrm -rf $SOURCE_ROOT/Packages/rootless/Applications\nrm -rf $SOURCE_ROOT/Packages/rootless/DEBIAN\nrm -rf $SOURCE_ROOT/Packages/rootless/var\nsed 's|/usr/bin/Saily.Daemon|/var/containers/Bundle/tweaksupport/usr/bin/Saily.Daemon|g' $SOURCE_ROOT/Packages/rootless/Library/LaunchDaemons/com.lakr233.Saily-Daemon.plist &> $SOURCE_ROOT/Packages/rootless/Library/LaunchDaemons/com.lakr233.Saily-Daemon.RTL.plist\nrm $SOURCE_ROOT/Packages/rootless/Library/LaunchDaemons/com.lakr233.Saily-Daemon.plist\n";
+		};
 		5E1B6DB8775B399D328AF7CA /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;

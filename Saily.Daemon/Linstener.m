@@ -72,6 +72,10 @@ static void read_end() {
         requiredUICACHE();
         return;
     }
+    if ([read_rdi hasPrefix:@"init:req:extractDEB"]) {
+        requiredEXTRACT();
+        return;
+    }
 }
 
 static void read_space() {
