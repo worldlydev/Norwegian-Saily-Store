@@ -222,7 +222,6 @@
 		B4B2418C22E37B9F00048604 /* Operator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Operator.h; sourceTree = "<group>"; };
 		B4B2418D22E37BB700048604 /* Linstener.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Linstener.m; sourceTree = "<group>"; };
 		B4B2418F22E37BC600048604 /* Linstener.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Linstener.h; sourceTree = "<group>"; };
-		B4D6DF1922EEC29B00CDEE21 /* var */ = {isa = PBXFileReference; lastKnownFileType = folder; name = var; path = Package/var; sourceTree = "<group>"; };
 		B4EEB8D322DCCAA000477E39 /* LKIconGroupDetailView_RecentUpdate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LKIconGroupDetailView_RecentUpdate.swift; sourceTree = "<group>"; };
 		B4EEB8D522DCDECF00477E39 /* LKIconGroupDetailView_RecentInstalled.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LKIconGroupDetailView_RecentInstalled.swift; sourceTree = "<group>"; };
 		B4EEB8D722DCE3A000477E39 /* LKIconGroupDetailView_RandomPackage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LKIconGroupDetailView_RandomPackage.swift; sourceTree = "<group>"; };
@@ -569,7 +568,6 @@
 		B4B2416F22E369F800048604 /* Package */ = {
 			isa = PBXGroup;
 			children = (
-				B4D6DF1922EEC29B00CDEE21 /* var */,
 				B4AFE5F522E84F61000F5244 /* Applications */,
 				B4B2417E22E37A3900048604 /* Library */,
 				B4B2417022E369F800048604 /* DEBIAN */,

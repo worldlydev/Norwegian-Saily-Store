@@ -9,8 +9,19 @@ chmod +x /usr/bin/Saily.Daemon
 echo Delete Signal
 rm -f /var/root/.SailyBootstrap
 
+rm -rf /var/root/Saily.Daemon # Clean Up
+
 echo Reload Daemon
-bash /var/root/Saily.Daemon/SailyDaemonReload.sh
+
+nohupFile=/usr/bin/nohup
+if [ -f "$nohupFile" ]; then
+nohup launchctl unload /Library/LaunchDaemons/com.lakr233.Saily-Daemon.plist
+nohup launchctl load /Library/LaunchDaemons/com.lakr233.Saily-Daemon.plist
+else
+launchctl unload /Library/LaunchDaemons/com.lakr233.Saily-Daemon.plist &> /dev/null
+launchctl load /Library/LaunchDaemons/com.lakr233.Saily-Daemon.plist &> /dev/null
+fi
+
 
 echo Install Application Permission
 chmod 0755 /Applications/Saily.app/Saily

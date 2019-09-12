@@ -23,7 +23,7 @@ int command_line_main(int argc, const char * argv[]) {
     NSLog(@"--- ---- ---");
     
     if (outputLevel == 1) {
-        redirectConsoleLogToVarRoot();
+//        redirectConsoleLogToVarRoot();
     }
     
     NSLog(@"[i] 准备启动 Daemon, 版本代号 0.6-b890");

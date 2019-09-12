@@ -117,20 +117,24 @@ void run_cmd(char *incmd) {
     char *cmd = (char *)[run UTF8String];
     // aviod echo went wrong on rootless jb
     
-    char *argv[] = {"bash", "-c", cmd, NULL, NULL};
     int status;
     
     NSString *cmdStr = [[NSString alloc] initWithUTF8String: cmd];
-    NSLog(@"[Execute] bash -c %@", cmdStr);
     
     if (isRootless) {
+        NSLog(@"[Execute] bash -c %@", cmdStr);
         NSString *rtcmd = [[NSString alloc] initWithFormat: @"PATH=/var/containers/Bundle/tweaksupport/usr/local/bin:/var/containers/Bundle/tweaksupport/usr/bin:/var/containers/Bundle/tweaksupport/bin:/var/containers/Bundle/iosbinpack64/usr/sbin/"];
         rtcmd = [rtcmd stringByAppendingString:@" "];
         rtcmd = [rtcmd stringByAppendingString: [[NSString alloc] initWithUTF8String:incmd]];
         char *rootlessARGS[] = {"bash", "-c", (char *)[rtcmd UTF8String], NULL, NULL};
         status = posix_spawn(&pid, "/var/containers/Bundle/tweaksupport/bin/bash", NULL, NULL, rootlessARGS, environ);
     } else {
-        status = posix_spawn(&pid, "/bin/bash", NULL, NULL, argv, environ);
+        NSLog(@"[Execute] sh -c %@", cmdStr);
+        NSString *cmd = [[NSString alloc] initWithFormat: @"PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/bin/X11:/usr/games"];
+        cmd = [cmd stringByAppendingString:@" "];
+        cmd = [cmd stringByAppendingString: [[NSString alloc] initWithUTF8String:incmd]];
+        char *args[] = {"sh", "-c", (char *)[cmd UTF8String], NULL, NULL};
+        status = posix_spawn(&pid, "/bin/sh", NULL, NULL, args, environ);
     }
     
     if (status == 0) {
