@@ -1,6 +1,6 @@
 Package: com.Lakr233.Saily
 Name: Saily Store
-Version: 0.6-b773
+Version: 0.6-b890
 Description: Saily Package Manager
 Section: System
 Depends: firmware (>= 11.0)

@@ -767,7 +767,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nmkdir -p $SOURCE_ROOT/Packages/rootless\ncd $SOURCE_ROOT/Packages/rootless\nunzip ./../*.zip\nrm -rf $SOURCE_ROOT/Packages/rootless/Applications\nrm -rf $SOURCE_ROOT/Packages/rootless/DEBIAN\nrm -rf $SOURCE_ROOT/Packages/rootless/var\nsed 's|/usr/bin/Saily.Daemon|/var/containers/Bundle/tweaksupport/usr/bin/Saily.Daemon|g' $SOURCE_ROOT/Packages/rootless/Library/LaunchDaemons/com.lakr233.Saily-Daemon.plist &> $SOURCE_ROOT/Packages/rootless/Library/LaunchDaemons/com.lakr233.Saily-Daemon.RTL.plist\nrm $SOURCE_ROOT/Packages/rootless/Library/LaunchDaemons/com.lakr233.Saily-Daemon.plist\n";
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nmkdir -p $SOURCE_ROOT/Packages/rootless\ncd $SOURCE_ROOT/Packages/rootless\nunzip ./../*.zip\n#rm -rf $SOURCE_ROOT/Packages/rootless/Applications\nrm -rf $SOURCE_ROOT/Packages/rootless/DEBIAN\nrm -rf $SOURCE_ROOT/Packages/rootless/var\nsed 's|/usr/bin/Saily.Daemon|/var/containers/Bundle/tweaksupport/usr/bin/Saily.Daemon|g' $SOURCE_ROOT/Packages/rootless/Library/LaunchDaemons/com.lakr233.Saily-Daemon.plist &> $SOURCE_ROOT/Packages/rootless/Library/LaunchDaemons/com.lakr233.Saily-Daemon.RTL.plist\nrm $SOURCE_ROOT/Packages/rootless/Library/LaunchDaemons/com.lakr233.Saily-Daemon.plist\n";
 		};
 		5E1B6DB8775B399D328AF7CA /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
