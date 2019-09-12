@@ -178,6 +178,7 @@ extension LKRequestList: UITableViewDelegate, UITableViewDataSource {
                 ret.title.text = LKRoot.ins_common_operator.PAK_read_name(version: version.1)
                 ret.sep.alpha = 0
                 
+                var isRemove = false
                 switch item.operation_type {
                 case .auto_install:
                     ret.link.text = "这个软件包被其他软件包要求安装".localized()
@@ -192,6 +193,7 @@ extension LKRequestList: UITableViewDelegate, UITableViewDataSource {
                     ret.link.text = "这个软件包被要求重新配置".localized()
                 case .required_remove:
                     ret.link.text = "这个软件包被您要求删除".localized()
+                    isRemove = true
                 case .required_modify_dcrp:
                     ret.link.text = "这个软件包在安装前被要求修改依赖".localized()
                 case .DNG_auto_remove:
@@ -200,24 +202,29 @@ extension LKRequestList: UITableViewDelegate, UITableViewDataSource {
                 case .unknown: ret.link.text = "未知错误".localized()
                 }
                 
-                if icon_link.hasPrefix("http") {
-                    ret.icon.sd_setImage(with: URL(string: icon_link), placeholderImage: UIImage(named: "Gary")) { (img, err, _, _) in
-                        if err != nil || img == nil {
-                            ret.icon.image = UIImage(named: "Error")
-                        }
-                    }
-                } else if icon_link.hasPrefix("NAMED:") {
-                    let link = icon_link.dropFirst("NAMED:".count).to_String()
-                    ret.icon.sd_setImage(with: URL(string: link), placeholderImage: UIImage(named: "Gary")) { (img, err, _, _) in
-                        if err != nil || img == nil {
-                            ret.icon.image = UIImage(named: "Error")
-                        }
-                    }
+                if LKRoot.isRootLess && isRemove {
+                    ret.icon.image = UIImage(named: "xerusdesign")
+                    ret.title.text = item.package.id
                 } else {
-                    if let some = UIImage(contentsOfFile: icon_link) {
-                        ret.icon.image = some
+                    if icon_link.hasPrefix("http") {
+                        ret.icon.sd_setImage(with: URL(string: icon_link), placeholderImage: UIImage(named: "Gary")) { (img, err, _, _) in
+                            if err != nil || img == nil {
+                                ret.icon.image = UIImage(named: "Error")
+                            }
+                        }
+                    } else if icon_link.hasPrefix("NAMED:") {
+                        let link = icon_link.dropFirst("NAMED:".count).to_String()
+                        ret.icon.sd_setImage(with: URL(string: link), placeholderImage: UIImage(named: "Gary")) { (img, err, _, _) in
+                            if err != nil || img == nil {
+                                ret.icon.image = UIImage(named: "Error")
+                            }
+                        }
                     } else {
-                        ret.icon.image = UIImage(named: TWEAK_DEFAULT_IMG_NAME)
+                        if let some = UIImage(contentsOfFile: icon_link) {
+                            ret.icon.image = some
+                        } else {
+                            ret.icon.image = UIImage(named: TWEAK_DEFAULT_IMG_NAME)
+                        }
                     }
                 }
             }

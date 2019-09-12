@@ -12,6 +12,8 @@ class LKPackageListController: UIViewController {
     var items = [DBMPackage]()
     let cell_id = UUID().uuidString
     
+    var rtl_sentFromRecentInstalled = false
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(false, animated: true)
@@ -62,7 +64,13 @@ extension LKPackageListController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let ret = tableView.dequeueReusableCell(withIdentifier: cell_id, for: indexPath) as? cell_views.LKIconTVCell ?? cell_views.LKIconTVCell()
         let pack = items[indexPath.row]
-        cell_views.LKTVCellPutPackage(cell: ret, pack: pack)
+        if LKRoot.isRootLess && rtl_sentFromRecentInstalled {
+            ret.icon.image = UIImage(named: "xerusdesign")
+            ret.title.text = pack.id
+            ret.link.text = "ROOTLESS JB LOCALHOST"
+        } else {
+            cell_views.LKTVCellPutPackage(cell: ret, pack: pack)
+        }
         
         if indexPath.row == items.count - 1 {
             ret.sep.alpha = 0
@@ -100,6 +108,16 @@ extension LKPackageListController: UITableViewDelegate, UITableViewDataSource {
     
     func touched_cell(which: IndexPath) {
         let pack = items[which.row]
+        if LKRoot.isRootLess && rtl_sentFromRecentInstalled {
+            let alert = UIAlertController(title: "删除".localized(), message: "你确定要这么做吗".localized(), preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "确认".localized(), style: .destructive, handler: { (_) in
+                let operation = DMOperationInfo(pack: pack, operation: .required_remove)
+                LKDaemonUtils.ins_operation_delegate.operation_queue.append(operation)
+            }))
+            alert.addAction(UIAlertAction(title: "取消".localized(), style: .cancel, handler: nil))
+            alert.presentToCurrentViewController()
+            return
+        }
         presentPackage(pack: pack)
     }
 }

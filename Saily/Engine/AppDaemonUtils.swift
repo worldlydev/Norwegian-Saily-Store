@@ -308,6 +308,12 @@ class app_daemon_utils {
             case .required_remove:
                 // 获取文件列表
                 let id = item.package.id
+                var fileList = [String]()
+                for line in item.package.version.first?.value.first?.value["FILELIST"]?.split(separator: "\n") ?? [] {
+                    fileList.append(line.to_String())
+                }
+                rootLessQueue_unInstall[id] = fileList
+                print(fileList)
             default:
                 print("[?] 这里有一个不被rootless支持的操作")
             }
@@ -380,6 +386,47 @@ export LC_ALL=C
 
 """
         
+        // 卸载脚本
+        for uninstall in rootLessQueue_unInstall {
+            for remove in uninstall.value {
+                script_install += "/var/containers/Bundle/iosbinpack64/bin/rm -f '/var/containers/Bundle/tweaksupport/" + remove + "'" + "\n"
+            }
+            try? LKRoot.rtlTrace_db?.delete(fromTable: common_data_handler.table_name.LKRootLessInstalledTrace.rawValue,
+                                       where: DMRTLInstallTrace.Properties.id == uninstall.key)
+        }
+        
+        // 刷新已安装
+        if let read: [DMRTLInstallTrace] = try? LKRoot.rtlTrace_db?.getObjects(fromTable: common_data_handler.table_name.LKRootLessInstalledTrace.rawValue) {
+            var package = [String : DBMPackage]()
+            for item in read {
+                let new = DBMPackage()
+                new.id = item.id ?? UUID().uuidString
+                new.latest_update_time = item.time ?? "20011002"
+                // 合成FileList
+                var list = ""
+                for f in item.list ?? [] {
+                    list += f
+                    list += "\n"
+                }
+                // 版本容器包含了 【版本号 ： 【软件源地址 ： 【属性 ： 属性值】】】
+                new.version = ["none" : ["rootLessInstall.id" : ["FILELIST" : list]]]
+                new.signal = "rootless_installed"
+                new.status = current_info.installed_ok.rawValue
+                package[new.id] = new
+            }
+            LKRoot.container_packages_installed_DBSync = package
+            for key_pair_value in package  {
+                try? LKRoot.root_db?.insertOrReplace(objects: key_pair_value.value, intoTable: common_data_handler.table_name.LKRecentInstalled.rawValue)
+            }
+            LKRoot.container_string_store["IN_PROGRESS_INSTALLED_PACKAGE_UPDATE"] = "FALSE"
+            if LKRoot.manager_reg.ya.initd {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    LKRoot.manager_reg.ya.update_interface {
+                    }
+                }
+            }
+        }
+        
         try? FileManager.default.moveItem(atPath: LKRoot.root_path! + "/daemon.call/pendingPatch", toPath: LKRoot.root_path! + "/daemon.call/pendingTrace")
         if let contents = try? FileManager.default.contentsOfDirectory(atPath: LKRoot.root_path! + "/daemon.call/pendingTrace") {
             inner: for object in contents {
@@ -415,7 +462,8 @@ export LC_ALL=C
             print("[?] pendingTrace ??????")
         }
         
-        appendLogToFile(log: "\n<---Start-Install-->\n")
+        appendLogToFile(log: "\n<---Start-Install-unInstall-->\n")
+        
         try? FileManager.default.moveItem(atPath: LKRoot.root_path! + "/daemon.call/pendingTrace", toPath: LKRoot.root_path! + "/daemon.call/pendingInstall")
         try? script_install.write(toFile: LKRoot.root_path! + "/daemon.call/pendingInstall/install.sh", atomically: true, encoding: .utf8)
         LKDaemonUtils.daemon_msg_pass(msg: "init:req:rtlInstall")

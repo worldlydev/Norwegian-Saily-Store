@@ -295,7 +295,13 @@ extension manage_views.LKIconGroupDetailView_RecentInstalled: UITableViewDelegat
         }
         let ret = tableView.dequeueReusableCell(withIdentifier: "LKIconGroupDetailView_RecentInstalled_TVID", for: indexPath) as? cell_views.LKIconTVCell ?? cell_views.LKIconTVCell()
         let pack = LKRoot.container_recent_installed[indexPath.row]
-        cell_views.LKTVCellPutPackage(cell: ret, pack: pack)
+        if LKRoot.isRootLess {
+            ret.icon.image = UIImage(named: "xerusdesign")
+            ret.title.text = pack.id
+            ret.link.text = "ROOTLESS JB LOCALHOST"
+        } else {
+            cell_views.LKTVCellPutPackage(cell: ret, pack: pack)
+        }
         ret.backgroundColor = .clear
         return ret
     }
@@ -396,6 +402,16 @@ extension manage_views.LKIconGroupDetailView_RecentInstalled: UITableViewDelegat
     
     func touched_cell(which: IndexPath) {
         var pack = LKRoot.container_recent_installed[which.row]
+        if LKRoot.isRootLess {
+            let alert = UIAlertController(title: "删除".localized(), message: "你确定要这么做吗".localized(), preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "确认".localized(), style: .destructive, handler: { (_) in
+                let operation = DMOperationInfo(pack: pack, operation: .required_remove)
+                LKDaemonUtils.ins_operation_delegate.operation_queue.append(operation)
+            }))
+            alert.addAction(UIAlertAction(title: "取消".localized(), style: .cancel, handler: nil))
+            alert.presentToCurrentViewController()
+            return
+        }
         if let packer = LKRoot.container_packages[pack.id] {
             pack = packer
         }
@@ -407,6 +423,7 @@ extension manage_views.LKIconGroupDetailView_RecentInstalled: UITableViewDelegat
         UIApplication.shared.beginIgnoringInteractionEvents()
         IHProgressHUD.show()
         let new = LKPackageListController()
+        new.rtl_sentFromRecentInstalled = true
         LKRoot.queue_dispatch.async {
             guard let read: [DBMPackage] = try? LKRoot.root_db?.getObjects(fromTable: common_data_handler.table_name.LKRecentInstalled.rawValue,
                                                                            orderBy: [DBMPackage.Properties.latest_update_time.asOrder(by: .descending),

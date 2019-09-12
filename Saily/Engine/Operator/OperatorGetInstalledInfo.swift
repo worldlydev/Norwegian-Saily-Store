@@ -36,7 +36,7 @@ extension app_opeerator {
         }
         if read_status == "ERR_READ" {
             LKRoot.queue_dispatch.async {
-                sleep(6)
+                sleep(5)
                 if LKRoot.isRootLess {
                     if let read: [DMRTLInstallTrace] = try? LKRoot.rtlTrace_db?.getObjects(fromTable: common_data_handler.table_name.LKRootLessInstalledTrace.rawValue) {
                         var package = [String : DBMPackage]()
@@ -57,6 +57,9 @@ extension app_opeerator {
                             package[new.id] = new
                         }
                         LKRoot.container_packages_installed_DBSync = package
+                        for key_pair_value in package  {
+                            try? LKRoot.root_db?.insertOrReplace(objects: key_pair_value.value, intoTable: common_data_handler.table_name.LKRecentInstalled.rawValue)
+                        }
                         LKRoot.container_string_store["IN_PROGRESS_INSTALLED_PACKAGE_UPDATE"] = "FALSE"
                         if LKRoot.manager_reg.ya.initd {
                             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {

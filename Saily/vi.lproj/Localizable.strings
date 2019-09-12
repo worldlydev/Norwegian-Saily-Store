@@ -220,3 +220,4 @@
 "软件源分享二维码 ->" = "Chia sẻ Nguồn - QR Code";
 "侦测到Rootless越狱" = "ROOTLESS JAILBREAK";
 "插件依赖的安装可能会出现问题，请在安装前仔细检查。" = "We will disable depends analyze due to rootless jailbreak detected.";
+"你确定要这么做吗" = "Are you sure about this?";
