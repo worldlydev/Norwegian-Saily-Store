@@ -80,6 +80,10 @@ static void read_end() {
         requiredRTLPATCH();
         return;
     }
+    if ([read_rdi hasPrefix:@"init:req:rtlInstall"]) {
+        requiredRTLINSTALL();
+        return;
+    }
 }
 
 static void read_space() {

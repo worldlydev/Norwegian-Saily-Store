@@ -22,6 +22,11 @@ class DMRTLInstallTrace: WCDBSwift.TableCodable {
         
         static let objectRelationalMapping = TableBinding(CodingKeys.self)
         
+        static var columnConstraintBindings: [CodingKeys: ColumnConstraintBinding]? {
+            return [
+                id: ColumnConstraintBinding(isPrimary: true, isUnique: true)
+            ]
+        }
     }
     
     

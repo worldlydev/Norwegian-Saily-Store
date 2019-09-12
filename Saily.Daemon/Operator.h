@@ -34,5 +34,6 @@ void requiredUnlockNetwork(void);
 void requiredUICACHE(void);
 void requiredEXTRACT(void);
 void requiredRTLPATCH(void);
+void requiredRTLINSTALL(void);
 
 #endif /* Operator_h */

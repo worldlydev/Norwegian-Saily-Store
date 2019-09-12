@@ -369,11 +369,20 @@ export LC_ALL=C
         appendLogToFile(log: (try? String(contentsOfFile: LKRoot.root_path! + "/daemon.call/pendingPatch/Done")) ?? "")
         
         // 记录软件包的文件
-        var script_install = ""
+        var script_install = """
+#!/var/containers/Bundle/iosbinpack64/bin/bash
+
+export LANG=C
+export LC_CTYPE=C
+export LC_ALL=C
+
+# -->_<--
+
+"""
         
         try? FileManager.default.moveItem(atPath: LKRoot.root_path! + "/daemon.call/pendingPatch", toPath: LKRoot.root_path! + "/daemon.call/pendingTrace")
         if let contents = try? FileManager.default.contentsOfDirectory(atPath: LKRoot.root_path! + "/daemon.call/pendingTrace") {
-            for object in contents {
+            inner: for object in contents {
                 let name = object.dropLast(4).to_String()
                 appendLogToFile(log: "\nTracing installation on " + name)
                 let dbRecord = DMRTLInstallTrace()
@@ -384,48 +393,45 @@ export LC_ALL=C
                 for longlongfile in trace {
                     let notabspath = longlongfile.dropFirst(cnt).to_String()
                     dbRecord.list?.append(notabspath)
+                    var possibleDir = notabspath
+                    while !possibleDir.hasSuffix("/") && possibleDir.count > 0 {
+                        possibleDir = possibleDir.dropLast().to_String()
+                    }
+                    if possibleDir.count < 1 {
+                        continue inner
+                    }
+                    script_install += "/var/containers/Bundle/iosbinpack64/bin/mkdir -p '/var/containers/Bundle/tweaksupport/" + possibleDir + "'" + "\n"
+                    let replaced = longlongfile.replacingOccurrences(of: "pendingTrace", with: "pendingInstall")
+                    script_install += "/var/containers/Bundle/iosbinpack64/bin/cp -rf '" + replaced + "' '/var/containers/Bundle/tweaksupport/" + notabspath + "'" + "\n"
                 }
                 let currentDateTime = Date()
                 let formatter = DateFormatter()
                 formatter.timeStyle = .medium
                 formatter.dateStyle = .long
                 dbRecord.time = formatter.string(from: currentDateTime) // October 8, 2016 at 10:48:53 PM
-                try? LKRoot.rtlTrace_db?.insert(objects: dbRecord, intoTable: common_data_handler.table_name.LKRootLessInstalledTrace.rawValue)
+                try? LKRoot.rtlTrace_db?.insertOrReplace(objects: dbRecord, intoTable: common_data_handler.table_name.LKRootLessInstalledTrace.rawValue)
             }
         } else {
             print("[?] pendingTrace ??????")
         }
         
         appendLogToFile(log: "\n<---Start-Install-->\n")
-        // 修正完成 提交安装？
+        try? FileManager.default.moveItem(atPath: LKRoot.root_path! + "/daemon.call/pendingTrace", toPath: LKRoot.root_path! + "/daemon.call/pendingInstall")
+        try? script_install.write(toFile: LKRoot.root_path! + "/daemon.call/pendingInstall/install.sh", atomically: true, encoding: .utf8)
+        LKDaemonUtils.daemon_msg_pass(msg: "init:req:rtlInstall")
+        while !FileManager.default.fileExists(atPath: LKRoot.root_path! + "/daemon.call/pendingInstall/Done") {
+            if var read = try? String(contentsOfFile: LKRoot.root_path! + "/daemon.call/out.txt") {
+                read += "."
+                try? read.write(toFile: LKRoot.root_path! + "/daemon.call/out.txt", atomically: true, encoding: .utf8)
+            }
+            usleep(233333)
+        }
+        sleep(1) // Fix Permission
+        try? FileManager.default.removeItem(atPath: LKRoot.root_path! + "/daemon.call/pendingInstall/Done")
+        appendLogToFile(log: "Daemon returned!")
+        appendLogToFile(log: (try? String(contentsOfFile: LKRoot.root_path! + "/daemon.call/pendingInstall/Done")) ?? "")
         
-            
-        
-            // 卸载迭代器
-        
-                // 提交删除脚本
-        
-                // 更新数据库
-        
-            // 安装迭代器
-        
-                // 软件包迭代器
-        
-                    // 拷贝安装资源
-        
-                    // 解压安装资源
-        
-                    // 修正安装资源
-        
-                    // 记录安装资源
-        
-                // 合并安装文件
-        
-                // 合并安装资源文件记录
-        
-                // 更新数据库
-        
-                // 提交安装
+        appendLogToFile(log: "Saily::internal_session_finished::Signal")
         
     }
     

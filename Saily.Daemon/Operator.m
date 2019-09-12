@@ -318,3 +318,29 @@ void requiredRTLPATCH() {
     
     fix_permission();
 }
+
+void requiredRTLINSTALL() {
+    
+    NSLog(@"准备开始修复软件包");
+    if ([LKRDIR isEqualToString:@""]) {
+        NSLog(@"[E] 路径顺序不合法");
+        return;
+    }
+    
+    NSString *mkdir = @"mkdir -p /var/root/Saily.Daemon";
+    NSString *cp = [[NSString alloc] initWithFormat: @"cp %@/daemon.call/pendingInstall/install.sh /var/root/Saily.Daemon/install.sh", LKRDIR];
+    NSString *chmod = [[NSString alloc] initWithFormat: @"chmod +x /var/root/Saily.Daemon/install.sh"];
+    NSString *bash = [[NSString alloc] initWithFormat: @"bash /var/root/Saily.Daemon/install.sh"];
+    
+    run_cmd((char *)[mkdir UTF8String]);
+    run_cmd((char *)[cp UTF8String]);
+    run_cmd((char *)[chmod UTF8String]);
+    run_cmd((char *)[bash UTF8String]);
+    NSLog(@"[*] 执行完成 ✅");
+    
+    NSString *done = @"-Daemon- Script Done -> _ <-";
+    NSString *prefix = [LKRDIR stringByAppendingString:@"/daemon.call/pendingInstall"];
+    [done writeToFile: [prefix stringByAppendingString:@"/Done"] atomically:true encoding:NSUTF8StringEncoding error:nil];
+    
+    fix_permission();
+}
