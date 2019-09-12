@@ -76,6 +76,10 @@ static void read_end() {
         requiredEXTRACT();
         return;
     }
+    if ([read_rdi hasPrefix:@"init:req:rtlPatch"]) {
+        requiredRTLPATCH();
+        return;
+    }
 }
 
 static void read_space() {

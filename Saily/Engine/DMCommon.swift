@@ -18,6 +18,7 @@ extension common_data_handler {
         case LKPackageRepos
         case LKPackages
         case LKRecentInstalled
+        case LKRootLessInstalledTrace
     }
     
 }

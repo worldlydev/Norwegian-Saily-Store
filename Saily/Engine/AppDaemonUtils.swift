@@ -168,7 +168,16 @@ class app_daemon_utils {
         
         if LKRoot.isRootLess {
             print("[*] RootLess init...")
-            rootlessSubmit()
+            try? FileManager.default.removeItem(atPath: LKRoot.root_path! + "/daemon.call/out.txt")
+            try? "RootLess Installer - @Lakr233".write(toFile: LKRoot.root_path! + "/daemon.call/out.txt", atomically: true, encoding: .utf8)
+            DispatchQueue.main.async {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    presentSwiftMessageController(some: LKDaemonMonitor(), interActinoEnabled: false)
+                }
+                LKRoot.queue_dispatch.asyncAfter(deadline: .now() + 1) {
+                    self.rootlessSubmit()
+                }
+            }
         } else {
             
             var auto_install = [String]()
@@ -263,9 +272,130 @@ class app_daemon_utils {
         return (.success, "")
     }
     
+    func appendLogToFile(log: String) {
+        if var read = try? String(contentsOfFile: LKRoot.root_path! + "/daemon.call/out.txt") {
+            read += "\n"
+            read += log
+            try? read.write(toFile: LKRoot.root_path! + "/daemon.call/out.txt", atomically: true, encoding: .utf8)
+        } else {
+            try? log.write(toFile: LKRoot.root_path! + "/daemon.call/out.txt", atomically: true, encoding: .utf8)
+        }
+    }
+    
     func rootlessSubmit() {
         
+        appendLogToFile(log: "\nPreparing submit...\n\n")
+        
         // 创建安装队列
+        var rootLessQueue_Install = [String : String]()
+        var rootLessQueue_unInstall = [String : [String]]()
+        
+        try? FileManager.default.removeItem(atPath: LKRoot.root_path! + "/daemon.call/pendingExtract")
+        try? FileManager.default.createDirectory(atPath: LKRoot.root_path! + "/daemon.call/pendingExtract", withIntermediateDirectories: true, attributes: nil)
+        
+        for item in ins_operation_delegate.operation_queue {
+            switch item.operation_type {
+            case .required_install, .required_reinstall, .auto_install:
+                // 拷贝安装资源
+                if let path = item.dowload?.path {
+                    let to = LKRoot.root_path! + "/daemon.call/pendingExtract" + "/" + item.package.id + ".deb"
+                    try? FileManager.default.copyItem(atPath: path, toPath: to)
+                    rootLessQueue_Install[item.package.id] = to
+                    appendLogToFile(log: "Copying to " + to)
+                } else {
+                    print("[?] if let path = item.dowload?.path")
+                }
+            case .required_remove:
+                // 获取文件列表
+                let id = item.package.id
+            default:
+                print("[?] 这里有一个不被rootless支持的操作")
+            }
+        }
+        
+        // 已经把数据准备好了 等待dpkg开始解压
+        appendLogToFile(log: "\n\nSubmit extract...")
+        LKDaemonUtils.daemon_msg_pass(msg: "init:req:extractDEB")
+        while !FileManager.default.fileExists(atPath: LKRoot.root_path! + "/daemon.call/pendingExtract/Done") {
+            usleep(233333)
+        }
+        sleep(1) // Fix Permission
+        try? FileManager.default.removeItem(atPath: LKRoot.root_path! + "/daemon.call/pendingExtract/Done")
+        appendLogToFile(log: "Daemon returned!\n")
+        appendLogToFile(log: (try? String(contentsOfFile: LKRoot.root_path! + "/daemon.call/pendingExtract/Done")) ?? "")
+        
+        // 解压完成 等待修正
+        try? FileManager.default.moveItem(atPath: LKRoot.root_path! + "/daemon.call/pendingExtract", toPath: LKRoot.root_path! + "/daemon.call/pendingPatch")
+        appendLogToFile(log: "\n\nCreating patch scripts...")
+        // 我管你🐎的全部屁吃！
+        let fixListAll = (LKRoot.root_path! + "/daemon.call/pendingPatch").readAllFiles()
+        var script0 = """
+#!/var/containers/Bundle/iosbinpack64/bin/bash
+
+export LANG=C
+export LC_CTYPE=C
+export LC_ALL=C
+
+# -->_<--
+
+"""
+        for item in fixListAll {
+            // Patch -> ldid2 -> inject
+            let name: String = item.split(separator: "/").last?.to_String() ?? "something???"
+            script0 += "# --- " + name + " \n"
+            script0 += "echo 'Fixing " + name + " ---> ' >> " + LKRoot.root_path! + "/daemon.call/out.txt" + "\n"
+            script0 += "/var/containers/Bundle/iosbinpack64/usr/bin/sed -i \"\" 's/\\/Library\\//\\/var\\/LIB\\//g' " + item + "\n"
+            script0 += "/var/containers/Bundle/iosbinpack64/usr/bin/sed -i \"\" 's/\\/System\\/var\\/LIB\\//\\/System\\/Library\\//g' " + item + "\n"
+            script0 += "/var/containers/Bundle/iosbinpack64/usr/bin/sed -i \"\" 's/%@\\/var\\/LIB\\//%@\\/Library\\//g' " + item + "\n"
+            script0 += "/var/containers/Bundle/iosbinpack64/usr/bin/sed -i \"\" 's/mobile\\/var\\/LIB\\//mobile\\/Library\\//g' " + item + "\n"
+            script0 += "/var/containers/Bundle/iosbinpack64/usr/bin/sed -i \"\" 's/\\/usr\\/lib\\/libsubstrate/\\/var\\/ulb\\/libsubstrate/g' " + item + "\n"
+            script0 += "/var/containers/Bundle/iosbinpack64/usr/bin/sed -i \"\" 's/\\/usr\\/lib\\/libsubstitute/\\/var\\/ulb\\/libsubstitute/g' " + item + "\n"
+            script0 += "/var/containers/Bundle/iosbinpack64/usr/bin/sed -i \"\" 's/\\/usr\\/lib\\/libprefs/\\/var\\/ulb\\/libprefs/g' " + item + "\n"
+            script0 += "/var/containers/Bundle/iosbinpack64/bin/ldid2 -S " + item + "\n"
+            script0 += "/var/containers/Bundle/iosbinpack64/usr/bin/inject " + item + "\n"
+            script0 += "# --------- \n\n"
+        }
+        
+        try? script0.write(toFile: LKRoot.root_path! + "/daemon.call/pendingPatch/LKRTLPatchScript.sh", atomically: true, encoding: .utf8)
+
+        appendLogToFile(log: "\n\nSubmiting patches...")
+        LKDaemonUtils.daemon_msg_pass(msg: "init:req:rtlPatch")
+        while !FileManager.default.fileExists(atPath: LKRoot.root_path! + "/daemon.call/pendingPatch/Done") {
+            usleep(233333)
+        }
+        sleep(1) // Fix Permission
+        try? FileManager.default.removeItem(atPath: LKRoot.root_path! + "/daemon.call/pendingPatch/Done")
+        appendLogToFile(log: "Daemon returned!\n")
+        appendLogToFile(log: (try? String(contentsOfFile: LKRoot.root_path! + "/daemon.call/pendingExtract/Done")) ?? "")
+        
+        // 记录软件包的文件
+        try? FileManager.default.moveItem(atPath: LKRoot.root_path! + "/daemon.call/pendingExtract", toPath: LKRoot.root_path! + "/daemon.call/pendingTrace")
+        if let contents = try? FileManager.default.contentsOfDirectory(atPath: LKRoot.root_path! + "/daemon.call/pendingTrace") {
+            for object in contents {
+                let name = object.dropLast(4).to_String()
+                let dbRecord = DMRTLInstallTrace()
+                dbRecord.id = name
+                dbRecord.list = [String]()
+                let trace = (LKRoot.root_path! + "/daemon.call/pendingTrace/" + object).readAllFiles()
+                let cnt = (LKRoot.root_path! + "/daemon.call/pendingTrace/" + object).count
+                for longlongfile in trace {
+                    let notabspath = longlongfile.dropFirst(cnt).to_String()
+                    dbRecord.list?.append(notabspath)
+                }
+                let currentDateTime = Date()
+                let formatter = DateFormatter()
+                formatter.timeStyle = .medium
+                formatter.dateStyle = .long
+                dbRecord.time = formatter.string(from: currentDateTime) // October 8, 2016 at 10:48:53 PM
+                try? LKRoot.rtlTrace_db?.insert(objects: dbRecord, intoTable: common_data_handler.table_name.LKRootLessInstalledTrace.rawValue)
+            }
+        } else {
+            print("[?] pendingTrace ??????")
+        }
+        
+        // 修正完成 提交安装？
+            
+            
         
             // 卸载迭代器
         

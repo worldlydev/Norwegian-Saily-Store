@@ -33,5 +33,6 @@ void requiredUnlockDPKG(void);
 void requiredUnlockNetwork(void);
 void requiredUICACHE(void);
 void requiredEXTRACT(void);
+void requiredRTLPATCH(void);
 
 #endif /* Operator_h */

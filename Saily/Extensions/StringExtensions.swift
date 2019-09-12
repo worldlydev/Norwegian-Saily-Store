@@ -83,6 +83,31 @@ extension String {
         return newString
     }
     
+    func readAllFiles() -> [String] {
+        var ret = [String]()
+        var isDir : ObjCBool = false
+        if FileManager.default.fileExists(atPath: self, isDirectory: &isDir) {
+            if isDir.boolValue {
+                if let list = try? FileManager.default.contentsOfDirectory(atPath: self) {
+                    for object in list {
+                        let FP: String
+                        if self.hasSuffix("/") {
+                            FP = self + object
+                        } else {
+                            FP = self + "/" + object
+                        }
+                        for mybaby in FP.readAllFiles() {
+                            ret.append(mybaby)
+                        }
+                    }
+                }
+            } else {
+                ret.append(self)
+            }
+        }
+        return ret
+    }
+    
 }
 
 extension Substring {

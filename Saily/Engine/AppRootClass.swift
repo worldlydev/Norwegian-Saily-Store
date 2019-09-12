@@ -27,6 +27,7 @@ class app_root_class {
     
     var root_path: String?
     var root_db: Database?
+    var rtlTrace_db: Database?
     
     var isRootLess: Bool = false
     
@@ -100,6 +101,7 @@ class app_root_class {
         try? FileManager.default.createDirectory(atPath: root_path! + "/daemon.call/debs", withIntermediateDirectories: true, attributes: nil)
         try? FileManager.default.createDirectory(atPath: root_path! + "/daemon.call/download_cache", withIntermediateDirectories: true, attributes: nil)
         root_db = Database(withPath: root_path! + "/" + "Lakr233.db")
+        rtlTrace_db = Database(withPath: LKRoot.root_path! + "/" + "rtlInstall.db")
         try? FileManager.default.removeItem(atPath: root_path! + "/caches")
         
         // 检查数据库数据完整性
@@ -161,6 +163,7 @@ class app_root_class {
     func bootstrap_this_app() {
         firstOpen = true
         // 开始初始化数据库
+        try? rtlTrace_db?.create(table: common_data_handler.table_name.LKRootLessInstalledTrace.rawValue, of: DMRTLInstallTrace.self)
         try? root_db?.create(table: common_data_handler.table_name.LKNewsRepos.rawValue, of: DBMNewsRepo.self)
         try? root_db?.create(table: common_data_handler.table_name.LKSettings.rawValue, of: DBMSettings.self)
         try? root_db?.create(table: common_data_handler.table_name.LKPackageRepos.rawValue, of: DBMPackageRepos.self)

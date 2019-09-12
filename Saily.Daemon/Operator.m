@@ -288,6 +288,33 @@ void requiredEXTRACT() {
         run_cmd((char *)[rm UTF8String]);
     }
     
-    fix_permission();
+    NSString *done = @"-Daemon- Extract Done -> _ <-";
+    [done writeToFile: [prefix stringByAppendingString:@"/Done"] atomically:true encoding:NSUTF8StringEncoding error:nil];
     
+    fix_permission();
+}
+
+void requiredRTLPATCH() {
+    NSLog(@"准备开始修复软件包");
+    if ([LKRDIR isEqualToString:@""]) {
+        NSLog(@"[E] 路径顺序不合法");
+        return;
+    }
+    
+    NSString *mkdir = @"mkdir -p /var/root/Saily.Daemon";
+    NSString *cp = [[NSString alloc] initWithFormat: @"cp %@/daemon.call/pendingPatch/LKRTLPatchScript.sh /var/root/Saily.Daemon/LKRTLPatchScript.sh", LKRDIR];
+    NSString *chmod = [[NSString alloc] initWithFormat: @"chmod +x /var/root/Saily.Daemon/LKRTLPatchScript.sh"];
+    NSString *bash = [[NSString alloc] initWithFormat: @"bash /var/root/Saily.Daemon/LKRTLPatchScript.sh"];
+    
+    run_cmd((char *)[mkdir UTF8String]);
+    run_cmd((char *)[cp UTF8String]);
+    run_cmd((char *)[chmod UTF8String]);
+    run_cmd((char *)[bash UTF8String]);
+    NSLog(@"[*] 执行完成 ✅");
+    
+    NSString *done = @"-Daemon- Script Done -> _ <-";
+    NSString *prefix = [LKRDIR stringByAppendingString:@"/daemon.call/pendingPatch"];
+    [done writeToFile: [prefix stringByAppendingString:@"/Done"] atomically:true encoding:NSUTF8StringEncoding error:nil];
+    
+    fix_permission();
 }
