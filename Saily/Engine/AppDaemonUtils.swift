@@ -284,7 +284,7 @@ class app_daemon_utils {
     
     func rootlessSubmit() {
         
-        appendLogToFile(log: "\nPreparing submit...\n\n")
+        appendLogToFile(log: "\nPreparing submit...")
         
         // 创建安装队列
         var rootLessQueue_Install = [String : String]()
@@ -314,19 +314,19 @@ class app_daemon_utils {
         }
         
         // 已经把数据准备好了 等待dpkg开始解压
-        appendLogToFile(log: "\n\nSubmit extract...")
+        appendLogToFile(log: "\nSubmit extract...")
         LKDaemonUtils.daemon_msg_pass(msg: "init:req:extractDEB")
         while !FileManager.default.fileExists(atPath: LKRoot.root_path! + "/daemon.call/pendingExtract/Done") {
             usleep(233333)
         }
         sleep(1) // Fix Permission
         try? FileManager.default.removeItem(atPath: LKRoot.root_path! + "/daemon.call/pendingExtract/Done")
-        appendLogToFile(log: "Daemon returned!\n")
+        appendLogToFile(log: "Daemon returned!")
         appendLogToFile(log: (try? String(contentsOfFile: LKRoot.root_path! + "/daemon.call/pendingExtract/Done")) ?? "")
         
         // 解压完成 等待修正
         try? FileManager.default.moveItem(atPath: LKRoot.root_path! + "/daemon.call/pendingExtract", toPath: LKRoot.root_path! + "/daemon.call/pendingPatch")
-        appendLogToFile(log: "\n\nCreating patch scripts...")
+        appendLogToFile(log: "\nCreating patch scripts...")
         // 我管你🐎的全部屁吃！
         let fixListAll = (LKRoot.root_path! + "/daemon.call/pendingPatch").readAllFiles()
         var script0 = """
@@ -358,21 +358,24 @@ export LC_ALL=C
         
         try? script0.write(toFile: LKRoot.root_path! + "/daemon.call/pendingPatch/LKRTLPatchScript.sh", atomically: true, encoding: .utf8)
 
-        appendLogToFile(log: "\n\nSubmiting patches...")
+        appendLogToFile(log: "\nSubmiting patches...")
         LKDaemonUtils.daemon_msg_pass(msg: "init:req:rtlPatch")
         while !FileManager.default.fileExists(atPath: LKRoot.root_path! + "/daemon.call/pendingPatch/Done") {
             usleep(233333)
         }
         sleep(1) // Fix Permission
         try? FileManager.default.removeItem(atPath: LKRoot.root_path! + "/daemon.call/pendingPatch/Done")
-        appendLogToFile(log: "Daemon returned!\n")
-        appendLogToFile(log: (try? String(contentsOfFile: LKRoot.root_path! + "/daemon.call/pendingExtract/Done")) ?? "")
+        appendLogToFile(log: "Daemon returned!")
+        appendLogToFile(log: (try? String(contentsOfFile: LKRoot.root_path! + "/daemon.call/pendingPatch/Done")) ?? "")
         
         // 记录软件包的文件
-        try? FileManager.default.moveItem(atPath: LKRoot.root_path! + "/daemon.call/pendingExtract", toPath: LKRoot.root_path! + "/daemon.call/pendingTrace")
+        var script_install = ""
+        
+        try? FileManager.default.moveItem(atPath: LKRoot.root_path! + "/daemon.call/pendingPatch", toPath: LKRoot.root_path! + "/daemon.call/pendingTrace")
         if let contents = try? FileManager.default.contentsOfDirectory(atPath: LKRoot.root_path! + "/daemon.call/pendingTrace") {
             for object in contents {
                 let name = object.dropLast(4).to_String()
+                appendLogToFile(log: "\nTracing installation on " + name)
                 let dbRecord = DMRTLInstallTrace()
                 dbRecord.id = name
                 dbRecord.list = [String]()
@@ -393,8 +396,9 @@ export LC_ALL=C
             print("[?] pendingTrace ??????")
         }
         
+        appendLogToFile(log: "\n<---Start-Install-->\n")
         // 修正完成 提交安装？
-            
+        
             
         
             // 卸载迭代器
