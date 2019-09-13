@@ -14,6 +14,7 @@ enum daemon_status: String {
 
 let LKDaemonUtils = app_daemon_utils()
 
+// swiftlint:disable:next type_body_length
 class app_daemon_utils {
     
     var session = ""

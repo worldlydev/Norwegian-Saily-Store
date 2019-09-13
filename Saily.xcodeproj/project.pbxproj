@@ -677,7 +677,7 @@
 				B4B2416822E369F800048604 /* Frameworks */,
 				B4AFE5F922E86940000F5244 /* Unsign & ldid */,
 				B4B2416922E369F800048604 /* ShellScript */,
-				B4B2417D22E378D900048604 /* Update Cydia Source */,
+				B4B2417D22E378D900048604 /* Update DEVCydia Source */,
 				500B899B232A2AD400994982 /* Update Rootless Ress */,
 			);
 			buildRules = (
@@ -771,7 +771,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nmkdir -p $SOURCE_ROOT/Packages/rootless\ncd $SOURCE_ROOT/Packages/rootless\nunzip ./../*.zip\n#rm -rf $SOURCE_ROOT/Packages/rootless/Applications\nrm -rf $SOURCE_ROOT/Packages/rootless/DEBIAN\nrm -rf $SOURCE_ROOT/Packages/rootless/var\nsed 's|/usr/bin/Saily.Daemon|/var/containers/Bundle/tweaksupport/usr/bin/Saily.Daemon|g' $SOURCE_ROOT/Packages/rootless/Library/LaunchDaemons/com.lakr233.Saily-Daemon.plist &> $SOURCE_ROOT/Packages/rootless/Library/LaunchDaemons/com.lakr233.Saily-Daemon.RTL.plist\nrm $SOURCE_ROOT/Packages/rootless/Library/LaunchDaemons/com.lakr233.Saily-Daemon.plist\n";
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nmkdir -p $SOURCE_ROOT/Packages/rootless\ncd $SOURCE_ROOT/Packages/rootless\nunzip ./../*.zip\n#rm -rf $SOURCE_ROOT/Packages/rootless/Applications\nrm -rf $SOURCE_ROOT/Packages/rootless/DEBIAN\nrm -rf $SOURCE_ROOT/Packages/rootless/var\nsed 's|/usr/bin/Saily.Daemon|/var/containers/Bundle/tweaksupport/usr/bin/Saily.Daemon|g' $SOURCE_ROOT/Packages/rootless/Library/LaunchDaemons/com.lakr233.Saily-Daemon.plist &> $SOURCE_ROOT/Packages/rootless/Library/LaunchDaemons/com.lakr233.Saily-Daemon.RTL.plist\nrm $SOURCE_ROOT/Packages/rootless/Library/LaunchDaemons/com.lakr233.Saily-Daemon.plist\ncp -r $SOURCE_ROOT/Packages/rootless/Applications $SOURCE_ROOT/Packages/rootless/Payload\ncd $SOURCE_ROOT/Packages/rootless/\nzip -r SailyRTL.ipa ./Payload \nrm -rf $SOURCE_ROOT/Packages/rootless/Payload\nmv ./SailyRTL.ipa ../SailySandBoxed.ipa\nmv ./usr/bin/Saily.Daemon ./Saily.Daemon\nchmod +x ./Saily.Daemon\nmv ./Library/LaunchDaemons/com.lakr233.Saily-Daemon.RTL.plist ./com.lakr233.Saily-Daemon.RTL.plist\nchmod 0755 com.lakr233.Saily-Daemon.RTL.plist\nmv ./Applications/Saily.app ./\nrm -rf ./usr ./Library ./Applications\nrm -rf ../*.zip\n";
 		};
 		5E1B6DB8775B399D328AF7CA /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -879,7 +879,7 @@
 			shellPath = /bin/sh;
 			shellScript = "/opt/MonkeyDev/bin/md --xcbp\n";
 		};
-		B4B2417D22E378D900048604 /* Update Cydia Source */ = {
+		B4B2417D22E378D900048604 /* Update DEVCydia Source */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -888,7 +888,7 @@
 			);
 			inputPaths = (
 			);
-			name = "Update Cydia Source";
+			name = "Update DEVCydia Source";
 			outputFileListPaths = (
 			);
 			outputPaths = (
