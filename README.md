@@ -39,12 +39,13 @@ More thins coming later.... I got summery holiday homeworks to do.
 - A better search page
 - News Repo featured
 - Generating News Repo and upload with GitHub OAuth
-- RootlessJB Support -> Daemon Side
+
+- Finished RootlessJB Support
 
 # Installation
 
 - Install cocoaPods
-- (Optional) Comment the line -> # source 'https://cdn.cocoapods.org/'
+- (Optional) Comment this line -> # source 'https://cdn.cocoapods.org/'
 - pod install
 - Build it and run
 
