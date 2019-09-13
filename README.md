@@ -16,7 +16,9 @@ Designers:
 - @xerusdesign - Default Tweak Icon   
 
 Translator:   
-- GitHub:dabeecao Vietnamese
+- GitHub: dabeecao Vietnamese
+- Twitter: @ammaripa @busadoki Arabic
+
 
 More thins coming later.... I got summery holiday homeworks to do.  
 
