@@ -19,6 +19,8 @@ Translator:
 - GitHub: dabeecao Vietnamese
 - Twitter: @ammaripa @busadoki Arabic
 
+iOS Bin Pack:   
+- It is from Uncover
 
 More thins coming later.... I got summery holiday homeworks to do.  
 

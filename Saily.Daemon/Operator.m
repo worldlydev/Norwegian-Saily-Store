@@ -123,7 +123,7 @@ void run_cmd(char *incmd) {
     
     if (isRootless) {
         NSLog(@"[Execute] bash -c %@", cmdStr);
-        NSString *rtcmd = [[NSString alloc] initWithFormat: @"PATH=/var/containers/Bundle/tweaksupport/usr/local/bin:/var/containers/Bundle/tweaksupport/usr/bin:/var/containers/Bundle/tweaksupport/bin:/var/containers/Bundle/iosbinpack64/usr/sbin/"];
+        NSString *rtcmd = [[NSString alloc] initWithFormat: @"PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/bin/X11:/usr/games:/var/containers/Bundle/iosbinpack64/usr/local/sbin:/var/containers/Bundle/iosbinpack64/usr/local/bin:/var/containers/Bundle/iosbinpack64/usr/sbin:/var/containers/Bundle/iosbinpack64/usr/bin:/var/containers/Bundle/iosbinpack64/sbin:/var/containers/Bundle/iosbinpack64/bin"];
         rtcmd = [rtcmd stringByAppendingString:@" "];
         rtcmd = [rtcmd stringByAppendingString: [[NSString alloc] initWithUTF8String:incmd]];
         char *rootlessARGS[] = {"bash", "-c", (char *)[rtcmd UTF8String], NULL, NULL};
