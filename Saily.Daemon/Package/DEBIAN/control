@@ -3,7 +3,7 @@ Name: Saily Store
 Version: 0.6-b972
 Description: Saily Package Manager
 Section: System
-Depends: firmware (>= 11.0)
+Depends: firmware (>= 10.0)
 Conflicts: com.lakr233.SailyTest, com.lakr233.jw.SailyPackageManager, com.lakr233.jw.SailyStartupDaemon
 Replaces: 
 Priority: required
