@@ -176,6 +176,9 @@ extension manage_views {
         }
         
         func re_sync(lim: Int? = nil) {
+            if LKRoot.isRootLess {
+                return
+            }
             guard let pack: [DBMPackage] = try? LKRoot.root_db?.getObjects(fromTable: common_data_handler.table_name.LKRecentInstalled.rawValue,
                                                                            orderBy: [DBMPackage.Properties.latest_update_time.asOrder(by: .descending),
                                                                                      DBMPackage.Properties.one_of_the_package_name_lol.asOrder(by: .ascending),
@@ -351,9 +354,13 @@ extension manage_views.LKIconGroupDetailView_RecentInstalled: UITableViewDelegat
         return [share, delete]
     }
     
-    func update_interface(_ CallB: @escaping () -> Void) {
+    func update_interface(isSentFromRootLess: Bool = false, _ CallB: @escaping () -> Void) {
         // 刷新成功了 先展开表格，再更新iconStack，最后reload自己
-        re_sync()
+        if !isSentFromRootLess {
+            re_sync()
+        } else {
+            try? LKRoot.root_db?.delete(fromTable: common_data_handler.table_name.LKRecentInstalled.rawValue)
+        }
         table_view.reloadData()
         DispatchQueue.main.async {
             (self.from_father_view as? UITableView)?.beginUpdates()

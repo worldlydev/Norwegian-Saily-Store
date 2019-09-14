@@ -12,6 +12,7 @@ class DMRTLInstallTrace: WCDBSwift.TableCodable {
     var id: String?
     var list: [String]?
     var time: String?
+    var usedDPKG: Bool?
     
     enum CodingKeys: String, CodingTableKey { // swiftlint:disable:next nesting
         typealias Root = DMRTLInstallTrace
@@ -19,6 +20,7 @@ class DMRTLInstallTrace: WCDBSwift.TableCodable {
         case id
         case list
         case time
+        case usedDPKG
         
         static let objectRelationalMapping = TableBinding(CodingKeys.self)
         
