@@ -110,6 +110,11 @@
 		04118A1B22AA7EDD00C4D94E /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0497D28C8C77251284C02B92 /* Pods-Saily.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Saily.release.xcconfig"; path = "Target Support Files/Pods-Saily/Pods-Saily.release.xcconfig"; sourceTree = "<group>"; };
 		500B899C232A3BC000994982 /* DMRTLInstallTrace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DMRTLInstallTrace.swift; sourceTree = "<group>"; };
+		507021B8232D4F7C00D82C6E /* nb */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nb; path = nb.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
+		507021B9232D4F7C00D82C6E /* nb */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nb; path = nb.lproj/Main_iPhone.strings; sourceTree = "<group>"; };
+		507021BA232D4F7C00D82C6E /* nb */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nb; path = nb.lproj/Main_iPad.strings; sourceTree = "<group>"; };
+		507021BB232D4F7C00D82C6E /* nb */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nb; path = nb.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		507021BC232D4F7C00D82C6E /* nb */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nb; path = nb.lproj/Localizable.strings; sourceTree = "<group>"; };
 		507A920F23292A100097C343 /* common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = common.h; sourceTree = "<group>"; };
 		507A921023292A100097C343 /* common.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = common.c; sourceTree = "<group>"; };
 		50A8157E232B9C1B008F6667 /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
@@ -723,6 +728,7 @@
 				"zh-Hans",
 				vi,
 				ar,
+				nb,
 			);
 			mainGroup = AB081F88229D4BDC00ACA4DD;
 			productRefGroup = AB081F92229D4BDC00ACA4DD /* Products */;
@@ -1030,6 +1036,7 @@
 				04118A1822AA7E0800C4D94E /* en */,
 				B4691C7722EA851B00329DF5 /* vi */,
 				50A81581232B9C1B008F6667 /* ar */,
+				507021BB232D4F7C00D82C6E /* nb */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -1040,6 +1047,7 @@
 				ABFBA800229D7B3D0070A17E /* Base */,
 				B4691C7422EA851B00329DF5 /* vi */,
 				50A8157E232B9C1B008F6667 /* ar */,
+				507021B8232D4F7C00D82C6E /* nb */,
 			);
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
@@ -1049,6 +1057,7 @@
 			children = (
 				ABFBA803229D7B460070A17E /* Base */,
 				50A81580232B9C1B008F6667 /* ar */,
+				507021BA232D4F7C00D82C6E /* nb */,
 			);
 			name = Main_iPad.storyboard;
 			sourceTree = "<group>";
@@ -1058,6 +1067,7 @@
 			children = (
 				ABFBA806229D7B4F0070A17E /* Base */,
 				50A8157F232B9C1B008F6667 /* ar */,
+				507021B9232D4F7C00D82C6E /* nb */,
 			);
 			name = Main_iPhone.storyboard;
 			sourceTree = "<group>";
@@ -1069,6 +1079,7 @@
 				ABFBA838229D8E3A0070A17E /* en */,
 				B4691C7822EA851B00329DF5 /* vi */,
 				50A81582232B9C1C008F6667 /* ar */,
+				507021BC232D4F7C00D82C6E /* nb */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
