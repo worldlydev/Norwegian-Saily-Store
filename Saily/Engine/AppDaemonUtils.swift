@@ -14,6 +14,7 @@ enum daemon_status: String {
 
 let LKDaemonUtils = app_daemon_utils()
 
+// swiftlint:disable:next type_body_length
 class app_daemon_utils {
     
     var session = ""
@@ -293,6 +294,7 @@ class app_daemon_utils {
         var rootLessQueue_unInstall_dpkg = [String]()
         
         try? FileManager.default.removeItem(atPath: LKRoot.root_path! + "/daemon.call/pendingExtract")
+        try? FileManager.default.removeItem(atPath: LKRoot.root_path! + "/daemon.call/pendingInstall")
         try? FileManager.default.createDirectory(atPath: LKRoot.root_path! + "/daemon.call/pendingExtract", withIntermediateDirectories: true, attributes: nil)
         
         for item in ins_operation_delegate.operation_queue {
@@ -312,7 +314,7 @@ class app_daemon_utils {
                 // 获取文件列表
                 let id = item.package.id
                 if item.package.version.first?.value.first?.value["USEDDPKG"] == "YES" {
-                    rootLessQueue_unInstall_dpkg.append(id.dropLast(4).to_String())
+                    rootLessQueue_unInstall_dpkg.append(id)
                 } else {
                     var fileList = [String]()
                     for line in item.package.version.first?.value.first?.value["FILELIST"]?.split(separator: "\n") ?? [] {
@@ -422,6 +424,8 @@ export LC_ALL=C
         }
         for uninstall in rootLessQueue_unInstall_dpkg {
             script_install += "dpkg --purge " + uninstall + "\n"
+            try? LKRoot.rtlTrace_db?.delete(fromTable: common_data_handler.table_name.LKRootLessInstalledTrace.rawValue,
+                                            where: DMRTLInstallTrace.Properties.id == uninstall)
         }
         
         // 刷新已安装
@@ -466,12 +470,12 @@ export LC_ALL=C
                     }
                 } else {
                     // dpkg installation
-                    dbRecord.usedDPKG = false
+                    dbRecord.usedDPKG = true
                     script_install += "echo [dpkg] Post Install at Package " + name
                     script_install += " >> " + LKRoot.root_path! + "/daemon.call/out.txt\n"
-                    script_install += "rm -f /var/root/LKRootLessForceDPKG\n"
+                    script_install += "rm -f /var/LKRootLessForceDPKG\n"
                     script_install += "dpkg -i " + (originalInstallFile[name] ?? UUID().uuidString) + "\n"
-                    script_install += "rm -f /var/root/LKRootLessForceDPKG\n"
+                    script_install += "rm -f /var/LKRootLessForceDPKG\n"
                 }
                 let currentDateTime = Date()
                 let formatter = DateFormatter()
@@ -487,6 +491,7 @@ export LC_ALL=C
         appendLogToFile(log: "\n<---Start-Install-unInstall-->\n")
         
         try? FileManager.default.moveItem(atPath: LKRoot.root_path! + "/daemon.call/pendingTrace", toPath: LKRoot.root_path! + "/daemon.call/pendingInstall")
+        try? FileManager.default.removeItem(atPath: LKRoot.root_path! + "/daemon.call/pendingInstall/LKRTLPatchScript.sh")
         try? script_install.write(toFile: LKRoot.root_path! + "/daemon.call/pendingInstall/install.sh", atomically: true, encoding: .utf8)
         LKDaemonUtils.daemon_msg_pass(msg: "init:req:rtlInstall")
         while !FileManager.default.fileExists(atPath: LKRoot.root_path! + "/daemon.call/pendingInstall/Done") {
