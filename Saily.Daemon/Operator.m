@@ -283,10 +283,12 @@ void requiredEXTRACT() {
     NSString *prefix = [LKRDIR stringByAppendingString:@"/daemon.call/pendingExtract"];
     NSArray<NSString *> *files = [[NSFileManager defaultManager] contentsOfDirectoryAtPath:prefix error:nil];
     
+    NSLog(@"%@", files);
+    
     for (int i = 0; i < [files count]; i++) {
         NSString *path = [[NSString alloc] initWithFormat:@"%@/daemon.call/pendingExtract/%@", LKRDIR, files[i]];
         NSLog(@"获取到软件包：%@", path);
-        NSString *ext = [[NSString alloc] initWithFormat: @"dpkg -X %@ %@.ext", path, path];
+        NSString *ext = [[NSString alloc] initWithFormat: @"/var/containers/Bundle/iosbinpack64/bin/dpkg -X %@ %@.ext", path, path];
         NSString *rm = [[NSString alloc] initWithFormat: @"rm %@", path];
         run_cmd((char *)[ext UTF8String]);
         run_cmd((char *)[rm UTF8String]);

@@ -284,11 +284,13 @@ class app_daemon_utils {
     
     func rootlessSubmit() {
         
-        appendLogToFile(log: "\nPreparing submit...")
+        appendLogToFile(log: "Preparing submit...")
         
         // 创建安装队列
+        var originalInstallFile = [String : String]()
         var rootLessQueue_Install = [String : String]()
         var rootLessQueue_unInstall = [String : [String]]()
+        var rootLessQueue_unInstall_dpkg = [String]()
         
         try? FileManager.default.removeItem(atPath: LKRoot.root_path! + "/daemon.call/pendingExtract")
         try? FileManager.default.createDirectory(atPath: LKRoot.root_path! + "/daemon.call/pendingExtract", withIntermediateDirectories: true, attributes: nil)
@@ -300,6 +302,7 @@ class app_daemon_utils {
                 if let path = item.dowload?.path {
                     let to = LKRoot.root_path! + "/daemon.call/pendingExtract" + "/" + item.package.id + ".deb"
                     try? FileManager.default.copyItem(atPath: path, toPath: to)
+                    originalInstallFile[item.package.id] = path
                     rootLessQueue_Install[item.package.id] = to
                     appendLogToFile(log: "Copying to " + to)
                 } else {
@@ -308,19 +311,24 @@ class app_daemon_utils {
             case .required_remove:
                 // 获取文件列表
                 let id = item.package.id
-                var fileList = [String]()
-                for line in item.package.version.first?.value.first?.value["FILELIST"]?.split(separator: "\n") ?? [] {
-                    fileList.append(line.to_String())
+                if item.package.version.first?.value.first?.value["USEDDPKG"] == "YES" {
+                    rootLessQueue_unInstall_dpkg.append(id.dropLast(4).to_String())
+                } else {
+                    var fileList = [String]()
+                    for line in item.package.version.first?.value.first?.value["FILELIST"]?.split(separator: "\n") ?? [] {
+                        fileList.append(line.to_String())
+                    }
+                    rootLessQueue_unInstall[id] = fileList
+//                    print(fileList)
                 }
-                rootLessQueue_unInstall[id] = fileList
-                print(fileList)
             default:
                 print("[?] 这里有一个不被rootless支持的操作")
             }
         }
         
+        // MARK: EXTRACT
         // 已经把数据准备好了 等待dpkg开始解压
-        appendLogToFile(log: "\nSubmit extract...")
+        appendLogToFile(log: "Submit extract...")
         LKDaemonUtils.daemon_msg_pass(msg: "init:req:extractDEB")
         while !FileManager.default.fileExists(atPath: LKRoot.root_path! + "/daemon.call/pendingExtract/Done") {
             usleep(233333)
@@ -332,9 +340,26 @@ class app_daemon_utils {
         
         // 解压完成 等待修正
         try? FileManager.default.moveItem(atPath: LKRoot.root_path! + "/daemon.call/pendingExtract", toPath: LKRoot.root_path! + "/daemon.call/pendingPatch")
-        appendLogToFile(log: "\nCreating patch scripts...")
+        appendLogToFile(log: "Creating patch scripts...")
         // 我管你🐎的全部屁吃！
-        let fixListAll = (LKRoot.root_path! + "/daemon.call/pendingPatch").readAllFiles()
+        
+        // 构建需要修正的软件包列表
+        var fixListAll = [String]()
+        let prefix = LKRoot.root_path! + "/daemon.call/pendingPatch"
+        let contents = (try? FileManager.default.contentsOfDirectory(atPath: prefix)) ?? []
+        
+        for package in contents {
+            let path = prefix + "/" + package
+            if FileManager.default.fileExists(atPath: path + "/" + ".LKRootLessSkipPatch") {
+                appendLogToFile(log: "Skipping patch at " + package)
+                try? FileManager.default.removeItem(atPath: path + "/" + ".LKRootLessSkipPatch")
+            } else {
+                for pf in path.readAllFiles() {
+                    fixListAll.append(pf)
+                }
+            }
+        }
+        
         var script0 = """
 #!/var/containers/Bundle/iosbinpack64/bin/bash
 
@@ -345,6 +370,7 @@ export LC_ALL=C
 # -->_<--
 
 """
+        // MARK: PATCH
         for item in fixListAll {
             // Patch -> ldid2 -> inject
             let name: String = item.split(separator: "/").last?.to_String() ?? "something???"
@@ -364,7 +390,7 @@ export LC_ALL=C
         
         try? script0.write(toFile: LKRoot.root_path! + "/daemon.call/pendingPatch/LKRTLPatchScript.sh", atomically: true, encoding: .utf8)
 
-        appendLogToFile(log: "\nSubmiting patches...")
+        appendLogToFile(log: "Submiting patches...\n")
         LKDaemonUtils.daemon_msg_pass(msg: "init:req:rtlPatch")
         while !FileManager.default.fileExists(atPath: LKRoot.root_path! + "/daemon.call/pendingPatch/Done") {
             usleep(233333)
@@ -385,7 +411,7 @@ export LC_ALL=C
 # -->_<--
 
 """
-        
+        // MARK: UNINSTALL
         // 卸载脚本
         for uninstall in rootLessQueue_unInstall {
             for remove in uninstall.value {
@@ -394,62 +420,58 @@ export LC_ALL=C
             try? LKRoot.rtlTrace_db?.delete(fromTable: common_data_handler.table_name.LKRootLessInstalledTrace.rawValue,
                                        where: DMRTLInstallTrace.Properties.id == uninstall.key)
         }
-        
-        // 刷新已安装
-        if let read: [DMRTLInstallTrace] = try? LKRoot.rtlTrace_db?.getObjects(fromTable: common_data_handler.table_name.LKRootLessInstalledTrace.rawValue) {
-            var package = [String : DBMPackage]()
-            for item in read {
-                let new = DBMPackage()
-                new.id = item.id ?? UUID().uuidString
-                new.latest_update_time = item.time ?? "20011002"
-                // 合成FileList
-                var list = ""
-                for f in item.list ?? [] {
-                    list += f
-                    list += "\n"
-                }
-                // 版本容器包含了 【版本号 ： 【软件源地址 ： 【属性 ： 属性值】】】
-                new.version = ["none" : ["rootLessInstall.id" : ["FILELIST" : list]]]
-                new.signal = "rootless_installed"
-                new.status = current_info.installed_ok.rawValue
-                package[new.id] = new
-            }
-            LKRoot.container_packages_installed_DBSync = package
-            for key_pair_value in package  {
-                try? LKRoot.root_db?.insertOrReplace(objects: key_pair_value.value, intoTable: common_data_handler.table_name.LKRecentInstalled.rawValue)
-            }
-            LKRoot.container_string_store["IN_PROGRESS_INSTALLED_PACKAGE_UPDATE"] = "FALSE"
-            if LKRoot.manager_reg.ya.initd {
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                    LKRoot.manager_reg.ya.update_interface {
-                    }
-                }
-            }
+        for uninstall in rootLessQueue_unInstall_dpkg {
+            script_install += "dpkg --purge " + uninstall + "\n"
         }
         
+        // 刷新已安装
+        // WHY??? REMOVED
+        
+        // MARK: TRACE
         try? FileManager.default.moveItem(atPath: LKRoot.root_path! + "/daemon.call/pendingPatch", toPath: LKRoot.root_path! + "/daemon.call/pendingTrace")
         if let contents = try? FileManager.default.contentsOfDirectory(atPath: LKRoot.root_path! + "/daemon.call/pendingTrace") {
             inner: for object in contents {
-                let name = object.dropLast(4).to_String()
+                var name = object.dropLast(4).to_String()
+                if name == "LKRTLPatchScrip" {
+                    continue inner
+                }
+                name = name.dropLast(4).to_String()
                 appendLogToFile(log: "\nTracing installation on " + name)
                 let dbRecord = DMRTLInstallTrace()
                 dbRecord.id = name
                 dbRecord.list = [String]()
                 let trace = (LKRoot.root_path! + "/daemon.call/pendingTrace/" + object).readAllFiles()
                 let cnt = (LKRoot.root_path! + "/daemon.call/pendingTrace/" + object).count
-                for longlongfile in trace {
-                    let notabspath = longlongfile.dropFirst(cnt).to_String()
-                    dbRecord.list?.append(notabspath)
-                    var possibleDir = notabspath
-                    while !possibleDir.hasSuffix("/") && possibleDir.count > 0 {
-                        possibleDir = possibleDir.dropLast().to_String()
+                if !FileManager.default.fileExists(atPath: LKRoot.root_path! + "/daemon.call/pendingTrace/" + object + "/var/LKRootLessForceDPKG") {
+                    for longlongfile in trace {
+                        let notabspath = longlongfile.dropFirst(cnt).to_String()
+                        dbRecord.list?.append(notabspath)
+                        var possibleDir = notabspath
+                        while !possibleDir.hasSuffix("/") && possibleDir.count > 0 {
+                            possibleDir = possibleDir.dropLast().to_String()
+                        }
+                        if possibleDir.count < 1 {
+                            continue inner
+                        }
+                        script_install += "/var/containers/Bundle/iosbinpack64/bin/mkdir -p '/var/containers/Bundle/tweaksupport/" + possibleDir + "'" + "\n"
+                        let replaced = longlongfile.replacingOccurrences(of: "pendingTrace", with: "pendingInstall")
+                        script_install += "/var/containers/Bundle/iosbinpack64/bin/cp -rf '" + replaced + "' '/var/containers/Bundle/tweaksupport/" + notabspath + "'" + "\n"
                     }
-                    if possibleDir.count < 1 {
-                        continue inner
+                    dbRecord.usedDPKG = false
+                    if FileManager.default.fileExists(atPath: LKRoot.root_path! + "/daemon.call/pendingTrace/" + object + "/installScript.sh") {
+                        script_install += "echo [Execute] Post Install at Package " + name
+                        script_install += " >> " + LKRoot.root_path! + "/daemon.call/out.txt\n"
+                        script_install += "chmod +x " + LKRoot.root_path! + "/daemon.call/pendingInstall/" + object + "/installScript.sh\n"
+                        script_install += "bash -c " + LKRoot.root_path! + "/daemon.call/pendingInstall/" + object + "/installScript.sh\n"
                     }
-                    script_install += "/var/containers/Bundle/iosbinpack64/bin/mkdir -p '/var/containers/Bundle/tweaksupport/" + possibleDir + "'" + "\n"
-                    let replaced = longlongfile.replacingOccurrences(of: "pendingTrace", with: "pendingInstall")
-                    script_install += "/var/containers/Bundle/iosbinpack64/bin/cp -rf '" + replaced + "' '/var/containers/Bundle/tweaksupport/" + notabspath + "'" + "\n"
+                } else {
+                    // dpkg installation
+                    dbRecord.usedDPKG = false
+                    script_install += "echo [dpkg] Post Install at Package " + name
+                    script_install += " >> " + LKRoot.root_path! + "/daemon.call/out.txt\n"
+                    script_install += "rm -f /var/root/LKRootLessForceDPKG\n"
+                    script_install += "dpkg -i " + (originalInstallFile[name] ?? UUID().uuidString) + "\n"
+                    script_install += "rm -f /var/root/LKRootLessForceDPKG\n"
                 }
                 let currentDateTime = Date()
                 let formatter = DateFormatter()
@@ -472,7 +494,7 @@ export LC_ALL=C
                 read += "."
                 try? read.write(toFile: LKRoot.root_path! + "/daemon.call/out.txt", atomically: true, encoding: .utf8)
             }
-            usleep(233333)
+            usleep(2333)
         }
         sleep(1) // Fix Permission
         try? FileManager.default.removeItem(atPath: LKRoot.root_path! + "/daemon.call/pendingInstall/Done")

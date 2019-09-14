@@ -8,5 +8,5 @@
 
 {
     "NSCameraUsageDescription" = "QR نحتاج الموافقة للوصول الى مشاركة كود ال";
-    "NSPhotoLibraryUsageDescription" = "نحتاج الموافقة للوصول الىللصور";
+    "NSPhotoLibraryUsageDescription" = "نحتاج الموافقة للوصول الى الصور";
 }

@@ -13,7 +13,10 @@ extension app_opeerator {
     // It always like fucked by ilIL1
     // Thanks for understanding
     
-    func YA_sync_dpkg_info() {
+    func YA_sync_dpkg_info() -> Int {
+        if LKRoot.isRootLess {
+            return operation_result.failed.rawValue
+        }
         try? FileManager.default.removeItem(atPath: LKRoot.root_path! + "/dpkg")
         if FileManager.default.fileExists(atPath: LKRoot.root_path! + "/dpkg") {
             print("[?] dpkg 同步出错了？")
@@ -24,60 +27,22 @@ extension app_opeerator {
             try? FileManager.default.createDirectory(atPath: LKRoot.root_path! + "/dpkg", withIntermediateDirectories: true, attributes: nil)
         }
         try? FileManager.default.copyItem(atPath: "/Library/dpkg/status", toPath: LKRoot.root_path! + "/dpkg/status")
+        if !FileManager.default.fileExists(atPath: LKRoot.root_path! + "/dpkg/status") {
+            return operation_result.failed.rawValue
+        }
+        return operation_result.success.rawValue
     }
     
     func YA_build_installed_list(session: String, _ CallB: @escaping (Int) -> Void) {
-        YA_sync_dpkg_info()
-        // 尝试从存档获取
-        // 如果失败那尝试从原始文件获取
-        var read_status = (try? String(contentsOfFile:  LKRoot.root_path! + "/dpkg/status")) ?? "ERR_READ"
-        if read_status == "ERR_READ" {
-            read_status = (try? String(contentsOfFile:  "/Library/dpkg/status")) ?? "ERR_READ"
+        LKRoot.queue_dispatch.async {
+            self.YA_build_installed_list_rootless()
         }
-        if read_status == "ERR_READ" {
-            LKRoot.queue_dispatch.async {
-                sleep(5)
-                if LKRoot.isRootLess {
-                    if let read: [DMRTLInstallTrace] = try? LKRoot.rtlTrace_db?.getObjects(fromTable: common_data_handler.table_name.LKRootLessInstalledTrace.rawValue) {
-                        var package = [String : DBMPackage]()
-                        for item in read {
-                            let new = DBMPackage()
-                            new.id = item.id ?? UUID().uuidString
-                            new.latest_update_time = item.time ?? "20011002"
-                            // 合成FileList
-                            var list = ""
-                            for f in item.list ?? [] {
-                                list += f
-                                list += "\n"
-                            }
-                            // 版本容器包含了 【版本号 ： 【软件源地址 ： 【属性 ： 属性值】】】
-                            new.version = ["none" : ["rootLessInstall.id" : ["FILELIST" : list]]]
-                            new.signal = "rootless_installed"
-                            new.status = current_info.installed_ok.rawValue
-                            package[new.id] = new
-                        }
-                        LKRoot.container_packages_installed_DBSync = package
-                        for key_pair_value in package  {
-                            try? LKRoot.root_db?.insertOrReplace(objects: key_pair_value.value, intoTable: common_data_handler.table_name.LKRecentInstalled.rawValue)
-                        }
-                        LKRoot.container_string_store["IN_PROGRESS_INSTALLED_PACKAGE_UPDATE"] = "FALSE"
-                        if LKRoot.manager_reg.ya.initd {
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                                LKRoot.manager_reg.ya.update_interface {
-                                }
-                            }
-                        }
-                        CallB(operation_result.success.rawValue)
-                    } else {
-                        CallB(operation_result.failed.rawValue)
-                    }
-                    return
-                }
-                CallB(operation_result.failed.rawValue)
-                return
-            }
+        if YA_sync_dpkg_info() == operation_result.failed.rawValue {
+            CallB(operation_result.failed.rawValue)
             return
         }
+        let read_status = (try? String(contentsOfFile:  LKRoot.root_path! + "/dpkg/status")) ?? "ERR_READ"
+        // 尝试从存档获取
         
         LKRoot.container_string_store["STR_SIG_PROGRESS"] = "正在刷新软件包列表，这可能需要一些时间。".localized()
         if LKRoot.container_string_store["IN_PROGRESS_INSTALLED_PACKAGE_UPDATE"] == "TRUE" || session != LKRoot.container_string_store["IN_PROGRESS_INSTALLED_PACKAGE_UPDATE_SESSION"] {
@@ -259,6 +224,52 @@ extension app_opeerator {
         
         print("[*] 更新已安装完成")
         CallB(operation_result.success.rawValue)
+    }
+    
+    func YA_build_installed_list_rootless() {
+        if !FileManager.default.fileExists(atPath: LKRoot.root_path! + "/rtlInstall.db") {
+            return
+        }
+        if let read: [DMRTLInstallTrace] = try? LKRoot.rtlTrace_db?.getObjects(fromTable: common_data_handler.table_name.LKRootLessInstalledTrace.rawValue) {
+            var package = [String : DBMPackage]()
+            for item in read {
+                let new = DBMPackage()
+                new.id = item.id ?? UUID().uuidString
+                new.latest_update_time = item.time ?? "20011002"
+                // 合成FileList
+                var list = ""
+                for f in item.list ?? [] {
+                    list += f
+                    list += "\n"
+                }
+                // 版本容器包含了 【版本号 ： 【软件源地址 ： 【属性 ： 属性值】】】
+                var some = ""
+                if item.usedDPKG ?? false {
+                    some = "YES"
+                } else {
+                    some = "NO"
+                }
+                new.version = ["none" : ["rootLessInstall.id" : ["FILELIST" : list, "USEDDPKG" : some]]]
+                new.signal = "rootless_installed"
+                new.status = current_info.installed_ok.rawValue
+                package[new.id] = new
+            }
+            LKRoot.container_packages_installed_DBSync = package
+            LKRoot.container_recent_installed.removeAll()
+            for item in package {
+                LKRoot.container_recent_installed.append(item.value)
+            }
+            for key_pair_value in package  {
+                try? LKRoot.root_db?.insertOrReplace(objects: key_pair_value.value, intoTable: common_data_handler.table_name.LKRecentInstalled.rawValue)
+            }
+            LKRoot.container_string_store["IN_PROGRESS_INSTALLED_PACKAGE_UPDATE"] = "FALSE"
+            if LKRoot.manager_reg.ya.initd {
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    LKRoot.manager_reg.ya.update_interface(isSentFromRootLess: true) {
+                    }
+                }
+            }
+        }
     }
     
     func YA_package_in_exclude_list(id: String) -> Bool {
