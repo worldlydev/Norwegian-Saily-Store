@@ -173,6 +173,7 @@ class LKPackageDetail: UIViewController {
         
         contentView.addSubview(banner_image)
         banner_image.contentMode = .scaleAspectFill
+        banner_image.image = UIImage(color: UIColor(hexString: "#00A5F8", transparency: 0.5)!, size: CGSize(width: 1, height: 1))
         banner_image.snp.makeConstraints { (x) in
             x.top.lessThanOrEqualTo(self.contentView.snp.top)
             x.top.lessThanOrEqualTo(self.view.snp.top)

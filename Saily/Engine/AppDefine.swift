@@ -6,6 +6,8 @@
 //  Copyright © 2019 Lakr Aream. All rights reserved.
 //
 
+let DATEBASE_MINCAP_VERSION: Int64 = 200110020001 // My birthday. REMEMBER IT
+
 let TWEAK_DEFAULT_IMG_NAME = "xerusdesign"
 let USE_SILEO_DEPICTION = true
 let EXCLUDE_INSTALLED_LIST = [

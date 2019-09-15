@@ -213,19 +213,19 @@ extension manage_views {
         var 😂 = true
         @objc func expend_self() {
             
-            if LKRoot.container_string_store["REFRESH_IN_POGRESS_NP"] == "TRUE" {
-                UIView.transition(with: expend_button, duration: 0.5, options: .transitionCrossDissolve, animations: {
-                    self.expend_button.setTitle("请等待首页刷新进程完成".localized(), for: .normal)
-                    self.expend_button.setTitleColor(.red, for: .normal)
-                })
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                    UIView.transition(with: self.expend_button, duration: 0.5, options: .transitionCrossDissolve, animations: {
-                        self.expend_button.setTitle("点击来展开全部新闻源 ▼".localized(), for: .normal)
-                        self.expend_button.setTitleColor(LKRoot.ins_color_manager.read_a_color("main_title_two"), for: .normal)
-                    })
-                }
-                return
-            }
+//            if LKRoot.container_string_store["REFRESH_IN_POGRESS_NP"] == "TRUE" {
+//                UIView.transition(with: expend_button, duration: 0.5, options: .transitionCrossDissolve, animations: {
+//                    self.expend_button.setTitle("请等待首页刷新进程完成".localized(), for: .normal)
+//                    self.expend_button.setTitleColor(.red, for: .normal)
+//                })
+//                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+//                    UIView.transition(with: self.expend_button, duration: 0.5, options: .transitionCrossDissolve, animations: {
+//                        self.expend_button.setTitle("点击来展开全部新闻源 ▼".localized(), for: .normal)
+//                        self.expend_button.setTitleColor(LKRoot.ins_color_manager.read_a_color("main_title_two"), for: .normal)
+//                    })
+//                }
+//                return
+//            }
             
             // 更新缓存
             re_sync()

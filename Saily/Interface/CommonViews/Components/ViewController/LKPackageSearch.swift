@@ -20,6 +20,16 @@ class LKPackageSearch: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        if LKRoot.settings?.use_dark_mode ?? false {
+            navigationController?.navigationBar.barStyle = .blackOpaque
+        } else {
+            navigationController?.navigationBar.barStyle = .default
+        }
+        
+        navigationController?.setNavigationBarHidden(false, animated: true)
+        navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
+        navigationController?.navigationBar.shadowImage = UIImage()
+        navigationController?.navigationBar.tintColor = LKRoot.ins_color_manager.read_a_color("main_tint_color")
         navigationController?.setNavigationBarHidden(false, animated: true)
     }
     

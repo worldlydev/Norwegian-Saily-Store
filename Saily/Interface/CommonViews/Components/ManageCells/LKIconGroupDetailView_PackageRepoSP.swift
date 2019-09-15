@@ -217,19 +217,19 @@ extension manage_views {
         @objc func expend_self() {
             
             
-            if LKRoot.container_string_store["REFRESH_IN_POGRESS_PR"] == "TRUE" {
-                UIView.transition(with: expend_button, duration: 0.5, options: .transitionCrossDissolve, animations: {
-                    self.expend_button.setTitle("请等待首次刷新进程完成".localized(), for: .normal)
-                    self.expend_button.setTitleColor(.red, for: .normal)
-                })
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                    UIView.transition(with: self.expend_button, duration: 0.5, options: .transitionCrossDissolve, animations: {
-                        self.expend_button.setTitle("点击来展开全部软件源 ▼".localized(), for: .normal)
-                        self.expend_button.setTitleColor(LKRoot.ins_color_manager.read_a_color("main_title_two"), for: .normal)
-                    })
-                }
-                return
-            }
+//            if LKRoot.container_string_store["REFRESH_IN_POGRESS_PR"] == "TRUE" {
+//                UIView.transition(with: expend_button, duration: 0.5, options: .transitionCrossDissolve, animations: {
+//                    self.expend_button.setTitle("请等待首次刷新进程完成".localized(), for: .normal)
+//                    self.expend_button.setTitleColor(.red, for: .normal)
+//                })
+//                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+//                    UIView.transition(with: self.expend_button, duration: 0.5, options: .transitionCrossDissolve, animations: {
+//                        self.expend_button.setTitle("点击来展开全部软件源 ▼".localized(), for: .normal)
+//                        self.expend_button.setTitleColor(LKRoot.ins_color_manager.read_a_color("main_title_two"), for: .normal)
+//                    })
+//                }
+//                return
+//            }
             
             re_sync()
             table_view.reloadData()

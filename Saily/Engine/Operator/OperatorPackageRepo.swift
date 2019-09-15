@@ -106,6 +106,12 @@ extension app_opeerator {
                     }
                 }
                 read_release = str ?? ""
+                DispatchQueue.main.asyncAfter(deadline: .now()) {
+                    if LKRoot.manager_reg.pr.initd {
+                        LKRoot.manager_reg.pr.update_user_interface {
+                        }
+                    }
+                }
                 sem.signal()
             }
             LKRoot.queue_dispatch.async {
@@ -162,6 +168,14 @@ extension app_opeerator {
             }
         }
         LKRoot.container_string_store["STR_SIG_PROGRESS"] = ""
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            if LKRoot.manager_reg.pr.initd {
+                LKRoot.manager_reg.pr.update_user_interface {
+                }
+            }
+        }
+        
     } // PR_sync_and_download
     
     func PR_release_wrapper(str: String) -> [String : String] {

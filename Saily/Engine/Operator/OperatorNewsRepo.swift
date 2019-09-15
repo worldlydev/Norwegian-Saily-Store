@@ -175,8 +175,22 @@ extension app_opeerator {
             new.cards = NR_cards_content_invoker(content_str: read_cards ?? "", master_link: item.link ?? "")
             // 放内存
             LKRoot.container_news_repo.append(new)
+            DispatchQueue.main.asyncAfter(deadline: .now()) {
+                if LKRoot.manager_reg.nr.initd {
+                    LKRoot.manager_reg.nr.update_user_interface {
+                    }
+                }
+            }
         } // for
 //        LKRoot.container_string_store["REFRESH_IN_POGRESS_NP"] = "FALSE"
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+            if LKRoot.manager_reg.nr.initd {
+                LKRoot.manager_reg.nr.update_user_interface {
+                }
+            }
+        }
+        
         CallB(operation_result.success.rawValue)
     } // NR_sync_and_download
 

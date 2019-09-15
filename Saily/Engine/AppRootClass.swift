@@ -27,7 +27,9 @@ class app_root_class {
     
     var root_path: String?
     var root_db: Database?
+    var root_db_update_required = false
     var rtlTrace_db: Database?
+    var rtlTrace_db_update_required = false
     
     var isRootLess: Bool = false
     
@@ -93,7 +95,18 @@ class app_root_class {
         
         print("[*] 获取到沙箱目录：\n")
         print(root_path!)
-        print("")
+        print("[*] App定义了最低兼容的数据库版本为 - " + DATEBASE_MINCAP_VERSION.description)
+        
+        if FileManager.default.fileExists(atPath: root_path! + "/db_version_trace.txt") {
+            if let read = try? String(contentsOfFile: root_path! + "/db_version_trace.txt") {
+                // Any Check?
+                print("[*] 数据库版本为 - " + read)
+            } else {
+                print("[?] String(contentsOfFile: db_version_trace.txt)")
+            }
+        } else {
+            try? DATEBASE_MINCAP_VERSION.description.write(toFile: root_path! + "/db_version_trace.txt", atomically: true, encoding: .utf8)
+        }
         
         try? FileManager.default.removeItem(atPath: root_path! + "/daemon.call")
 //        try? FileManager.default.removeItem(atPath: root_path! + "/Lakr233.db-wal") 操这玩意害惨我了
@@ -134,24 +147,17 @@ class app_root_class {
         UserDefaults.standard.set(false, forKey: "_UIConstraintBasedLayoutLogUnsatisfiable")
         
         // rootless JB working on it!
-        if FileManager.default.fileExists(atPath: "/.rootlessJBENVSIM") /* x86 simulator */ {
+        if FileManager.default.fileExists(atPath: "/.rootlessJB.env.signal") /* x86 simulator */ {
             isRootLess = true
-        }
-        
-        if let rootlessSigs = try? FileManager.default.contentsOfDirectory(atPath: "/var/containers/Bundle/") {
-            for item in rootlessSigs where item.lowercased().contains("rootless") {
-                isRootLess = true
-            }
-        } else {
-            // Do it in init of daemon
-//            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-//                LKDaemonUtils.checkRootlessJB()
-//            }
-        }
-        
-        if isRootLess {
             print("------> 启用rootless版本 <------")
         }
+
+        // Obviously not work cause amfid will block us searching for files at /var
+//        if let rootlessSigs = try? FileManager.default.contentsOfDirectory(atPath: "/var/containers/Bundle/") {
+//            for item in rootlessSigs where item.lowercased().contains("rootless") {
+//                isRootLess = true
+//            }
+//        }
         
         // 发送到下载处理引擎
         queue_dispatch.async {
@@ -255,10 +261,21 @@ class app_root_class {
             print("[LLDB] - " + str!)
         }
         #if DEBUG
-//        raise(SIGINT)
+        if amIBeingDebugged() {
+            raise(SIGINT)
+        }
         #else
 //        asm("svc 0")
         #endif
+    }
+    
+    func amIBeingDebugged() -> Bool {
+        var info = kinfo_proc()
+        var mib : [Int32] = [CTL_KERN, KERN_PROC, KERN_PROC_PID, getpid()]
+        var size = MemoryLayout<kinfo_proc>.stride
+        let junk = sysctl(&mib, UInt32(mib.count), &info, &size, nil, 0)
+        assert(junk == 0, "sysctl failed")
+        return (info.kp_proc.p_flag & P_TRACED) != 0
     }
     
 }
