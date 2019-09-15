@@ -16,12 +16,12 @@ echo Reload Daemon
 nohupFile=/usr/bin/nohup
 if [ -f "$nohupFile" ]; then
 nohup launchctl unload /Library/LaunchDaemons/com.lakr233.Saily-Daemon.plist
+sleep 1
 nohup launchctl load /Library/LaunchDaemons/com.lakr233.Saily-Daemon.plist
 else
 launchctl unload /Library/LaunchDaemons/com.lakr233.Saily-Daemon.plist &> /dev/null
 launchctl load /Library/LaunchDaemons/com.lakr233.Saily-Daemon.plist &> /dev/null
 fi
-
 
 echo Install Application Permission
 chmod 0755 /Applications/Saily.app/Saily

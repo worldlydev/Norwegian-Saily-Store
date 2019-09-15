@@ -1,12 +1,4 @@
-/* 
-  InfoPlist.strings
-  Saily
-
-  Created by mac on 2019/6/7.
-  Copyright © 2019 Lakr Aream. All rights reserved.
-*/
-
 {
-    "NSCameraUsageDescription" = "We need this permission to access shared QR Code.";
-    "NSPhotoLibraryUsageDescription" = "We need this permission to access your photots.";
+    "NSCameraUsageDescription"="Vi trenger denne tillatelsen for å få tilgang til delt QR-kode.";
+    "NSPhotoLibraryUsageDescription"="Vi trenger denne tillatelsen for å få tilgang til bildene dine.";
 }
