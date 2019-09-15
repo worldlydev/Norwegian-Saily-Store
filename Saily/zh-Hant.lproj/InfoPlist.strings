@@ -7,6 +7,6 @@
 */
 
 {
-    "NSCameraUsageDescription" = "我们需要使用相机来拍摄您请求的照片。";
-    "NSPhotoLibraryUsageDescription" = "我们需要访问照片图库来获取您请求的照片。";
+    "NSCameraUsageDescription" = "我們需要使用相機來拍攝您請求的照片。";
+    "NSPhotoLibraryUsageDescription" = "我們需要訪問照片圖庫來獲取您請求的照片。";
 }
