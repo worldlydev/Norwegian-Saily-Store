@@ -2,7 +2,8 @@
 
 The most magical package manager forever. (Experimental Branch)   
 
-Acknowledgements:    
+# Acknowledgements:    
+
 Leader:    
 - @Lakr233     
 
@@ -30,31 +31,30 @@ More thins coming later.... I got summery holiday homeworks to do.
 
 # Known Issues
 
-- Freezing on some Chimera/Electra jailbreak 
-- May cause UIPasteBoard to freeze system wide (Need confirm)
-- Download may failed and we still have the file cause dpkg not to read it
-- dpkg depends may not handled in right way
+- Freezing on some Chimera/Electra jailbreak  
+- Download may failed and we still have the file cause dpkg not to read it  
+- dpkg depends may not handled in right way  
 
 # Road Map
 
-- Auth surface between daemon and Application
-- Package Payments
-- Package depends provides conflict replace support
-- Package depends provides conflict replace overwrite
-- Setting page redesign
-- A better search page
-- News Repo featured
-- Generating News Repo and upload with GitHub OAuth
+- Auth surface between daemon and Application  
+- Package Payments  
+- Package depends provides conflict replace support  
+- Package depends provides conflict replace overwrite  
+- Setting page redesign  
+- A better search page  
+- News Repo featured  
+- Generating News Repo and upload with GitHub OAuth  
 
-- Finished RootlessJB Support
+- Finished RootlessJB Support  
 
-# Installation
+# Cooking Development Installation  
 
-- Install cocoaPods
-- (Optional) Comment this line -> # source 'https://cdn.cocoapods.org/'
-- pod install
-- Build it and run
+- Install cocoaPods  
+- (Optional) Comment this line -> # source 'https://cdn.cocoapods.org/'  
+- pod install  
+- Build it and run  
 
----> Daemon may not run on macOS or and x86 devices, and required to comment some lines in build scripts. 
+---> Daemon may not run on macOS or and x86 devices, and required to comment some lines in build scripts.   
 
 
