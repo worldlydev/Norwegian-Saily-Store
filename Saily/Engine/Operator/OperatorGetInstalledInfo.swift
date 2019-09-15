@@ -36,7 +36,7 @@ extension app_opeerator {
     func YA_build_installed_list(session: String, _ CallB: @escaping (Int) -> Void) {
         LKRoot.queue_dispatch.async {
             sleep(1)
-            if FileManager.default.fileExists(atPath: LKRoot.root_path! + "/dpkg/status") {
+            if FileManager.default.fileExists(atPath: LKRoot.root_path! + "/dpkg/status")  && !LKRoot.isRootLess {
                 return
             }
             self.YA_build_installed_list_rootless()

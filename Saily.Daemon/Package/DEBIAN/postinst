@@ -1,5 +1,5 @@
 echo Installing Saily
-echo Version: Major 0.6 Beta 1005
+echo Version: Major 0.6 Beta b1063
 
 echo Install Daemon Permission
 chown root:wheel /Library/LaunchDaemons/com.lakr233.Saily-Daemon.plist
