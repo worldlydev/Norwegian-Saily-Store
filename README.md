@@ -18,6 +18,7 @@ Designers:
 Translator:   
 - GitHub: dabeecao Vietnamese
 - Twitter: @ammaripa @busadoki Arabic
+- Twitter: @WorldlyDev Norwegian
 
 Project Struct:   
 - Monkey Dev: https://github.com/AloneMonkey/MonkeyDev
