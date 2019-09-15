@@ -50,7 +50,7 @@
 "外观 - 启用黑夜模式" = "Appearance - Enable Dark Mode";
 "外观 - 全局卡片圆角" = "Appearance - Card Radius";
 "软件逻辑" = "Application Defaults";
-"通用 - 全局下载超时" = "General - Network Timeou";
+"通用 - 全局下载超时" = "General - Network Timeout";
 "通用 - 获取设备 UDID" = "General - Set UDID";
 "通用 - 强制解锁 dpkg" = "General - Force Unlock DPKG";
 "通用 - 强制解锁网络" = "General - Force Unlock Network";
@@ -84,7 +84,7 @@
 "确认" = "Confirm";
 "请输入一个小于 20 并大于 0 的值。" = "The input must between 0 and 20";
 "请输入一个整数" = "Please input a valid integer";
-"网络超时" = "Network Timeou";
+"网络超时" = "Network Timeout";
 "你的操作已经保存。" = "Your operation was saved.";
 "最近安装" = "Recent Install";
 "这里包含了您在系统中已经安装的软件包。" = "This section contains recent install packages.";
