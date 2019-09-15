@@ -367,6 +367,10 @@ extension common_views {
                                                    title: "已尝试刷新软件源".localized(),
                                                    msg: "软件包的更新将在后台进行。".localized())
                             } // update_user_interface
+                        } else {
+                            presentStatusAlert(imgName: "Done",
+                                               title: "已尝试刷新软件源".localized(),
+                                               msg: "软件包的更新将在后台进行。".localized())
                         } // initd
                     } // async
                 } // PR_sync_and_download
