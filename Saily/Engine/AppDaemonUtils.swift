@@ -356,42 +356,27 @@ class app_daemon_utils {
                 appendLogToFile(log: "Skipping patch at " + package)
                 try? FileManager.default.removeItem(atPath: path + "/" + ".LKRootLessSkipPatch")
             } else {
-                for pf in path.readAllFiles() {
-                    fixListAll.append(pf)
-                }
+                fixListAll.append(path)
             }
         }
         
-        var script0 = """
-#!/var/containers/Bundle/iosbinpack64/bin/bash
-
-export LANG=C
-export LC_CTYPE=C
-export LC_ALL=C
-
-# -->_<--
-
-"""
         // MARK: PATCH
+        let origPatchScript = Bundle.main.url(forResource: "RootLessPatch", withExtension: ".sh")!
+        let text = (try? String(contentsOfFile: origPatchScript.absoluteString.dropFirst("file://".count).to_String()))!
+
+        var fine = "/var/containers/Bundle/iosbinpack64/bin/chmod -R 777 " + LKRoot.root_path! + "/daemon.call/pendingPatch/\n"
+        
         for item in fixListAll {
-            // Patch -> ldid2 -> inject
-            let name: String = item.split(separator: "/").last?.to_String() ?? "something???"
-            script0 += "# --- " + name + " \n"
-            script0 += "echo 'Fixing " + name + " ---> ' >> " + LKRoot.root_path! + "/daemon.call/out.txt" + "\n"
-            script0 += "/var/containers/Bundle/iosbinpack64/usr/bin/sed -i \"\" 's/\\/Library\\//\\/var\\/LIB\\//g' " + item + "\n"
-            script0 += "/var/containers/Bundle/iosbinpack64/usr/bin/sed -i \"\" 's/\\/System\\/var\\/LIB\\//\\/System\\/Library\\//g' " + item + "\n"
-            script0 += "/var/containers/Bundle/iosbinpack64/usr/bin/sed -i \"\" 's/%@\\/var\\/LIB\\//%@\\/Library\\//g' " + item + "\n"
-            script0 += "/var/containers/Bundle/iosbinpack64/usr/bin/sed -i \"\" 's/mobile\\/var\\/LIB\\//mobile\\/Library\\//g' " + item + "\n"
-            script0 += "/var/containers/Bundle/iosbinpack64/usr/bin/sed -i \"\" 's/\\/usr\\/lib\\/libsubstrate/\\/var\\/ulb\\/libsubstrate/g' " + item + "\n"
-            script0 += "/var/containers/Bundle/iosbinpack64/usr/bin/sed -i \"\" 's/\\/usr\\/lib\\/libsubstitute/\\/var\\/ulb\\/libsubstitute/g' " + item + "\n"
-            script0 += "/var/containers/Bundle/iosbinpack64/usr/bin/sed -i \"\" 's/\\/usr\\/lib\\/libprefs/\\/var\\/ulb\\/libprefs/g' " + item + "\n"
-            script0 += "/var/containers/Bundle/iosbinpack64/bin/ldid2 -S " + item + "\n"
-            script0 += "/var/containers/Bundle/iosbinpack64/usr/bin/inject " + item + "\n"
-            script0 += "# --------- \n\n"
+            var patchOne = "export packagePath=" + item + "\n"
+            patchOne += text
+            try? patchOne.write(toFile: item + "/p.sh", atomically: true, encoding: .utf8)
+            fine += "/var/containers/Bundle/iosbinpack64/bin/chmod +x '" + item + "/p.sh'\n"
+            fine += "/var/containers/Bundle/iosbinpack64/bin/bash -c '" + item + "/p.sh >> " + LKRoot.root_path! + "/daemon.call/out.txt" + "'\n"
         }
         
-        try? script0.write(toFile: LKRoot.root_path! + "/daemon.call/pendingPatch/LKRTLPatchScript.sh", atomically: true, encoding: .utf8)
-
+        let patchScriptPath = LKRoot.root_path! + "/daemon.call/pendingPatch/LKRTLPatchScript.sh"
+        try? fine.write(toFile: patchScriptPath, atomically: true, encoding: .utf8)
+        
         appendLogToFile(log: "Submiting patches...\n")
         LKDaemonUtils.daemon_msg_pass(msg: "init:req:rtlPatch")
         while !FileManager.default.fileExists(atPath: LKRoot.root_path! + "/daemon.call/pendingPatch/Done") {
@@ -459,6 +444,7 @@ export LC_ALL=C
                         }
                         script_install += "/var/containers/Bundle/iosbinpack64/bin/mkdir -p '/var/containers/Bundle/tweaksupport/" + possibleDir + "'" + "\n"
                         let replaced = longlongfile.replacingOccurrences(of: "pendingTrace", with: "pendingInstall")
+                        script_install += "/var/containers/Bundle/iosbinpack64/bin/rm -f '/var/containers/Bundle/tweaksupport/" + notabspath + "'" + "\n"
                         script_install += "/var/containers/Bundle/iosbinpack64/bin/cp -rf '" + replaced + "' '/var/containers/Bundle/tweaksupport/" + notabspath + "'" + "\n"
                     }
                     dbRecord.usedDPKG = false

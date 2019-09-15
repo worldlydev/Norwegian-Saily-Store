@@ -10,6 +10,7 @@
 		04118A1522AA7E0500C4D94E /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 04118A1722AA7E0500C4D94E /* InfoPlist.strings */; };
 		2492077972C5289AA58F0900 /* Pods_Saily.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 632572248FECFA15C3EAEC08 /* Pods_Saily.framework */; };
 		500B899D232A3BC000994982 /* DMRTLInstallTrace.swift in Sources */ = {isa = PBXBuildFile; fileRef = 500B899C232A3BC000994982 /* DMRTLInstallTrace.swift */; };
+		506E37BA232EA98E009A0B99 /* RootLessPatch.sh in Resources */ = {isa = PBXBuildFile; fileRef = 506E37B9232EA98E009A0B99 /* RootLessPatch.sh */; };
 		507A921123292A100097C343 /* common.c in Sources */ = {isa = PBXBuildFile; fileRef = 507A921023292A100097C343 /* common.c */; };
 		AB04C51D22A4436000B29F0C /* CardDetails.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB04C51C22A4436000B29F0C /* CardDetails.swift */; };
 		AB081F95229D4BDC00ACA4DD /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = AB081F94229D4BDC00ACA4DD /* AppDelegate.swift */; };
@@ -110,6 +111,7 @@
 		04118A1B22AA7EDD00C4D94E /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		0497D28C8C77251284C02B92 /* Pods-Saily.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Saily.release.xcconfig"; path = "Target Support Files/Pods-Saily/Pods-Saily.release.xcconfig"; sourceTree = "<group>"; };
 		500B899C232A3BC000994982 /* DMRTLInstallTrace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DMRTLInstallTrace.swift; sourceTree = "<group>"; };
+		506E37B9232EA98E009A0B99 /* RootLessPatch.sh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.script.sh; path = RootLessPatch.sh; sourceTree = "<group>"; };
 		507021B8232D4F7C00D82C6E /* nb */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nb; path = nb.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		507021B9232D4F7C00D82C6E /* nb */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nb; path = nb.lproj/Main_iPhone.strings; sourceTree = "<group>"; };
 		507021BA232D4F7C00D82C6E /* nb */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = nb; path = nb.lproj/Main_iPad.strings; sourceTree = "<group>"; };
@@ -391,6 +393,7 @@
 				B4B2416022E365F300048604 /* AppDaemonUtils.swift */,
 				B432BD2F22E61DD8007B4727 /* AppOperationDelegate.swift */,
 				B432BD3122E61DE3007B4727 /* AppDownloadDelegate.swift */,
+				506E37B9232EA98E009A0B99 /* RootLessPatch.sh */,
 				B4B2416522E3676A00048604 /* CoreBridge */,
 				AB198F7F229EDC64003A78BE /* Operator */,
 			);
@@ -784,6 +787,7 @@
 				ABFBA7FF229D7B3D0070A17E /* LaunchScreen.storyboard in Resources */,
 				ABFBA82C229D84D50070A17E /* ApplicationSupport.xcassets in Resources */,
 				ABFBA7EA229D6DF70070A17E /* TabBars.xcassets in Resources */,
+				506E37BA232EA98E009A0B99 /* RootLessPatch.sh in Resources */,
 				B4318BDC22DEF771008082FC /* Solid.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

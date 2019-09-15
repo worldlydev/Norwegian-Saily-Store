@@ -21,8 +21,9 @@ Translator:
 - Twitter: @ammaripa @busadoki Arabic  
 - Twitter: @WorldlyDev Norwegian  
 
-Project Struct:   
+Used Project:   
 - Monkey Dev: https://github.com/AloneMonkey/MonkeyDev  
+- RootLessInstaller: https://github.com/Alticha/RootlessInstaller  
 
 The "SomeHow" Offical Twitter Account:   
 - @TrySaily: @BreckenLusk  
