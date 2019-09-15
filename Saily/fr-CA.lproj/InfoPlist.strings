@@ -7,6 +7,6 @@
 */
 
 {
-    "NSCameraUsageDescription" = "We need this permission to access shared QR Code.";
-    "NSPhotoLibraryUsageDescription" = "We need this permission to access your photots.";
+    "NSCameraUsageDescription"="Nous avons besoin de cette permission pour le QR Code.";
+    "NSPhotoLibraryUsageDescription"="Nous avons besoin de cette permission pour accéder à vos photos.";
 }
