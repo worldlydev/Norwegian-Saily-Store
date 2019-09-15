@@ -102,7 +102,7 @@
 "排序方法"="طريقة الفرز";
 "提交"="عرض";
 "提示"="نصيحة:";
-"插件依赖的安装可能会出现问题，请在安装前仔细检查。"="We will disable depends analyze due to rootless jailbreak detected.";
+"插件依赖的安装可能会出现问题，请在安装前仔细检查。" = "We will disable dependecies analyse due to rootless jailbreak detected.";
 "搜索"="بحث";
 "搜索中心"="مركز البحث";
 "操作队列"="عمليات";
