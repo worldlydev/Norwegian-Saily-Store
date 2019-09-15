@@ -122,6 +122,16 @@
 		50A81580232B9C1B008F6667 /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/Main_iPad.strings; sourceTree = "<group>"; };
 		50A81581232B9C1B008F6667 /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		50A81582232B9C1C008F6667 /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/Localizable.strings; sourceTree = "<group>"; };
+		50E25DF3232E5FDF00BBFE6F /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
+		50E25DF4232E5FDF00BBFE6F /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Main_iPhone.strings; sourceTree = "<group>"; };
+		50E25DF5232E5FDF00BBFE6F /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Main_iPad.strings; sourceTree = "<group>"; };
+		50E25DF6232E5FDF00BBFE6F /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		50E25DF7232E5FDF00BBFE6F /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
+		50E25DF8232E5FE500BBFE6F /* fr-CA */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "fr-CA"; path = "fr-CA.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
+		50E25DF9232E5FE500BBFE6F /* fr-CA */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "fr-CA"; path = "fr-CA.lproj/Main_iPhone.strings"; sourceTree = "<group>"; };
+		50E25DFA232E5FE500BBFE6F /* fr-CA */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "fr-CA"; path = "fr-CA.lproj/Main_iPad.strings"; sourceTree = "<group>"; };
+		50E25DFB232E5FE500BBFE6F /* fr-CA */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "fr-CA"; path = "fr-CA.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		50E25DFC232E5FE500BBFE6F /* fr-CA */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "fr-CA"; path = "fr-CA.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		632572248FECFA15C3EAEC08 /* Pods_Saily.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Saily.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		AB04C51C22A4436000B29F0C /* CardDetails.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardDetails.swift; sourceTree = "<group>"; };
 		AB081F91229D4BDC00ACA4DD /* Saily.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Saily.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -729,6 +739,8 @@
 				vi,
 				ar,
 				nb,
+				fr,
+				"fr-CA",
 			);
 			mainGroup = AB081F88229D4BDC00ACA4DD;
 			productRefGroup = AB081F92229D4BDC00ACA4DD /* Products */;
@@ -1037,6 +1049,8 @@
 				B4691C7722EA851B00329DF5 /* vi */,
 				50A81581232B9C1B008F6667 /* ar */,
 				507021BB232D4F7C00D82C6E /* nb */,
+				50E25DF6232E5FDF00BBFE6F /* fr */,
+				50E25DFB232E5FE500BBFE6F /* fr-CA */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -1048,6 +1062,8 @@
 				B4691C7422EA851B00329DF5 /* vi */,
 				50A8157E232B9C1B008F6667 /* ar */,
 				507021B8232D4F7C00D82C6E /* nb */,
+				50E25DF3232E5FDF00BBFE6F /* fr */,
+				50E25DF8232E5FE500BBFE6F /* fr-CA */,
 			);
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
@@ -1058,6 +1074,8 @@
 				ABFBA803229D7B460070A17E /* Base */,
 				50A81580232B9C1B008F6667 /* ar */,
 				507021BA232D4F7C00D82C6E /* nb */,
+				50E25DF5232E5FDF00BBFE6F /* fr */,
+				50E25DFA232E5FE500BBFE6F /* fr-CA */,
 			);
 			name = Main_iPad.storyboard;
 			sourceTree = "<group>";
@@ -1068,6 +1086,8 @@
 				ABFBA806229D7B4F0070A17E /* Base */,
 				50A8157F232B9C1B008F6667 /* ar */,
 				507021B9232D4F7C00D82C6E /* nb */,
+				50E25DF4232E5FDF00BBFE6F /* fr */,
+				50E25DF9232E5FE500BBFE6F /* fr-CA */,
 			);
 			name = Main_iPhone.storyboard;
 			sourceTree = "<group>";
@@ -1080,6 +1100,8 @@
 				B4691C7822EA851B00329DF5 /* vi */,
 				50A81582232B9C1C008F6667 /* ar */,
 				507021BC232D4F7C00D82C6E /* nb */,
+				50E25DF7232E5FDF00BBFE6F /* fr */,
+				50E25DFC232E5FE500BBFE6F /* fr-CA */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";

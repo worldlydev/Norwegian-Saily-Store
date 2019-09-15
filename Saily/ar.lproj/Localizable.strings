@@ -25,8 +25,6 @@
 "APT软件"="APT Standard Software";
 "Copyright © 2019 Saily Team. All rights reserved."="حقوق النشر © 2019 Saily Team. All rights reserved. (تم التعريب بواسطة busadoki@)";
 "LKRP-TITLE| |加载失败\nLKRP-SUBTITLE| |请重试\n"="LKRP-TITLE| |اخفق في التحميل\nLKRP-SUBTITLE| |خطأ غير معروف\n";
-"https:\/\/lakrowo.gitee.io\/AreamN\/"="https:\/\/lakraream.github.io\/AreamN\/";
-"https:\/\/lakrowo.gitee.io\/Saily\/"="https:\/\/lakraream.github.io\/Saily\/";
 "⚠️"="⚠️";
 "世界"="العالم";
 "了解"="مفهوم";
@@ -219,3 +217,4 @@
 "重新安装"="إعادة تثبيت";
 "错误"="خطأ";
 "错误的软件包识别码"="هوية الحزمة غير صالحة";
+"未找到的软件包" = "Can't Find";
