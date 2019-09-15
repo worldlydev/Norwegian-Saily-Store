@@ -16,12 +16,15 @@ Designers:
 - @xerusdesign - Default Tweak Icon   
 
 Translator:   
-- GitHub: dabeecao Vietnamese
-- Twitter: @ammaripa @busadoki Arabic
-- Twitter: @WorldlyDev Norwegian
+- GitHub: dabeecao Vietnamese  
+- Twitter: @ammaripa @busadoki Arabic  
+- Twitter: @WorldlyDev Norwegian  
 
 Project Struct:   
-- Monkey Dev: https://github.com/AloneMonkey/MonkeyDev
+- Monkey Dev: https://github.com/AloneMonkey/MonkeyDev  
+
+The "SomeHow" Offical Twitter Account:   
+- @TrySaily: @BreckenLusk  
 
 More thins coming later.... I got summery holiday homeworks to do.  
 
