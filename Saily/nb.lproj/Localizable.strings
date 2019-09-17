@@ -61,7 +61,7 @@
 "加载失败 点击重试"="Kunne ikke laste";
 "即将导入"="Vil Importere";
 "即将开放"="Kommer Snart";
-"即将执行"="VENTER BEKREFT";
+"即将执行"="VENTER PÅ BEKREFTELSE";
 "卸载"="Avinstaller";
 "发现"="Oppdag";
 "发生了未知错误。"="Ukjent Feil Skjedde";
@@ -71,7 +71,7 @@
 "因出现未知错误现提供软件包的原始信息：\n\n"="Ingen avbildningside tilgjengelig";
 "在获取这个软件包时出现了意外错误。"="Ukjent Feil Oppstod Under Nedlasting Av Pakkeinnhold";
 "在这里，你和你的全部"="Her er alt du trenger";
-"在这里，寻找可能"="Vi et her for mulighet";
+"在这里，寻找可能"="Vi er her for mulighet";
 "外观 - 全局卡片圆角"="Utseende - Kortradius";
 "外观 - 启用黑夜模式"="Utseende - Skru på Mørkmodus";
 "失败"="Mislyktes";
@@ -100,12 +100,12 @@
 "执行"="Kjør";
 "排序"="Sorter";
 "排序方法"="Sorteringsmetode";
-"提交"="SEND INN";
+"提交"="UTFØR";
 "提示"="Tips:";
 "插件依赖的安装可能会出现问题，请在安装前仔细检查。"="Om vi deaktiverer avhenger av analyse om rootless jailbreak oppdagelse.";
 "搜索"="Søk";
 "搜索中心"="Søkesenter";
-"操作队列"="OPERASJONER";
+"操作队列"="KØ";
 "操作队列信息校验失败"="Feil i informasjon om operasjonskø";
 "收起 ▲"="Vis mindre ▲";
 "新闻源"="Nyhetskilder";
@@ -148,7 +148,7 @@
 "点击来获取惊喜 ▼"="Vis mer ▼";
 "确认"="Bekreft";
 "稍后"="Start på nytt senere";
-"等待执行"="I KØ";
+"等待执行"="KØ";
 "管理"="Håndter";
 "管理中心"="Håndteringsenter";
 "给你惊喜 🎁"="Overraskelser 🎁";
@@ -192,7 +192,7 @@
 "这个操作将重启您的系统"="Omstart nødvendig";
 "这个新闻源的刷新进程在上一次刷新中意外退出了，我们建议您将其移除，或者尝试再次刷新。"="Denne nyhetskilden kunne ikke oppdateres.  Vurderer å oppdatere eller fjerne den?";
 "这个板块显示了最近更新的软件包。"="Denne delen viser pakkene som har blitt oppdatert nylig.";
-"这个栏目没有内容"="Seksjonen tømt";
+"这个栏目没有内容"="Ingen pakker";
 "这个软件包同时被多个软件源提供。请选择一个查看详情"="Denne pakken ble levert av flere kilder. Velg en for å fortsette.";
 "这个软件包在安装前被要求修改依赖"="NØDVENDIG TØM MULIGENS PÅKREVD FØR DU INSTALLERER";
 "这个软件包的名字已经复制到剪贴板"="Navnet til pakken er kopiert";
