@@ -1,3 +1,9 @@
+# WorldlyDev’s Saily-Store Fork
+
+This fork is now archived as it has been merged into the original repository.
+It added updated translations for Norwegian Bokmål and Norwegian Nynorsk localizations.
+
+
 # Saily-Store  
 
 The most magical package manager forever. (Experimental Branch)   
