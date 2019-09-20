@@ -2,6 +2,7 @@
 
 This fork is now archived as it has been merged into the original repository.
 It added updated translations for Norwegian Bokmål and Norwegian Nynorsk localizations.
+https://github.com/Co2333/Saily-Store/pull/3
 
 
 # Saily-Store  
@@ -64,5 +65,4 @@ More thins coming later.... I got summery holiday homeworks to do.
 - Build it and run  
 
 ---> Daemon may not run on macOS or and x86 devices, and required to comment some lines in build scripts.   
-
 
